@@ -3,7 +3,8 @@ import SiteNav from "@/components/layout/site-nav";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Download, ExternalLink } from "lucide-react";
+import { Download, ExternalLink, Award, ArrowRight } from "lucide-react";
+import { certificates } from "@/data/certificates";
 
 export const metadata: Metadata = {
   title: "About",
@@ -106,6 +107,58 @@ export default function About() {
                   </p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Certifications teaser */}
+        <section className="border-t border-border/60">
+          <div className="mx-auto max-w-4xl px-6 py-14">
+            <p className="mb-8 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              Certifications
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {certificates.slice(0, 4).map((cert, idx) => {
+                const gradients = [
+                  "from-violet-600 via-purple-600 to-indigo-700",
+                  "from-indigo-600 via-blue-600 to-cyan-700",
+                  "from-purple-700 via-pink-600 to-rose-600",
+                  "from-cyan-600 via-teal-600 to-emerald-700",
+                ];
+                return (
+                  <div
+                    key={cert.id}
+                    className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card transition-all duration-300 hover:scale-[1.02] hover:border-primary/40 hover:shadow-[0_0_28px_oklch(0.55_0.22_264_/_35%)]"
+                  >
+                    <div
+                      className={`relative flex h-32 w-full items-center justify-center bg-gradient-to-br ${gradients[idx % gradients.length]} overflow-hidden`}
+                    >
+                      <div
+                        className="absolute inset-0 opacity-20"
+                        style={{
+                          backgroundImage:
+                            "linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)",
+                          backgroundSize: "28px 28px",
+                        }}
+                      />
+                      <Award className="relative z-10 size-8 text-white/90" />
+                    </div>
+                    <div className="p-4">
+                      <p className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">{cert.title}</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">{cert.issuer} · {cert.date}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-6">
+              <Button asChild variant="outline">
+                <Link href="/certifications">
+                  <Award className="size-4" />
+                  View all {certificates.length} certificates
+                  <ArrowRight className="size-4" />
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
