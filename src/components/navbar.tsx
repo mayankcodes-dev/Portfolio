@@ -1,152 +1,176 @@
 "use client";
 
-import { useState } from "react";
+/**
+ * Navbar — Homepage only (GSAP scroll anchors)
+ * Floating centered pill design inspired by aanchalcreates.com
+ * Glassmorphism · Active link highlight · ChaiCode button CTA
+ */
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { Menu, X } from "lucide-react";
 
 gsap.registerPlugin(ScrollToPlugin);
 
-const navItems = [
-  { label: "Work", target: "projects" },
-  { label: "Skills", target: "skills" },
-  { label: "About", target: "hero" },
+const NAV_ITEMS = [
+  { label: "Work",    target: "projects" },
+  { label: "Skills",  target: "skills"  },
+  { label: "About",   target: "hero"    },
   { label: "Contact", target: "contact" },
 ];
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive]     = useState("hero");
 
-  const handleNavClick = (target: string) => {
+  /* Detect scroll for shadow intensity */
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  /* Active section via IntersectionObserver */
+  useEffect(() => {
+    const sections = NAV_ITEMS.map((i) => document.getElementById(i.target));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+    sections.forEach((s) => s && observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollTo = (target: string) => {
     setMenuOpen(false);
     gsap.to(window, {
       duration: 1.05,
       ease: "power2.inOut",
-      scrollTo: {
-        y: `#${target}`,
-        offsetY: 88,
-      },
+      scrollTo: { y: `#${target}`, offsetY: 80 },
     });
   };
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4 md:px-10">
-
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <span className="grid size-9 place-items-center rounded-xl bg-primary text-primary-foreground text-sm font-bold transition-transform group-hover:scale-105">
-            M
-          </span>
-          <span className="text-sm font-semibold tracking-wide text-foreground/90">
-            Mayank Developer
-          </span>
-        </Link>
-
-        {/* Desktop nav links */}
-        <div className="hidden items-center gap-1 rounded-full border border-border/60 bg-muted/50 p-1 md:flex">
-          {navItems.map((item) => (
-            <Link
-              key={item.label}
-              href={`#${item.target}`}
-              onClick={(event) => {
-                event.preventDefault();
-                handleNavClick(item.target);
-              }}
-              className="rounded-full px-4 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground hover:bg-background/80"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </div>
-
-        {/* Desktop right actions */}
-        <div className="hidden items-center gap-2 md:flex">
-          {/* Theme Toggle */}
-          <ThemeToggle />
-
-          {/* CTA */}
-          <button
-            onClick={() => handleNavClick("contact")}
-            className="flex items-center gap-2.5 rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-all duration-200 hover:opacity-90 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    <>
+      {/* ── Floating pill navbar ─────────────────────────────────────── */}
+      <nav
+        className={`fixed top-5 left-1/2 z-50 -translate-x-1/2 transition-all duration-500 ${
+          scrolled ? "top-3" : "top-5"
+        }`}
+        aria-label="Main navigation"
+      >
+        <motion.div
+          initial={{ y: -80, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 200, damping: 24, delay: 0.1 }}
+          className={`flex items-center gap-1 rounded-2xl border border-border/50 bg-background/80 px-2 py-1.5 shadow-lg backdrop-blur-xl transition-shadow duration-300 ${
+            scrolled ? "shadow-black/20" : "shadow-black/8"
+          }`}
+        >
+          {/* Logo */}
+          <Link
+            href="/"
+            onClick={(e) => { e.preventDefault(); scrollTo("hero"); }}
+            className="mr-2 flex items-center gap-2 group px-1"
           >
-            Hire me
-            <span className="grid size-6 place-items-center rounded-full bg-primary-foreground/15">
-              <svg
-                width="10"
-                height="9"
-                viewBox="0 0 12 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M.6 4.602h10m-4-4 4 4-4 4"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+            <span className="btn-chai grid size-8 place-items-center bg-primary text-primary-foreground text-sm font-bold">
+              M
             </span>
-          </button>
-        </div>
+            <span className="hidden text-sm font-semibold tracking-wide text-foreground/90 sm:block">
+              Mayank
+            </span>
+          </Link>
 
-        {/* Mobile: Theme toggle + hamburger */}
-        <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle />
-          <button
-            onClick={() => setMenuOpen((prev) => !prev)}
-            className="flex flex-col gap-1.5 p-1"
-            aria-label="Toggle menu"
-            aria-expanded={menuOpen}
-          >
-            <span
-              className={`block h-0.5 w-6 bg-foreground transition-transform ${
-                menuOpen ? "translate-y-2 rotate-45" : ""
-              }`}
-            />
-            <span
-              className={`block h-0.5 w-6 bg-foreground transition-opacity ${
-                menuOpen ? "opacity-0" : ""
-              }`}
-            />
-            <span
-              className={`block h-0.5 w-6 bg-foreground transition-transform ${
-                menuOpen ? "-translate-y-2 -rotate-45" : ""
-              }`}
-            />
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="border-t border-border/60 bg-background/95 backdrop-blur-md px-6 py-5 md:hidden">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-1">
-            {navItems.map((item) => (
-              <Link
+          {/* Desktop links */}
+          <div className="hidden items-center gap-0.5 md:flex">
+            {NAV_ITEMS.map((item) => (
+              <button
                 key={item.label}
-                href={`#${item.target}`}
-                onClick={(event) => {
-                  event.preventDefault();
-                  handleNavClick(item.target);
-                }}
-                className="rounded-lg px-4 py-2.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                onClick={() => scrollTo(item.target)}
+                className={`relative rounded-xl px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
+                  active === item.target
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                }`}
               >
                 {item.label}
-              </Link>
+              </button>
             ))}
+          </div>
 
+          {/* Right: theme toggle + CTA */}
+          <div className="ml-2 hidden items-center gap-1.5 md:flex">
+            <ThemeToggle />
             <button
-              onClick={() => handleNavClick("contact")}
-              className="mt-3 flex w-fit items-center gap-2.5 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground"
+              onClick={() => scrollTo("contact")}
+              className="btn-chai btn-magnetic bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground"
             >
-              Hire me
+              Hire me →
             </button>
           </div>
-        </div>
-      )}
-    </nav>
+
+          {/* Mobile: theme + hamburger */}
+          <div className="ml-2 flex items-center gap-1.5 md:hidden">
+            <ThemeToggle />
+            <button
+              onClick={() => setMenuOpen((p) => !p)}
+              aria-label="Toggle menu"
+              aria-expanded={menuOpen}
+              className="grid size-8 place-items-center rounded-xl border border-border/60 bg-muted/50 text-foreground"
+            >
+              {menuOpen ? <X className="size-4" /> : <Menu className="size-4" />}
+            </button>
+          </div>
+        </motion.div>
+      </nav>
+
+      {/* ── Mobile drawer ────────────────────────────────────────────── */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0, y: -12, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 300, damping: 28 }}
+            className="fixed top-[4.5rem] left-1/2 z-40 w-[calc(100vw-2rem)] max-w-sm -translate-x-1/2 rounded-2xl border border-border/60 bg-background/95 p-3 shadow-2xl backdrop-blur-xl"
+          >
+            <div className="flex flex-col gap-1">
+              {NAV_ITEMS.map((item) => (
+                <button
+                  key={item.label}
+                  onClick={() => scrollTo(item.target)}
+                  className={`rounded-xl px-4 py-2.5 text-left text-sm font-medium transition-colors ${
+                    active === item.target
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+              <button
+                onClick={() => scrollTo("contact")}
+                className="btn-chai btn-magnetic mt-1 bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
+              >
+                Hire me →
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Spacer so page content doesn't hide under fixed navbar */}
+      <div className="h-20" aria-hidden />
+    </>
   );
 }

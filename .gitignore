@@ -42,3 +42,7 @@ next-env.d.ts
 
 # Internal documentation (not for public repo)
 KNOWLEDGE_TRANSFER.md
+STRAPI_SETUP.md
+
+# Strapi CMS (lives in its own separate git repo)
+strapi-cms/
