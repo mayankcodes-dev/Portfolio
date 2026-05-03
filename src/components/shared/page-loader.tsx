@@ -41,10 +41,23 @@ const TOTAL_DURATION = 3500; // ms before loader exits
 
 export default function PageLoader() {
   const [visibleLines, setVisibleLines] = useState<number>(0);
+  const [typedCommand, setTypedCommand] = useState<string>("");
   const [exiting, setExiting] = useState<boolean>(false);
   const [done, setDone] = useState<boolean>(false);
 
   useEffect(() => {
+    // Typewriter effect for "npm run dev"
+    const cmdText = "npm run dev";
+    let typeIndex = 0;
+    const typingInterval = setInterval(() => {
+      if (typeIndex <= cmdText.length) {
+        setTypedCommand(cmdText.substring(0, typeIndex));
+        typeIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, 40);
+
     const lineTimers = BOOT_LINES.map((line, i) =>
       setTimeout(() => {
         setVisibleLines(i + 1);
@@ -55,6 +68,7 @@ export default function PageLoader() {
     const doneTimer = setTimeout(() => setDone(true), TOTAL_DURATION + 450);
 
     return () => {
+      clearInterval(typingInterval);
       lineTimers.forEach(clearTimeout);
       clearTimeout(exitTimer);
       clearTimeout(doneTimer);
@@ -120,7 +134,9 @@ export default function PageLoader() {
                     {line.content ? (
                       <span className="leading-relaxed">{line.content}</span>
                     ) : (
-                      <span className="whitespace-pre-wrap leading-relaxed">{line.text}</span>
+                      <span className="whitespace-pre-wrap leading-relaxed">
+                        {line.type === "cmd" ? typedCommand : line.text}
+                      </span>
                     )}
                     {isLast && (
                       <span className="inline-block h-3.5 w-[7px] animate-[blink_0.9s_step-end_infinite] bg-white/80" />
