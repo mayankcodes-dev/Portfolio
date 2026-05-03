@@ -11,10 +11,33 @@ type BootLine = {
 };
 
 const BOOT_LINES: BootLine[] = [
-  { type: "cmd", text: "", delay: 0 },
+  { type: "cmd", text: "npm run dev", delay: 0 },
+  { type: "out", text: "", delay: 300 },
+  { type: "out", text: "> mayank-developer@0.1.0 dev", delay: 400 },
+  { type: "out", text: "> next dev", delay: 500 },
+  { type: "out", text: "", delay: 1800 }, // Slight delay after next dev
+  { 
+    type: "out", 
+    content: <><span className="text-[#bc3fbc]">▲</span> Next.js 16.2.4 (Turbopack)</>, 
+    delay: 1900 
+  },
+  { type: "out", text: "- Local:        http://localhost:3000", delay: 2000 },
+  { type: "out", text: "- Network:      http://10.249.250.82:3000", delay: 2100 },
+  { 
+    type: "out", 
+    content: <><span className="text-[#39d353]">✓</span> Ready in 1217ms</>, 
+    delay: 2400 
+  },
+  { type: "out", text: "", delay: 2500 },
+  { 
+    type: "out", 
+    content: <> GET /blog <span className="text-[#39d353]">200</span> in 1453ms <span className="text-neutral-500">(next.js: 509ms, application-code: 945ms)</span></>, 
+    delay: 2800 
+  },
+  { type: "cmd", text: "", delay: 3000 },
 ];
 
-const TOTAL_DURATION = 1500; // ms before loader exits
+const TOTAL_DURATION = 3500; // ms before loader exits
 
 export default function PageLoader() {
   const [visibleLines, setVisibleLines] = useState<number>(0);
