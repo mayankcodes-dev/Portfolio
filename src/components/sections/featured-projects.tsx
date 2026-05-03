@@ -3,19 +3,17 @@
 import { useRef } from "react";
 import { motion, useInView, type Variants } from "framer-motion";
 import Link from "next/link";
-import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { ArrowUpRight, ExternalLink, GitBranch } from "lucide-react";
 import { projects } from "@/data/projects";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-/* ─── Easing constant — cubic-bezier avoids Framer's string-type issue ── */
 const EASE_OUT = [0.25, 0.1, 0.25, 1] as const;
 
-/* ─── Animation variants ─────────────────────────────────────────────── */
 const sectionVariants: Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
 };
 
 const headingVariants: Variants = {
@@ -28,166 +26,129 @@ const cardVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE_OUT } },
 };
 
-/* ─── Gradient placeholders per project ──────────────────────────────── */
-const GRADIENTS = [
-  "from-indigo-900/60 via-violet-900/40 to-background",
-  "from-emerald-900/60 via-teal-900/40 to-background",
-  "from-rose-900/60 via-pink-900/40 to-background",
-];
-
 export function FeaturedProjects() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView   = useInView(sectionRef, { once: true, margin: "-80px" });
+  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
 
   const featured = projects.filter((p) => p.featured);
 
   return (
-    <section ref={sectionRef} className="py-28 lg:py-36">
-      <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
-
-        {/* ── Section header ── */}
+    <section ref={sectionRef} className="py-24 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl px-6 md:px-8">
+        {/* Section Header */}
         <motion.div
           variants={sectionVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="mb-20"
+          className="mb-16"
         >
           <motion.p
             variants={headingVariants}
-            className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary"
+            className="mb-2 text-sm font-semibold uppercase tracking-wider text-primary"
           >
-            Selected Work
+            Featured Work
           </motion.p>
           <motion.h2
             variants={headingVariants}
-            className="text-4xl font-bold tracking-tight text-foreground md:text-5xl"
+            className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4"
           >
-            Projects That Matter
+            Selected Projects
           </motion.h2>
           <motion.p
             variants={headingVariants}
-            className="mt-4 max-w-xl text-lg text-muted-foreground"
+            className="text-lg text-muted-foreground max-w-2xl"
           >
-            Real-world full-stack applications built with engineering precision
-            and deliberate design choices.
+            A collection of full-stack applications demonstrating design, engineering, and problem-solving expertise.
           </motion.p>
         </motion.div>
 
-        {/* ── Alternating project cards ── */}
+        {/* Projects Grid */}
         <motion.div
           variants={sectionVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="space-y-16"
+          className="space-y-12"
         >
-          {featured.map((project, i) => {
-            const isEven = i % 2 === 0;
-
-            return (
-              <motion.div
-                key={project.id}
-                variants={cardVariants}
-                whileHover={{ y: -4 }}
-                transition={{ type: "spring", stiffness: 260, damping: 22 }}
-                className={cn(
-                  "group relative grid items-center gap-10 overflow-hidden rounded-2xl border border-border/60",
-                  "bg-card/50 p-8 backdrop-blur-sm md:grid-cols-2 md:p-10",
-                  "shadow-[0_0_0_1px_rgba(255,255,255,0.04)] transition-shadow duration-300",
-                  "hover:shadow-[0_8px_40px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.08)]",
-                )}
-              >
-                {/* Hover glow overlay */}
-                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_0%,rgba(99,102,241,0.07),transparent_60%)]" />
-
-                {/* ── Image placeholder ── */}
-                <div className={cn("aspect-[4/3] overflow-hidden rounded-xl", isEven ? "order-none" : "md:order-2")}>
-                  <div
-                    className={cn(
-                      "h-full w-full bg-gradient-to-br flex items-center justify-center",
-                      GRADIENTS[i % GRADIENTS.length],
-                    )}
-                  >
-                    <span className="select-none text-7xl font-black tracking-tighter text-primary/30">
-                      {project.title.slice(0, 2).toUpperCase()}
-                    </span>
+          {featured.map((project, i) => (
+            <motion.div
+              key={project.id}
+              variants={cardVariants}
+              className={cn(
+                "grid gap-8 items-center md:grid-cols-2",
+                i % 2 === 1 && "md:grid-flow-dense"
+              )}
+            >
+              {/* Image Placeholder */}
+              <div className={cn(
+                "aspect-video rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 border border-border flex items-center justify-center",
+                i % 2 === 1 && "md:col-start-2"
+              )}>
+                <div className="text-center">
+                  <div className="text-5xl font-bold text-primary/20 mb-2">
+                    {project.title.slice(0, 2).toUpperCase()}
                   </div>
+                  <p className="text-xs text-muted-foreground">Project Preview</p>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className={cn(
+                i % 2 === 1 && "md:col-start-1"
+              )}>
+                <p className="text-sm font-semibold text-primary mb-3">
+                  {String(i + 1).padStart(2, "0")} · Project
+                </p>
+                <h3 className="text-3xl font-bold text-foreground mb-3">
+                  {project.title}
+                </h3>
+                <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                  {project.longDescription ?? project.description}
+                </p>
+
+                {/* Technologies */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {project.technologies.map((tech) => (
+                    <Badge key={tech} variant="secondary" className="text-xs font-medium">
+                      {tech}
+                    </Badge>
+                  ))}
                 </div>
 
-                {/* ── Text content ── */}
-                <div className={isEven ? "" : "md:order-1"}>
-                  <span className="mb-4 inline-block text-xs font-bold tracking-widest text-primary/70">
-                    {String(i + 1).padStart(2, "0")} ——
-                  </span>
-
-                  <h3 className="text-2xl font-bold text-foreground md:text-3xl">
-                    {project.title}
-                  </h3>
-
-                  <p className="mt-3 text-base leading-relaxed text-muted-foreground md:text-lg">
-                    {project.longDescription ?? project.description}
-                  </p>
-
-                  {/* Tech stack badges */}
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {project.technologies.map((tech) => (
-                      <Badge key={tech} variant="secondary" className="rounded-full text-xs font-medium">
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-
-                  {/* Action links */}
-                  <div className="mt-8 flex flex-wrap items-center gap-3">
-                    {project.link && (
-                      <motion.a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
-                      >
-                        <Button size="sm" className="gap-2 rounded-full">
-                          <ExternalLink className="size-3.5" />
-                          Live Demo
-                        </Button>
-                      </motion.a>
-                    )}
-                    {project.github && (
-                      <motion.a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
-                      >
-                        <Button size="sm" variant="outline" className="gap-2 rounded-full">
-                          <ExternalLink className="size-3.5" />
-                          GitHub
-                        </Button>
-                      </motion.a>
-                    )}
-                  </div>
+                {/* Actions */}
+                <div className="flex flex-wrap gap-3">
+                  {project.link && (
+                    <a href={project.link} target="_blank" rel="noopener noreferrer">
+                      <Button size="sm" className="gap-2">
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        Live Demo
+                      </Button>
+                    </a>
+                  )}
+                  {project.github && (
+                    <a href={project.github} target="_blank" rel="noopener noreferrer">
+                      <Button size="sm" variant="outline" className="gap-2">
+                        <GitBranch className="w-3.5 h-3.5" />
+                        GitHub
+                      </Button>
+                    </a>
+                  )}
                 </div>
-              </motion.div>
-            );
-          })}
+              </div>
+            </motion.div>
+          ))}
         </motion.div>
 
-        {/* ── View all CTA ── */}
+        {/* View All CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-16 text-center"
         >
           <Link href="/projects">
-            <Button
-              size="lg"
-              variant="outline"
-              className="gap-2 rounded-full px-8 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
-            >
+            <Button size="lg" variant="outline" className="gap-2">
               View All Projects
-              <ArrowUpRight className="size-4" />
+              <ArrowUpRight className="w-4 h-4" />
             </Button>
           </Link>
         </motion.div>

@@ -1,11 +1,5 @@
 "use client";
 
-/**
- * Navbar — Unified multi-page navigation
- * 6 pages: Home · About Me · Projects · Certificates · Blog · Contact
- * ChaiCode style: full-width · glassmorphic · orange accent · active underline
- */
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,8 +17,8 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [scrolled,  setScrolled] = useState(false);
-  const [menuOpen,  setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -32,7 +26,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => setMenuOpen(false), [pathname]);
 
   const isActive = (href: string) =>
@@ -44,7 +37,7 @@ export default function Navbar() {
         className={[
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           scrolled
-            ? "border-b border-border/60 bg-background/90 shadow-sm shadow-black/10 backdrop-blur-xl"
+            ? "border-b border-border bg-background/95 backdrop-blur-md shadow-sm"
             : "bg-transparent",
         ].join(" ")}
         aria-label="Main navigation"
@@ -52,27 +45,27 @@ export default function Navbar() {
         <motion.div
           initial={{ y: -60, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-          className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10"
+          transition={{ duration: 0.5 }}
+          className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-8"
         >
-          {/* ── Logo ── */}
-          <Link href="/" className="flex items-center gap-2.5">
-            <span className="btn-chai grid size-8 place-items-center bg-primary text-sm font-black text-primary-foreground shadow-md shadow-primary/30">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2.5 font-bold text-lg tracking-tight">
+            <div className="w-8 h-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
               M
-            </span>
-            <span className="hidden font-bold tracking-wide text-foreground sm:block">
-              Mayank<span className="text-primary">.</span>
+            </div>
+            <span className="hidden sm:block text-foreground">
+              Mayank<span className="text-primary ml-0.5">.</span>
             </span>
           </Link>
 
-          {/* ── Desktop links ── */}
-          <div className="hidden items-center gap-0.5 md:flex">
+          {/* Desktop Navigation */}
+          <div className="hidden items-center gap-1 md:flex">
             {NAV_LINKS.map(({ label, href }) => (
               <Link
                 key={label}
                 href={href}
                 className={[
-                  "relative px-3.5 py-2 text-sm font-semibold transition-colors duration-200",
+                  "relative px-3.5 py-2 text-sm font-medium transition-colors duration-200",
                   isActive(href)
                     ? "text-primary"
                     : "text-muted-foreground hover:text-foreground",
@@ -82,30 +75,30 @@ export default function Navbar() {
                 {isActive(href) && (
                   <motion.span
                     layoutId="nav-underline"
-                    className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-primary"
+                    className="absolute bottom-0 left-3 right-3 h-0.5 bg-primary rounded-full"
                   />
                 )}
               </Link>
             ))}
           </div>
 
-          {/* ── Right: CTA ── */}
+          {/* CTA Button */}
           <div className="hidden items-center gap-3 md:flex">
             <Link
               href="/contact"
-              className="btn-chai btn-magnetic bg-primary px-5 py-2 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/25"
+              className="bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
             >
-              Hire me →
+              Get In Touch
             </Link>
           </div>
 
-          {/* ── Mobile: hamburger ── */}
+          {/* Mobile Menu Button */}
           <div className="flex items-center gap-2 md:hidden">
             <button
               onClick={() => setMenuOpen((p) => !p)}
               aria-label="Toggle menu"
               aria-expanded={menuOpen}
-              className="grid size-9 place-items-center rounded-xl border border-border/60 bg-card text-foreground"
+              className="flex items-center justify-center size-9 rounded-lg border border-border bg-card text-foreground hover:bg-muted transition-colors"
             >
               {menuOpen ? <X className="size-4" /> : <Menu className="size-4" />}
             </button>
@@ -113,28 +106,28 @@ export default function Navbar() {
         </motion.div>
       </nav>
 
-      {/* ── Mobile drawer ── */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             key="mobile-menu"
-            initial={{ opacity: 0, y: -8, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -6, scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 380, damping: 30 }}
-            className="fixed inset-x-4 top-[68px] z-40 rounded-2xl border border-border/60 bg-background/95 p-3 shadow-2xl backdrop-blur-xl md:hidden"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed inset-x-4 top-[68px] z-40 rounded-xl border border-border bg-card/95 backdrop-blur-md shadow-lg md:hidden"
           >
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 p-3">
               {NAV_LINKS.map(({ label, href }) => (
                 <Link
                   key={label}
                   href={href}
                   onClick={() => setMenuOpen(false)}
                   className={[
-                    "rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors",
+                    "rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
                     isActive(href)
                       ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
                   ].join(" ")}
                 >
                   {label}
@@ -143,16 +136,16 @@ export default function Navbar() {
               <Link
                 href="/contact"
                 onClick={() => setMenuOpen(false)}
-                className="btn-chai btn-magnetic mt-1 block bg-primary px-4 py-2.5 text-center text-sm font-bold text-primary-foreground"
+                className="mt-2 block bg-primary text-primary-foreground px-4 py-2.5 text-center text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors"
               >
-                Hire me →
+                Get In Touch
               </Link>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Spacer — compensates for fixed navbar */}
+      {/* Spacer */}
       <div className="h-16" aria-hidden />
     </>
   );

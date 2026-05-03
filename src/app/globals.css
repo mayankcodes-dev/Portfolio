@@ -2,26 +2,25 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* ─────────────────────────────────────────────────────────────
-   Theme toggle variant — toggled via next-themes on <html>
-   ───────────────────────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────────
+   MODERN DESIGN SYSTEM
+   Inspired by: unosend.co, mdsaban.com, v0-invoice-copilot
+   Focus: Clean, minimal, professional aesthetics
+   ──────────────────────────────────────────────────────────── */
+
 @custom-variant dark (&:is(.dark *));
 
-html,
-body {
+html, body {
   min-height: 100%;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Tailwind v4 theme bridge
-   ───────────────────────────────────────────────────────────── */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  /* Geist as primary sans — no Google Fonts needed (self-hosted by Vercel) */
   --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), "Courier New", monospace;
   --font-heading: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -30,11 +29,13 @@ body {
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
+  
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
+  
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -51,295 +52,318 @@ body {
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-
-  /* ── ChaiCode orange as a named color token ── */
-  --color-chai-orange: #f97316;
-  --color-chai-orange-dim: oklch(0.65 0.20 40 / 20%);
+  
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2rem;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   🧡  LIGHT THEME — Premium warm white (mdsaban.com inspired)
-   Palette: Parchment white · Orange accent · Near-black text
+   LIGHT THEME — Clean, Professional, Minimal
+   Palette: Clean white, slate text, subtle accents
    ═══════════════════════════════════════════════════════════════ */
 :root {
-  /* Base surfaces — warm parchment, not clinical white */
-  --background: oklch(0.985 0.003 75);      /* #f9f8f5 warm off-white */
-  --foreground: oklch(0.10 0.005 40);       /* #171310 near-black */
+  /* Base surfaces */
+  --background: oklch(0.99 0.0005 0);       /* Clean white */
+  --foreground: oklch(0.2 0.01 240);        /* Slate/dark gray */
 
-  /* Card surface — pure white for contrast */
-  --card: oklch(1 0 0);                     /* #ffffff */
-  --card-foreground: oklch(0.12 0.005 40);
+  /* Card surface */
+  --card: oklch(1 0 0);                     /* White */
+  --card-foreground: oklch(0.2 0.01 240);
 
   /* Popover */
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.12 0.005 40);
+  --popover-foreground: oklch(0.2 0.01 240);
 
-  /* Primary — Orange #f97316 */
-  --primary: oklch(0.65 0.22 40);
-  --primary-foreground: oklch(1 0 0);
+  /* Primary — Professional blue */
+  --primary: oklch(0.5 0.15 260);           /* Modern blue */
+  --primary-foreground: oklch(1 0 0);       /* White text */
 
   /* Secondary */
-  --secondary: oklch(0.96 0.008 75);
-  --secondary-foreground: oklch(0.25 0.01 40);
+  --secondary: oklch(0.96 0.008 0);         /* Light gray */
+  --secondary-foreground: oklch(0.25 0.01 240);
 
   /* Muted */
-  --muted: oklch(0.95 0.005 75);            /* warm gray */
-  --muted-foreground: oklch(0.48 0.01 40);
+  --muted: oklch(0.92 0.007 240);           /* Soft gray */
+  --muted-foreground: oklch(0.5 0.01 240);  /* Medium gray */
 
   /* Accent */
-  --accent: oklch(0.97 0.012 60);
-  --accent-foreground: oklch(0.45 0.12 60);
+  --accent: oklch(0.95 0.01 240);           /* Very light slate */
+  --accent-foreground: oklch(0.35 0.08 260); /* Blue accent */
 
   /* Destructive */
-  --destructive: oklch(0.57 0.24 27);
+  --destructive: oklch(0.6 0.2 30);         /* Red */
 
-  /* Border / Input / Ring — very soft */
-  --border: oklch(0.90 0.006 75);           /* warm light gray */
-  --input:  oklch(0.90 0.006 75);
-  --ring:   oklch(0.78 0.17 60);
+  /* Border / Input / Ring */
+  --border: oklch(0.92 0.007 240);          /* Light gray */
+  --input: oklch(0.95 0.007 240);           /* Very light gray */
+  --ring: oklch(0.5 0.15 260);              /* Blue ring */
 
   /* Charts */
-  --chart-1: oklch(0.78 0.17 60);
-  --chart-2: oklch(0.65 0.18 264);
-  --chart-3: oklch(0.55 0.2  195);
-  --chart-4: oklch(0.65 0.18 140);
-  --chart-5: oklch(0.65 0.2  0);
+  --chart-1: oklch(0.5 0.15 260);           /* Blue */
+  --chart-2: oklch(0.65 0.15 280);          /* Purple */
+  --chart-3: oklch(0.55 0.15 200);          /* Cyan */
+  --chart-4: oklch(0.65 0.15 140);          /* Green */
+  --chart-5: oklch(0.6 0.15 20);            /* Red */
 
-  /* Border radius — slightly more rounded = friendlier */
   --radius: 0.75rem;
 
   /* Sidebar */
-  --sidebar: oklch(0.97 0.005 75);
-  --sidebar-foreground: oklch(0.2 0.005 40);
-  --sidebar-primary: oklch(0.78 0.17 60);
-  --sidebar-primary-foreground: oklch(0.08 0 0);
-  --sidebar-accent: oklch(0.95 0.012 60);
-  --sidebar-accent-foreground: oklch(0.4 0.1 60);
-  --sidebar-border: oklch(0.90 0.006 75);
-  --sidebar-ring: oklch(0.78 0.17 60);
+  --sidebar: oklch(0.97 0.005 0);
+  --sidebar-foreground: oklch(0.2 0.01 240);
+  --sidebar-primary: oklch(0.5 0.15 260);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.92 0.007 240);
+  --sidebar-accent-foreground: oklch(0.5 0.15 260);
+  --sidebar-border: oklch(0.92 0.007 240);
+  --sidebar-ring: oklch(0.5 0.15 260);
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   🌑  DARK THEME — ChaiCode Exact
-   Palette: Pure Black #000 · Orange #FF9F0D accent · White text
+   DARK THEME — Clean Dark, Professional, Subtle
+   Palette: Near-black background, light text, blue accents
    ═══════════════════════════════════════════════════════════════ */
 .dark {
-  /* Base surfaces */
-  --background: oklch(0.03 0 0);            /* Pure black #050505 */
-  --foreground: oklch(0.97 0 0);            /* White */
+  --background: oklch(0.08 0.01 240);       /* Very dark slate */
+  --foreground: oklch(0.95 0.01 0);         /* Almost white */
 
-  /* Card surface */
-  --card: oklch(0.08 0 0);                  /* #141414 */
-  --card-foreground: oklch(0.94 0 0);
+  --card: oklch(0.12 0.01 240);             /* Dark slate */
+  --card-foreground: oklch(0.93 0.01 0);
 
-  /* Popover */
-  --popover: oklch(0.09 0 0);
-  --popover-foreground: oklch(0.94 0 0);
+  --popover: oklch(0.13 0.01 240);
+  --popover-foreground: oklch(0.93 0.01 0);
 
-  /* Primary — ChaiCode Orange #f97316 */
-  --primary: oklch(0.65 0.22 40);           /* #f97316 orange */
-  --primary-foreground: oklch(1 0 0);       /* White text on orange */
+  --primary: oklch(0.6 0.16 260);           /* Bright blue */
+  --primary-foreground: oklch(0.08 0.01 240);
 
-  /* Secondary */
-  --secondary: oklch(0.14 0 0);
-  --secondary-foreground: oklch(0.85 0 0);
+  --secondary: oklch(0.16 0 0);
+  --secondary-foreground: oklch(0.85 0.01 0);
 
-  /* Muted */
-  --muted: oklch(0.13 0 0);
-  --muted-foreground: oklch(0.55 0 0);
+  --muted: oklch(0.18 0.01 240);
+  --muted-foreground: oklch(0.65 0.01 0);
 
-  /* Accent */
-  --accent: oklch(0.14 0.03 60);            /* Very subtle orange tint */
-  --accent-foreground: oklch(0.78 0.17 60); /* Orange on dark */
+  --accent: oklch(0.16 0.01 240);
+  --accent-foreground: oklch(0.6 0.16 260);
 
-  /* Destructive */
-  --destructive: oklch(0.7 0.19 22);
+  --destructive: oklch(0.7 0.18 30);
 
-  /* Border / Input / Ring */
-  --border: oklch(1 0 0 / 8%);             /* Barely visible white */
-  --input: oklch(1 0 0 / 10%);
-  --ring: oklch(0.78 0.17 60);             /* Orange focus ring */
+  --border: oklch(0.22 0.01 240);
+  --input: oklch(0.2 0.01 240);
+  --ring: oklch(0.6 0.16 260);
 
-  /* Charts */
-  --chart-1: oklch(0.78 0.17 60);          /* Orange */
-  --chart-2: oklch(0.65 0.18 264);         /* Purple */
-  --chart-3: oklch(0.55 0.2 195);          /* Cyan */
-  --chart-4: oklch(0.7 0.18 140);          /* Green */
-  --chart-5: oklch(0.75 0.16 0);           /* Rose */
+  --chart-1: oklch(0.6 0.16 260);
+  --chart-2: oklch(0.65 0.15 280);
+  --chart-3: oklch(0.55 0.15 200);
+  --chart-4: oklch(0.65 0.15 140);
+  --chart-5: oklch(0.6 0.15 20);
 
-  /* Sidebar */
-  --sidebar: oklch(0.06 0 0);
-  --sidebar-foreground: oklch(0.88 0 0);
-  --sidebar-primary: oklch(0.78 0.17 60);
-  --sidebar-primary-foreground: oklch(0.06 0 0);
-  --sidebar-accent: oklch(0.14 0 0);
-  --sidebar-accent-foreground: oklch(0.88 0 0);
-  --sidebar-border: oklch(1 0 0 / 8%);
-  --sidebar-ring: oklch(0.78 0.17 60);
+  --sidebar: oklch(0.1 0.01 240);
+  --sidebar-foreground: oklch(0.88 0.01 0);
+  --sidebar-primary: oklch(0.6 0.16 260);
+  --sidebar-primary-foreground: oklch(0.08 0.01 240);
+  --sidebar-accent: oklch(0.16 0 0);
+  --sidebar-accent-foreground: oklch(0.88 0.01 0);
+  --sidebar-border: oklch(0.22 0.01 240);
+  --sidebar-ring: oklch(0.6 0.16 260);
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* ────────────────────────────────────────────────────────────
    Base layer styles
-   ───────────────────────────────────────────────────────────── */
+   ──────────────────────────────────────────────────────────── */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+  
   html {
     @apply font-sans;
     scroll-behavior: smooth;
   }
+
+  /* Typography refinements */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold tracking-tight;
+  }
+
+  h1 { @apply text-4xl md:text-5xl lg:text-6xl; }
+  h2 { @apply text-3xl md:text-4xl; }
+  h3 { @apply text-2xl md:text-3xl; }
+  h4 { @apply text-xl md:text-2xl; }
+  
+  p {
+    @apply leading-relaxed;
+  }
 }
 
-/* Dark body — subtle dot grid + orange + blue glow (ChaiCode exact) */
-.dark body {
-  background-image:
-    radial-gradient(circle at 1px 1px, oklch(1 0 0 / 8%) 1px, transparent 0);
-  background-size: 32px 32px;
-}
-
-/* Orange + Blue atmospheric glows (exactly like ChaiCode hero) */
-.dark body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 70% 50% at 20% 20%, oklch(0.65 0.22 40 / 15%) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 80%, oklch(0.55 0.20 215 / 10%) 0%, transparent 60%);
-}
-
-/* Light body — clean warm background, no pseudo overlay */
-body {
-  background-color: oklch(0.985 0.003 75);
-}
-
-/* ─────────────────────────────────────────────────────────────
+/* ────────────────────────────────────────────────────────────
    Smooth theme transitions
-   ───────────────────────────────────────────────────────────── */
+   ──────────────────────────────────────────────────────────── */
 html {
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 *, *::before, *::after {
-  transition-property: background-color, border-color, color;
+  transition-property: background-color, border-color, color, box-shadow;
   transition-duration: 0.2s;
   transition-timing-function: ease;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Custom cursor — hide default on desktop (pointer:fine)
-   ───────────────────────────────────────────────────────────── */
-@media (pointer: fine) {
-  * { cursor: none !important; }
+/* ────────────────────────────────────────────────────────────
+   Modern button styles — Clean, flat, no asymmetry
+   ──────────────────────────────────────────────────────────── */
+button, [role="button"], .button {
+  @apply inline-flex items-center justify-center rounded-lg font-medium;
+  @apply transition-all duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   ChaiCode-style asymmetric buttons
-   Primary:   rounded top-right + bottom-left (white/orange)
-   Secondary: rounded top-left  + bottom-right (outlined)
-   ───────────────────────────────────────────────────────────── */
-.btn-chai-primary {
-  border-radius: 0 0.5rem 0 0.5rem;         /* tr + bl — ChaiCode exact */
-  transition: border-radius 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-.btn-chai-primary:hover {
-  border-radius: 0.5rem 0 0.5rem 0;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px oklch(0.65 0.22 40 / 40%);
+button:hover, [role="button"]:hover {
+  @apply scale-105;
 }
 
-.btn-chai {
-  border-radius: 0 0.5rem 0 0.5rem;         /* tr + bl */
-  transition: border-radius 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-.btn-chai:hover {
-  border-radius: 0.5rem 0 0.5rem 0;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px oklch(0 0 0 / 22%);
+button:active {
+  @apply scale-95;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Magnetic button ripple (mouse-following glow on hover)
-   ───────────────────────────────────────────────────────────── */
-.btn-magnetic {
-  position: relative;
-  overflow: hidden;
-}
-.btn-magnetic::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), oklch(1 0 0 / 15%) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.btn-magnetic:hover::after {
-  opacity: 1;
-}
-
-/* ─────────────────────────────────────────────────────────────
-   Text selection color (ChaiCode uses custom selection)
-   ───────────────────────────────────────────────────────────── */
+/* Text selection */
 ::selection {
-  background-color: oklch(0.78 0.17 60 / 30%);
-  color: inherit;
+  @apply bg-primary/20 text-foreground;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Scrollbar styling (thin, orange thumb)
-   ───────────────────────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────────
+   Scrollbar styling — Minimal, subtle
+   ──────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
+
 ::-webkit-scrollbar-track {
-  background: transparent;
+  @apply bg-transparent;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: oklch(0.78 0.17 60 / 50%);
-  border-radius: 9999px;
+  @apply bg-muted rounded-full;
+  transition: background-color 0.2s ease;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.78 0.17 60 / 80%);
+  @apply bg-muted-foreground;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Viewport glow edges (top/bottom blue line — ChaiCode detail)
-   ───────────────────────────────────────────────────────────── */
-.dark body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, oklch(0.65 0.18 220 / 60%), transparent);
-  pointer-events: none;
-  z-index: 9998;
+/* Firefox scrollbar */
+* {
+  scrollbar-color: oklch(0.5 0.01 240 / 50%) transparent;
+  scrollbar-width: thin;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Mobile utilities
-   ───────────────────────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────────
+   Card and container styling
+   ──────────────────────────────────────────────────────────── */
+.card, [role="region"] {
+  @apply bg-card text-card-foreground;
+  @apply rounded-lg border border-border;
+  @apply shadow-sm hover:shadow-md transition-shadow;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Links
+   ──────────────────────────────────────────────────────────── */
+a {
+  @apply text-primary hover:text-primary/80;
+  @apply transition-colors duration-200;
+  @apply underline-offset-4 hover:underline;
+}
+
+a:focus-visible {
+  @apply outline-none ring-2 ring-primary rounded;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Form elements
+   ──────────────────────────────────────────────────────────── */
+input, textarea, select {
+  @apply rounded-lg border border-border;
+  @apply bg-background text-foreground;
+  @apply placeholder-muted-foreground;
+  @apply transition-all duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Focus visible for accessibility
+   ──────────────────────────────────────────────────────────── */
+*:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2;
+}
+
+.dark *:focus-visible {
+  @apply ring-offset-background;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Utility classes
+   ──────────────────────────────────────────────────────────── */
 
 /* Hide scrollbar while keeping scroll functionality */
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth animations */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.5s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* Minimum tap target size for mobile (WCAG 2.2) */
 @media (pointer: coarse) {
@@ -347,7 +371,7 @@ html {
     min-height: 44px;
     min-width: 44px;
   }
-  /* Ensure navbar items have proper tap targets */
+  
   nav a, nav button {
     padding-top: 0.6rem;
     padding-bottom: 0.6rem;
@@ -355,13 +379,23 @@ html {
 }
 
 /* Prevent horizontal overflow on mobile */
-html, body { overflow-x: hidden; max-width: 100vw; }
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
 
 /* Improve readability on small screens */
-@media (max-width: 480px) {
-  h1 { font-size: clamp(1.75rem, 8vw, 3rem); line-height: 1.15; }
-  h2 { font-size: clamp(1.4rem, 6vw, 2rem); }
+@media (max-width: 640px) {
+  h1 {
+    font-size: clamp(1.75rem, 8vw, 3rem);
+    line-height: 1.15;
+  }
+  h2 {
+    font-size: clamp(1.4rem, 6vw, 2rem);
+  }
 }
 
 /* Safe area padding for notched phones */
-.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
