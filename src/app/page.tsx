@@ -120,7 +120,7 @@ export default function Home() {
               {/* Photo container */}
               <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border border-neutral-200 shadow-[0_8px_40px_rgba(0,0,0,0.08)]">
                 <Image
-                  src="/hero.webp"
+                  src="/images/mayank2.jpg"
                   alt="Mayank — Software Engineer"
                   fill
                   priority
