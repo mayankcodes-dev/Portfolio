@@ -47,7 +47,7 @@ const SOCIALS = [
     path: "M13.205.043a13.01 13.01 0 0 0-9.23 3.816A13.038 13.038 0 0 0 .043 13.1c.066 7.18 5.984 12.998 13.162 12.998 7.117 0 13.018-5.836 13.018-13.021 0-7.228-5.877-13.077-13.018-13.034zm1.245 16.918a3.437 3.437 0 0 1-4.864 0 3.44 3.44 0 0 1 0-4.865 3.438 3.438 0 0 1 4.864 0 3.44 3.44 0 0 1 0 4.865z",
   },
   {
-    href: "mailto:codermayank69@gmail.com",
+    href: "mailto:mayankbca96325@gmail.com",
     label: "Email",
     path: "M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z",
   },
@@ -369,7 +369,7 @@ export default function Home() {
             {/* Right — quick info card */}
             <div className="card-eng p-8 space-y-4">
               {[
-                { icon: "📬", label: "Email", value: "codermayank69@gmail.com" },
+                { icon: "📬", label: "Email", value: "mayankbca96325@gmail.com" },
                 { icon: "📍", label: "Location", value: "Lucknow, India" },
                 { icon: "⚡", label: "Status", value: "Open to internships & freelance", badge: "green" },
                 { icon: "🕐", label: "Response", value: "Within 24 hours" },

@@ -16,7 +16,7 @@ const ICON_PATHS = {
 };
 
 const SOCIALS = [
-  { label: "Email",    value: "codermayank69@gmail.com",           href: "mailto:codermayank69@gmail.com",           icon: "email" },
+  { label: "Email",    value: "mayankbca96325@gmail.com",           href: "mailto:mayankbca96325@gmail.com",           icon: "email" },
   { label: "Phone",    value: "+91 8115529832",                    href: "tel:+918115529832",                        icon: "phone" },
   { label: "GitHub",   value: "github.com/coderMayank69",          href: "https://github.com/coderMayank69",         icon: "github" },
   { label: "LinkedIn", value: "linkedin.com/in/codermayank69",     href: "https://www.linkedin.com/in/codermayank69/",icon: "linkedin" },
