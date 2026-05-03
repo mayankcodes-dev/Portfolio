@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Code2, ExternalLink, Pin } from "lucide-react";
 import { projects } from "@/data/projects";
@@ -12,134 +11,119 @@ const GithubIcon = ({ className = "" }: { className?: string }) => (
   </svg>
 );
 
-const TABS = ["All", "Freelance", "Personal"] as const;
-type Tab = typeof TABS[number];
-
-const GRADIENTS = [
-  "from-orange-500/15 to-transparent",
-  "from-sky-500/15 to-transparent",
-  "from-violet-500/15 to-transparent",
-  "from-green-500/15 to-transparent",
-  "from-pink-500/15 to-transparent",
-];
+/* Only show pinned projects on the homepage */
+const pinnedProjects = projects.filter((p) => p.isPinned);
 
 export default function ProjectsSection() {
-  const [tab, setTab] = useState<Tab>("All");
-
-  const filtered = projects.filter(p =>
-    tab === "All" ? true : p.type === tab.toLowerCase()
-  );
-
-  // Pinned first
-  const sorted = [...filtered].sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0));
-
   return (
-    <section id="projects" className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-10 flex flex-wrap items-end justify-between gap-4"
-      >
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Portfolio</p>
-          <h2 className="mt-2 text-3xl font-extrabold tracking-tight md:text-4xl">What I&apos;ve built</h2>
-        </div>
-        <Link href="/projects" className="btn-chai hidden items-center gap-2 border border-border/60 bg-card px-4 py-2 text-sm font-semibold text-muted-foreground hover:border-primary/40 hover:text-foreground md:inline-flex">
-          All projects <ArrowRight className="size-4" />
-        </Link>
-      </motion.div>
+    <section id="projects" className="border-t border-neutral-100">
+      <div className="mx-auto max-w-6xl px-6 md:px-8 py-20 md:py-28">
 
-      {/* Tabs */}
-      <div className="mb-8 flex gap-2">
-        {TABS.map(t => (
-          <motion.button
-            key={t}
-            onClick={() => setTab(t)}
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            className={[
-              "btn-chai px-4 py-1.5 text-sm font-semibold transition-all",
-              tab === t
-                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
-                : "border border-border/60 bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground",
-            ].join(" ")}
+        {/* ── Header ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-10 flex flex-wrap items-end justify-between gap-4"
+        >
+          <div>
+            <p className="eyebrow mb-2">
+              <Pin className="size-3" /> Pinned Projects
+            </p>
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+              What I&apos;ve built
+            </h2>
+          </div>
+          <Link
+            href="/projects"
+            className="hidden md:inline-flex items-center gap-1.5 btn btn-outline btn-sm"
           >
-            {t}
-            {t !== "All" && (
-              <span className="ml-1.5 rounded-full bg-current/20 px-1.5 py-0.5 text-xs">
-                {projects.filter(p => p.type === t.toLowerCase()).length}
-              </span>
-            )}
-          </motion.button>
-        ))}
-      </div>
+            All projects <ArrowRight className="size-3.5" />
+          </Link>
+        </motion.div>
 
-      {/* Grid */}
-      <AnimatePresence mode="popLayout">
-        <motion.div layout className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {sorted.map((project, i) => (
+        {/* ── Grid — pinned only ── */}
+        <motion.div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {pinnedProjects.map((project, i) => (
             <motion.article
               key={project.id}
-              layout
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.35, delay: i * 0.06 }}
-              whileHover={{ y: -7 }}
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card transition-all hover:border-primary/50 hover:shadow-[0_0_36px_rgba(249,115,22,0.12)]"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
+              className="card-eng group relative flex flex-col overflow-hidden"
             >
-              {/* Badges */}
+              {/* ── Badges ── */}
               <div className="absolute right-3 top-3 z-10 flex flex-col items-end gap-1.5">
-                {project.isPinned && (
-                  <span className="flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-white">
-                    <Pin className="size-2.5" /> Pinned
-                  </span>
-                )}
-                <span className={[
-                  "rounded-full px-2 py-0.5 text-xs font-semibold",
-                  project.type === "freelance"
-                    ? "bg-violet-500/20 text-violet-400"
-                    : "bg-sky-500/20 text-sky-400",
-                ].join(" ")}>
-                  {project.type === "freelance" ? "💼 Freelance" : "🚀 Personal"}
+                <span className="badge badge-neutral text-[10px]">
+                  <Pin className="size-2.5" /> Pinned
+                </span>
+                <span
+                  className={[
+                    "badge text-[10px]",
+                    project.type === "freelance"
+                      ? "badge-yellow"
+                      : "badge-green",
+                  ].join(" ")}
+                >
+                  {project.type === "freelance" ? "Freelance" : "Personal"}
                 </span>
               </div>
 
-              {/* Cover */}
-              <div className={`relative flex h-44 items-center justify-center overflow-hidden bg-gradient-to-br ${GRADIENTS[i % GRADIENTS.length]}`}>
-                <Code2 className="size-14 text-primary/20 transition-transform duration-500 group-hover:scale-110" />
+              {/* ── Cover ── */}
+              <div className="relative flex h-40 items-center justify-center bg-neutral-50 border-b border-neutral-100">
+                <Code2 className="size-12 text-neutral-200 transition-transform duration-300 group-hover:scale-110 group-hover:text-neutral-300" />
               </div>
 
-              {/* Content */}
+              {/* ── Content ── */}
               <div className="flex flex-1 flex-col gap-3 p-5">
                 <div>
-                  <h3 className="font-bold text-foreground transition-colors group-hover:text-primary">{project.title}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
+                  <h3 className="font-bold text-[#0a0a0a] text-[15px] group-hover:underline underline-offset-2 transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-neutral-500 line-clamp-2">
+                    {project.description}
+                  </p>
                 </div>
 
+                {/* Tech stack pills */}
                 <div className="flex flex-wrap gap-1.5">
-                  {project.technologies.slice(0, 4).map(t => (
-                    <span key={t} className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">{t}</span>
+                  {project.technologies.slice(0, 4).map((t) => (
+                    <span
+                      key={t}
+                      className="text-[11px] font-mono text-neutral-500 bg-neutral-50 border border-neutral-100 rounded-md px-2 py-0.5"
+                    >
+                      {t}
+                    </span>
                   ))}
                   {project.technologies.length > 4 && (
-                    <span className="rounded-full bg-muted/40 px-2.5 py-0.5 text-xs text-muted-foreground">+{project.technologies.length - 4}</span>
+                    <span className="text-[11px] text-neutral-400 bg-neutral-50 border border-neutral-100 rounded-md px-2 py-0.5">
+                      +{project.technologies.length - 4}
+                    </span>
                   )}
                 </div>
 
-                <div className="mt-auto flex gap-2.5 pt-1">
+                {/* Actions */}
+                <div className="mt-auto flex gap-2 pt-2">
                   {project.github && (
-                    <a href={project.github} target="_blank" rel="noopener noreferrer"
-                      className="btn-chai flex items-center gap-1.5 border border-border/60 px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:border-primary/50 hover:text-primary">
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-outline btn-sm text-[12px]"
+                    >
                       <GithubIcon className="size-3.5" /> Code
                     </a>
                   )}
                   {project.link && (
-                    <a href={project.link} target="_blank" rel="noopener noreferrer"
-                      className="btn-chai btn-magnetic flex items-center gap-1.5 bg-primary px-3 py-1.5 text-xs font-bold text-white">
-                      <ExternalLink className="size-3.5" /> Live Demo
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-primary btn-sm text-[12px]"
+                    >
+                      <ExternalLink className="size-3.5" /> Live
                     </a>
                   )}
                 </div>
@@ -147,12 +131,21 @@ export default function ProjectsSection() {
             </motion.article>
           ))}
         </motion.div>
-      </AnimatePresence>
 
-      <div className="mt-8 text-center md:hidden">
-        <Link href="/projects" className="btn-chai inline-flex items-center gap-2 border border-border/60 bg-card px-5 py-2.5 text-sm font-semibold text-muted-foreground hover:border-primary/40 hover:text-foreground">
-          View all <ArrowRight className="size-4" />
-        </Link>
+        {/* Fallback if no pinned projects */}
+        {pinnedProjects.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <Code2 className="mb-4 size-12 text-neutral-200" />
+            <p className="text-neutral-500">No pinned projects yet.</p>
+          </div>
+        )}
+
+        {/* Mobile "view all" */}
+        <div className="mt-8 text-center md:hidden">
+          <Link href="/projects" className="btn btn-outline btn-sm">
+            View all <ArrowRight className="size-3.5" />
+          </Link>
+        </div>
       </div>
     </section>
   );

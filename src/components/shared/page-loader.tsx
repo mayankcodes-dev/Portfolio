@@ -44,9 +44,8 @@ export default function PageLoader() {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-[oklch(0.03_0_0)] transition-opacity duration-500 ${
-        exiting ? "opacity-0 pointer-events-none" : "opacity-100"
-      }`}
+      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-[oklch(0.03_0_0)] transition-opacity duration-500 ${exiting ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
       aria-label="Loading"
       role="status"
     >
@@ -90,13 +89,12 @@ export default function PageLoader() {
               return (
                 <div
                   key={i}
-                  className={`flex items-center gap-2 transition-all duration-200 ${
-                    isSuccess
+                  className={`flex items-center gap-2 transition-all duration-200 ${isSuccess
                       ? "text-[oklch(0.93_0.22_122)]"
                       : isLast
-                      ? "text-white/90"
-                      : "text-white/45"
-                  }`}
+                        ? "text-white/90"
+                        : "text-white/45"
+                    }`}
                 >
                   <span>{line.text}</span>
                   {/* Blinking cursor only on the last visible line */}

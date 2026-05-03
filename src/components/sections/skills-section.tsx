@@ -9,109 +9,111 @@ export default function SkillsSection() {
   const cat = skillCategories[active];
 
   return (
-    <section id="skills" className="mx-auto max-w-6xl px-6 md:px-8 py-24 lg:py-32">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-16"
-      >
-        <p className="text-sm font-semibold uppercase tracking-wider text-primary mb-2">Skills</p>
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-          Technologies & Tools
-        </h2>
-        <p className="text-lg text-muted-foreground max-w-2xl">
-          A collection of technologies and tools I've mastered throughout my development journey.
-        </p>
-      </motion.div>
+    <section id="skills" className="border-t border-neutral-100">
+      <div className="mx-auto max-w-6xl px-6 md:px-8 py-20 md:py-28">
 
-      {/* Category Tabs */}
-      <div className="flex flex-wrap gap-3 mb-12">
-        {skillCategories.map((c, i) => (
-          <motion.button
-            key={c.category}
-            onClick={() => setActive(i)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={[
-              "px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200",
-              i === active
-                ? "bg-primary text-primary-foreground shadow-md"
-                : "border border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/50",
-            ].join(" ")}
-          >
-            <span className="mr-2">{c.icon}</span>
-            {c.category}
-          </motion.button>
-        ))}
-      </div>
-
-      {/* Skills Grid */}
-      <AnimatePresence mode="wait">
+        {/* ── Header ── */}
         <motion.div
-          key={cat.category}
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-14"
         >
-          {cat.skills.map((skill, i) => (
-            <motion.div
-              key={skill.name}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05, duration: 0.35 }}
-              whileHover={{ y: -4 }}
-              className="flex flex-col items-center gap-3 p-4 rounded-lg border border-border bg-card/50 hover:border-primary/30 hover:bg-card transition-all"
-            >
-              {/* Logo */}
-              <div
-                className="flex items-center justify-center w-12 h-12 rounded-lg p-2"
-                style={{ background: `${skill.color}15` }}
-              >
-                <img
-                  src={skill.logo}
-                  alt={skill.name}
-                  width={32}
-                  height={32}
-                  className="w-8 h-8 object-contain"
-                  onError={(e) => {
-                    const t = e.target as HTMLImageElement;
-                    t.style.display = "none";
-                    const span = document.createElement("span");
-                    span.className = "text-lg font-bold";
-                    span.style.color = skill.color;
-                    span.textContent = skill.name[0];
-                    t.parentElement?.appendChild(span);
-                  }}
-                />
-              </div>
-
-              {/* Name & Level */}
-              <div className="text-center">
-                <p className="font-semibold text-foreground text-sm">{skill.name}</p>
-                <p className="text-xs text-muted-foreground mt-1">{LEVEL_LABELS[skill.level]}</p>
-              </div>
-
-              {/* Level Bar */}
-              <div className="flex gap-1 w-full">
-                {[1, 2, 3, 4, 5].map((dot) => (
-                  <div
-                    key={dot}
-                    className={[
-                      "h-1 flex-1 rounded-full transition-all duration-300",
-                      dot <= skill.level ? "bg-primary" : "bg-border/30",
-                    ].join(" ")}
-                  />
-                ))}
-              </div>
-            </motion.div>
-          ))}
+          <p className="eyebrow mb-2">Skills</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
+            Technologies &amp; Tools
+          </h2>
+          <p className="text-neutral-500 max-w-lg">
+            A collection of technologies I use day-to-day to build modern, performant web applications.
+          </p>
         </motion.div>
-      </AnimatePresence>
+
+        {/* ── Category tabs ── */}
+        <div className="flex flex-wrap gap-2 mb-10">
+          {skillCategories.map((c, i) => (
+            <button
+              key={c.category}
+              onClick={() => setActive(i)}
+              className={[
+                "px-3.5 py-2 text-[13px] font-medium rounded-lg border transition-all",
+                i === active
+                  ? "bg-[#0a0a0a] text-white border-[#0a0a0a] shadow-sm"
+                  : "bg-white text-neutral-500 border-neutral-200 hover:border-neutral-400 hover:text-[#0a0a0a]",
+              ].join(" ")}
+            >
+              <span className="mr-1.5">{c.icon}</span>
+              {c.category}
+            </button>
+          ))}
+        </div>
+
+        {/* ── Skills grid ── */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={cat.category}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25 }}
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"
+          >
+            {cat.skills.map((skill, i) => (
+              <motion.div
+                key={skill.name}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.04, duration: 0.3 }}
+                className="card-eng group flex flex-col items-center gap-3 p-5"
+              >
+                {/* Logo */}
+                <div
+                  className="flex items-center justify-center w-11 h-11 rounded-lg"
+                  style={{ background: `${skill.color}12` }}
+                >
+                  <img
+                    src={skill.logo}
+                    alt={skill.name}
+                    width={28}
+                    height={28}
+                    className="w-7 h-7 object-contain"
+                    onError={(e) => {
+                      const t = e.target as HTMLImageElement;
+                      t.style.display = "none";
+                      const span = document.createElement("span");
+                      span.className = "text-base font-bold";
+                      span.style.color = skill.color;
+                      span.textContent = skill.name[0];
+                      t.parentElement?.appendChild(span);
+                    }}
+                  />
+                </div>
+
+                {/* Name & level */}
+                <div className="text-center">
+                  <p className="font-semibold text-[#0a0a0a] text-sm">{skill.name}</p>
+                  <p className="text-[11px] text-neutral-400 font-mono mt-0.5 uppercase tracking-wider">
+                    {LEVEL_LABELS[skill.level]}
+                  </p>
+                </div>
+
+                {/* Level bar */}
+                <div className="flex gap-1 w-full">
+                  {[1, 2, 3, 4, 5].map((dot) => (
+                    <div
+                      key={dot}
+                      className={[
+                        "h-[3px] flex-1 rounded-full transition-all",
+                        dot <= skill.level ? "bg-[#0a0a0a]" : "bg-neutral-100",
+                      ].join(" ")}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </section>
   );
 }

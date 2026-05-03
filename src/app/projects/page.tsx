@@ -1,117 +1,62 @@
 "use client";
 
-/**
- * Standalone /projects page
- * ChaiCode aesthetic: pure black · orange accent · dot-grid · card hover glow
- */
-
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ExternalLink, ArrowLeft, Code2, Layers } from "lucide-react";
 
-/* Github brand icon (not in this lucide version) */
 const GithubIcon = ({ className = "" }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
     <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.341-3.369-1.341-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.268 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.026 2.747-1.026.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.933.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
   </svg>
 );
+
 import SiteNav from "@/components/layout/site-nav";
 import { Footer } from "@/components/sections/footer";
 import { projects } from "@/data/projects";
-import type { Metadata } from "next";
-
-const TECH_COLORS: Record<string, string> = {
-  "Next.js":      "bg-white/10 text-white",
-  "Next.js 15":   "bg-white/10 text-white",
-  "Next.js 16":   "bg-white/10 text-white",
-  "React":        "bg-sky-500/10 text-sky-400",
-  "Vite":         "bg-violet-500/10 text-violet-400",
-  "TypeScript":   "bg-blue-500/10 text-blue-400",
-  "JavaScript":   "bg-yellow-500/10 text-yellow-400",
-  "Node.js":      "bg-green-500/10 text-green-400",
-  "Express":      "bg-green-500/10 text-green-300",
-  "Express.js":   "bg-green-500/10 text-green-300",
-  "MongoDB":      "bg-green-600/10 text-green-500",
-  "Mongoose":     "bg-green-600/10 text-green-400",
-  "PostgreSQL":   "bg-blue-600/10 text-blue-300",
-  "Tailwind CSS": "bg-cyan-500/10 text-cyan-400",
-  "Clerk":        "bg-purple-500/10 text-purple-400",
-  "Stripe":       "bg-indigo-500/10 text-indigo-400",
-  "Cloudinary":   "bg-sky-500/10 text-sky-300",
-  "Docker":       "bg-blue-400/10 text-blue-300",
-  "Firebase Auth":"bg-orange-500/10 text-orange-400",
-  "Firebase":     "bg-orange-500/10 text-orange-400",
-  "Passport.js":  "bg-lime-500/10 text-lime-400",
-  "MapTiler":     "bg-teal-500/10 text-teal-400",
-  "Material UI":  "bg-blue-500/10 text-blue-400",
-  "Bootstrap":    "bg-purple-600/10 text-purple-400",
-  "HTML5":        "bg-orange-500/10 text-orange-400",
-  "CSS3":         "bg-blue-500/10 text-blue-400",
-  "GSAP":         "bg-emerald-500/10 text-emerald-400",
-  "Python":       "bg-yellow-500/10 text-yellow-400",
-  "FastAPI":      "bg-teal-500/10 text-teal-400",
-  "JWT":          "bg-purple-500/10 text-purple-400",
-  "Razorpay":     "bg-indigo-500/10 text-indigo-400",
-  "Vercel":       "bg-white/10 text-white/70",
-  "Resend":       "bg-rose-500/10 text-rose-400",
-  "Google Maps API": "bg-blue-500/10 text-blue-400",
-};
-
-const TAG_DEFAULT = "bg-orange-500/10 text-orange-400";
 
 const TABS = [
-  { label: "All",       value: "all" },
   { label: "Freelance", value: "freelance" },
   { label: "Personal",  value: "personal" },
-  { label: "Pinned ⭐", value: "pinned" },
 ] as const;
 type TabValue = typeof TABS[number]["value"];
 
 const fadeUp = (delay = 0) => ({
-  hidden:  { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const, delay } },
+  hidden:  { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] as const, delay } },
 });
 
 export default function ProjectsPage() {
-  const [tab, setTab] = useState<TabValue>("all");
+  const [tab, setTab] = useState<TabValue>("freelance");
 
-  const filtered = (() => {
-    if (tab === "all")       return projects;
-    if (tab === "pinned")    return projects.filter(p => p.isPinned);
-    return projects.filter(p => p.type === tab);
-  })();
+  const filtered = projects.filter(p => p.type === tab);
 
   const sorted = [...filtered].sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0));
 
   return (
     <>
       <SiteNav />
-      <main className="min-h-screen bg-background text-foreground">
+      <main className="min-h-screen bg-white text-[#0a0a0a]">
 
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden border-b border-border/60 pb-14 pt-8 md:pt-14">
-          {/* Orange + blue ambient glow (ChaiCode style) */}
-          <div aria-hidden className="pointer-events-none absolute -left-20 top-0 h-64 w-64 rounded-full bg-primary/20 blur-3xl" />
-          <div aria-hidden className="pointer-events-none absolute -right-10 bottom-0 h-48 w-48 rounded-full bg-sky-500/10 blur-3xl" />
-
-          <div className="relative mx-auto max-w-6xl px-6 md:px-10">
+        <section className="border-b border-neutral-100 pb-12 pt-8 md:pt-14">
+          <div className="mx-auto max-w-6xl px-6 md:px-8">
             <motion.div
               initial="hidden"
               animate="visible"
-              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
+              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
             >
               <motion.div variants={fadeUp(0)}>
                 <Link
                   href="/"
-                  className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
+                  className="mb-6 inline-flex items-center gap-2 text-sm text-neutral-400 transition-colors hover:text-[#0a0a0a]"
                 >
-                  <ArrowLeft className="size-4" /> Back to Home
+                  <ArrowLeft className="size-3.5" /> Back to Home
                 </Link>
               </motion.div>
 
-              <motion.div variants={fadeUp(0.05)} className="flex items-center gap-3">
-                <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary">
+              <motion.div variants={fadeUp(0.04)}>
+                <span className="eyebrow">
                   <Layers className="size-3" />
                   Projects
                 </span>
@@ -119,15 +64,15 @@ export default function ProjectsPage() {
 
               <motion.h1
                 variants={fadeUp(0.08)}
-                className="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl"
+                className="mt-4 font-extrabold tracking-tighter"
+                style={{ fontSize: "clamp(2.25rem, 5vw, 3.5rem)" }}
               >
-                Things I&apos;ve{" "}
-                <span className="text-primary">built</span>
+                Things I&apos;ve <span className="text-neutral-400">built</span>
               </motion.h1>
 
               <motion.p
                 variants={fadeUp(0.12)}
-                className="mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground"
+                className="mt-4 max-w-2xl text-base md:text-lg leading-relaxed text-neutral-500"
               >
                 A collection of projects I&apos;ve shipped — from full-stack SaaS
                 platforms to developer tools. Each one taught me something new.
@@ -136,28 +81,22 @@ export default function ProjectsPage() {
               {/* Filter tabs */}
               <motion.div variants={fadeUp(0.16)} className="mt-8 flex flex-wrap gap-2">
                 {TABS.map(({ label, value }) => {
-                  const count = value === "all"
-                    ? projects.length
-                    : value === "pinned"
-                      ? projects.filter(p => p.isPinned).length
-                      : projects.filter(p => p.type === value).length;
+                  const count = projects.filter(p => p.type === value).length;
                   return (
-                    <motion.button
+                    <button
                       key={value}
                       id={`project-filter-${value}`}
                       onClick={() => setTab(value)}
-                      whileHover={{ scale: 1.04 }}
-                      whileTap={{ scale: 0.97 }}
                       className={[
-                        "btn-chai px-4 py-1.5 text-sm font-semibold transition-all duration-200",
+                        "px-3.5 py-2 text-[13px] font-medium rounded-lg border transition-all",
                         tab === value
-                          ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                          : "border border-border/60 bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground",
+                          ? "bg-[#0a0a0a] text-white border-[#0a0a0a] shadow-sm"
+                          : "bg-white text-neutral-500 border-neutral-200 hover:border-neutral-400 hover:text-[#0a0a0a]",
                       ].join(" ")}
                     >
                       {label}
-                      <span className="ml-1.5 rounded-full bg-current/20 px-1.5 py-0.5 text-xs">{count}</span>
-                    </motion.button>
+                      <span className="ml-1.5 text-[11px] opacity-60">{count}</span>
+                    </button>
                   );
                 })}
               </motion.div>
@@ -166,42 +105,38 @@ export default function ProjectsPage() {
         </section>
 
         {/* ── Project Grid ── */}
-        <section className="mx-auto max-w-6xl px-6 py-14 md:px-10">
-          <p className="mb-8 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+        <section className="mx-auto max-w-6xl px-6 md:px-8 py-12 md:py-16">
+          <p className="mb-6 font-mono text-[11px] uppercase tracking-wider text-neutral-400">
             {sorted.length} project{sorted.length !== 1 ? "s" : ""}
           </p>
+
           <AnimatePresence mode="popLayout">
-            <motion.div layout className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <motion.div layout className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {sorted.map((project, idx) => (
                 <motion.article
                   key={project.id}
                   layout
-                  initial={{ opacity: 0, y: 28 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4, delay: idx * 0.07, ease: [0.25, 0.1, 0.25, 1] }}
-                  whileHover={{ y: -8 }}
-                  className="group relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_40px_rgba(249,115,22,0.12)]"
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 0.3, delay: idx * 0.04 }}
+                  className="card-eng group relative flex flex-col overflow-hidden"
                 >
-                  {/* Badges: pinned + type */}
+                  {/* Badges */}
                   <div className="absolute right-3 top-3 z-10 flex flex-col items-end gap-1.5">
                     {project.isPinned && (
-                      <span className="flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-white shadow">
-                        ⭐ Pinned
-                      </span>
+                      <span className="badge badge-neutral text-[10px]">Pinned</span>
                     )}
                     <span className={[
-                      "rounded-full px-2 py-0.5 text-xs font-semibold",
-                      project.type === "freelance"
-                        ? "bg-violet-500/20 text-violet-400"
-                        : "bg-sky-500/20 text-sky-400",
+                      "badge text-[10px]",
+                      project.type === "freelance" ? "badge-yellow" : "badge-green",
                     ].join(" ")}>
-                      {project.type === "freelance" ? "💼 Freelance" : "🚀 Personal"}
+                      {project.type === "freelance" ? "Freelance" : "Personal"}
                     </span>
                   </div>
 
-                  {/* Cover image / gradient */}
-                  <div className="relative h-48 overflow-hidden bg-gradient-to-br from-card via-card to-primary/5">
+                  {/* Cover */}
+                  <div className="relative h-44 overflow-hidden bg-neutral-50 border-b border-neutral-100">
                     {project.image ? (
                       <img
                         src={project.image}
@@ -210,21 +145,18 @@ export default function ProjectsPage() {
                         onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                       />
                     ) : null}
-                    {/* Fallback code icon */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-30 transition-opacity">
-                      <Code2 className="size-20 text-primary" />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-15 group-hover:opacity-25 transition-opacity">
+                      <Code2 className="size-16 text-neutral-300" />
                     </div>
-                    {/* Bottom gradient overlay */}
-                    <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent" />
                   </div>
 
                   {/* Content */}
-                  <div className="flex flex-1 flex-col gap-4 p-5">
+                  <div className="flex flex-1 flex-col gap-3 p-5">
                     <div>
-                      <h2 className="text-lg font-bold leading-snug text-foreground transition-colors group-hover:text-primary">
+                      <h2 className="font-bold text-[15px] text-[#0a0a0a] group-hover:underline underline-offset-2">
                         {project.title}
                       </h2>
-                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      <p className="mt-1.5 text-sm leading-relaxed text-neutral-500 line-clamp-2">
                         {project.description}
                       </p>
                     </div>
@@ -234,47 +166,41 @@ export default function ProjectsPage() {
                       {project.technologies.slice(0, 5).map((tech) => (
                         <span
                           key={tech}
-                          className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${TECH_COLORS[tech] ?? TAG_DEFAULT}`}
+                          className="text-[11px] font-mono text-neutral-500 bg-neutral-50 border border-neutral-100 rounded-md px-2 py-0.5"
                         >
                           {tech}
                         </span>
                       ))}
                       {project.technologies.length > 5 && (
-                        <span className="rounded-full bg-muted/50 px-2.5 py-0.5 text-xs text-muted-foreground">
+                        <span className="text-[11px] text-neutral-400 bg-neutral-50 border border-neutral-100 rounded-md px-2 py-0.5">
                           +{project.technologies.length - 5}
                         </span>
                       )}
                     </div>
 
                     {/* Links */}
-                    <div className="mt-auto flex items-center gap-3 pt-1">
+                    <div className="mt-auto flex items-center gap-2 pt-2">
                       {project.github && (
-                        <motion.a
+                        <a
                           href={project.github}
                           target="_blank"
                           rel="noopener noreferrer"
-                          whileHover={{ scale: 1.08 }}
-                          whileTap={{ scale: 0.94 }}
-                          className="btn-chai flex items-center gap-2 border border-border/60 bg-muted/40 px-3 py-2 text-sm font-semibold text-foreground/80 transition-all hover:border-primary/50 hover:text-primary"
+                          className="btn btn-outline btn-sm text-[12px]"
                           aria-label={`View ${project.title} on GitHub`}
                         >
-                          <GithubIcon className="size-4" />
-                          Code
-                        </motion.a>
+                          <GithubIcon className="size-3.5" /> Code
+                        </a>
                       )}
                       {project.link && (
-                        <motion.a
+                        <a
                           href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          whileHover={{ scale: 1.08 }}
-                          whileTap={{ scale: 0.94 }}
-                          className="btn-chai btn-magnetic flex items-center gap-2 bg-primary px-4 py-2 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/25 transition-all"
+                          className="btn btn-primary btn-sm text-[12px]"
                           aria-label={`View live demo of ${project.title}`}
                         >
-                          <ExternalLink className="size-4" />
-                          Live Demo
-                        </motion.a>
+                          <ExternalLink className="size-3.5" /> Live
+                        </a>
                       )}
                     </div>
                   </div>
@@ -285,58 +211,50 @@ export default function ProjectsPage() {
 
           {filtered.length === 0 && (
             <div className="flex flex-col items-center justify-center py-24 text-center">
-              <Code2 className="mb-4 size-12 text-muted-foreground/30" />
-              <p className="text-muted-foreground">No projects in this category yet.</p>
+              <Code2 className="mb-4 size-12 text-neutral-200" />
+              <p className="text-neutral-500">No projects in this category yet.</p>
             </div>
           )}
         </section>
 
         {/* ── CTA ── */}
-        <section className="border-t border-border/60">
-          <div className="mx-auto max-w-6xl px-6 py-16 text-center md:px-10">
+        <section className="border-t border-neutral-100">
+          <div className="mx-auto max-w-6xl px-6 md:px-8 py-16 md:py-20 text-center">
             <motion.h2
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-2xl font-bold"
+              className="text-2xl font-bold tracking-tight"
             >
               Got a project idea?
             </motion.h2>
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="mt-3 text-muted-foreground"
+              transition={{ delay: 0.08 }}
+              className="mt-3 text-neutral-500"
             >
               Let&apos;s build something great together.
             </motion.p>
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.18 }}
-              className="mt-7 flex justify-center gap-4"
+              transition={{ delay: 0.15 }}
+              className="mt-7 flex justify-center gap-3"
             >
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                <Link
-                  href="/contact"
-                  className="btn-chai btn-magnetic inline-flex items-center gap-2 bg-primary px-6 py-3 font-bold text-primary-foreground shadow-lg shadow-primary/30"
-                >
-                  Let&apos;s Talk →
-                </Link>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                <a
-                  href="https://github.com/coderMayank69"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-chai inline-flex items-center gap-2 border border-border/60 px-6 py-3 font-semibold text-foreground/80 hover:border-primary/50 hover:text-primary"
-                >
-                  <GithubIcon className="size-4" />
-                  GitHub
-                </a>
-              </motion.div>
+              <Link href="/contact" className="btn btn-primary">
+                Let&apos;s Talk →
+              </Link>
+              <a
+                href="https://github.com/coderMayank69"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-outline"
+              >
+                <GithubIcon className="size-4" /> GitHub
+              </a>
             </motion.div>
           </div>
         </section>

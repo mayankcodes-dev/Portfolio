@@ -1,11 +1,5 @@
 "use client";
 
-/**
- * About Page — Full build
- * GitHub contribution graph · LeetCode stats · Timeline · Values
- * Framer Motion scroll reveals · ChaiCode button style
- */
-
 import { useRef } from "react";
 import { motion, useInView, type Variants } from "framer-motion";
 import Link from "next/link";
@@ -14,8 +8,6 @@ import {
   Download, ExternalLink, Award, ArrowRight,
   Code2, Zap, Users, MapPin, GraduationCap,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import SiteNav from "@/components/layout/site-nav";
 import { Footer } from "@/components/sections/footer";
 import { certificates } from "@/data/certificates";
@@ -25,7 +17,7 @@ const GitHubCalendar = dynamic(
   () => import("./github-calendar-wrapper"),
   {
     ssr: false,
-    loading: () => <div className="h-32 animate-pulse rounded-xl bg-muted/50" />,
+    loading: () => <div className="h-32 animate-pulse rounded-xl bg-neutral-50 border border-neutral-100" />,
   }
 );
 
@@ -72,18 +64,9 @@ const values = [
   },
 ];
 
-const CARD_GRADIENTS = [
-  "from-violet-600 via-purple-600 to-indigo-700",
-  "from-indigo-600 via-blue-600 to-cyan-700",
-  "from-purple-700 via-pink-600 to-rose-600",
-  "from-cyan-600 via-teal-600 to-emerald-700",
-];
-
-const EASE_OUT = [0.25, 0.1, 0.25, 1] as const;
-
 const fadeUp = (delay = 0): Variants => ({
-  hidden:  { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE_OUT, delay } },
+  hidden:  { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const, delay } },
 });
 
 function AnimatedSection({ children, className = "" }: { children: React.ReactNode; className?: string }) {
@@ -105,19 +88,17 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
 function LeetCodeStats() {
   return (
     <div className="mt-6 grid gap-4 sm:grid-cols-2">
-      {/* Stats card via leetcard */}
-      <div className="overflow-hidden rounded-2xl border border-border/60 bg-card">
+      <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
         <img
-          src="https://leetcard.jacoblin.cool/coderMayank69?theme=dark&font=Nunito&ext=activity"
+          src="https://leetcard.jacoblin.cool/coderMayank69?theme=light&font=Inter&ext=activity"
           alt="LeetCode stats for coderMayank69"
           className="w-full object-cover"
           loading="lazy"
         />
       </div>
-      {/* Heatmap / contest rating card */}
-      <div className="overflow-hidden rounded-2xl border border-border/60 bg-card">
+      <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
         <img
-          src="https://leetcard.jacoblin.cool/coderMayank69?theme=dark&font=Nunito&ext=heatmap"
+          src="https://leetcard.jacoblin.cool/coderMayank69?theme=light&font=Inter&ext=heatmap"
           alt="LeetCode heatmap for coderMayank69"
           className="w-full object-cover"
           loading="lazy"
@@ -129,95 +110,82 @@ function LeetCodeStats() {
 
 /* ─── Page ──────────────────────────────────────────────────────── */
 export default function About() {
-  const heroRef = useRef<HTMLDivElement>(null);
-
   return (
     <>
       <SiteNav />
-      <main className="min-h-screen bg-background text-foreground">
+      <main className="min-h-screen bg-white text-[#0a0a0a]">
 
         {/* ════ HERO ════ */}
-        <section className="mx-auto max-w-4xl px-6 pb-12 pt-8 md:pt-16">
+        <section className="mx-auto max-w-4xl px-6 md:px-8 pb-12 pt-8 md:pt-16">
           <motion.div
-            ref={heroRef}
             initial="hidden"
             animate="visible"
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12 } } }}
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
           >
             <motion.div variants={fadeUp(0)}>
-              <Badge variant="outline" className="mb-5 btn-chai">
-                About me
-              </Badge>
+              <span className="eyebrow">About me</span>
             </motion.div>
 
             <motion.h1
               variants={fadeUp(0.05)}
-              className="text-balance text-4xl font-bold tracking-tight md:text-6xl"
+              className="mt-4 text-balance font-extrabold tracking-tighter"
+              style={{ fontSize: "clamp(2.25rem, 5vw, 3.5rem)" }}
             >
-              The Developer Behind&nbsp;
-              <span className="text-primary">the Code</span>
+              The Developer Behind
+              <span className="text-neutral-400"> the Code</span>
             </motion.h1>
 
-            <motion.div variants={fadeUp(0.08)} className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
-              <MapPin className="size-4 text-primary" />
+            <motion.div variants={fadeUp(0.08)} className="mt-3 flex items-center gap-2 text-sm text-neutral-500">
+              <MapPin className="size-4 text-neutral-400" />
               Lucknow, Krishna Nagar, India
             </motion.div>
 
             <motion.p
               variants={fadeUp(0.1)}
-              className="mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground"
+              className="mt-5 max-w-2xl text-pretty text-base md:text-lg leading-relaxed text-neutral-500"
             >
-              Hi, I&apos;m <strong className="text-foreground">Mayank</strong> — a MERN stack
+              Hi, I&apos;m <strong className="text-[#0a0a0a] font-semibold">Mayank</strong> — a MERN stack
               developer passionate about building polished, production-ready web
               applications. Currently pursuing my CS degree and actively seeking
               software engineering internships.
             </motion.p>
 
             <motion.div variants={fadeUp(0.15)} className="mt-8 flex flex-wrap gap-3">
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                <Button asChild className="btn-chai btn-magnetic gap-2 bg-primary text-primary-foreground">
-                  <a
-                    href="https://drive.google.com/file/d/1HH8bHTrCKS_YGufdW8zs5rgTZcf6xIp8/view?usp=sharing"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Download className="size-4" />
-                    Download Resume
-                  </a>
-                </Button>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                <Button variant="outline" asChild className="btn-chai gap-2">
-                  <Link href="/contact">
-                    Let&apos;s work together
-                    <ArrowRight className="size-4" />
-                  </Link>
-                </Button>
-              </motion.div>
+              <a
+                href="https://drive.google.com/file/d/1HH8bHTrCKS_YGufdW8zs5rgTZcf6xIp8/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
+              >
+                <Download className="size-4" />
+                Download Resume
+              </a>
+              <Link href="/contact" className="btn btn-outline">
+                Let&apos;s work together
+                <ArrowRight className="size-4" />
+              </Link>
             </motion.div>
           </motion.div>
         </section>
 
         {/* ════ VALUES ════ */}
-        <AnimatedSection className="border-t border-border/60">
-          <div className="mx-auto max-w-4xl px-6 py-16">
-            <motion.p variants={fadeUp(0)} className="mb-10 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+        <AnimatedSection className="border-t border-neutral-100">
+          <div className="mx-auto max-w-4xl px-6 md:px-8 py-16 md:py-20">
+            <motion.p variants={fadeUp(0)} className="eyebrow mb-8">
               What I Stand For
             </motion.p>
-            <div className="grid gap-6 sm:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-3">
               {values.map(({ icon: Icon, title, desc }, i) => (
                 <motion.div
                   key={title}
-                  variants={fadeUp(i * 0.1)}
-                  whileHover={{ y: -6, boxShadow: "0 16px 40px rgba(0,0,0,0.18)" }}
-                  transition={{ type: "spring", stiffness: 280, damping: 22 }}
-                  className="rounded-2xl border border-border/60 bg-card p-6"
+                  variants={fadeUp(i * 0.08)}
+                  className="card-eng p-6"
                 >
-                  <div className="mb-4 grid size-10 place-items-center rounded-xl bg-primary/10 text-primary">
-                    <Icon className="size-5" />
+                  <div className="mb-4 grid size-9 place-items-center rounded-lg bg-neutral-50 border border-neutral-200">
+                    <Icon className="size-4 text-neutral-600" />
                   </div>
-                  <p className="font-semibold text-foreground">{title}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
+                  <p className="font-semibold text-[#0a0a0a] text-[15px]">{title}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-neutral-500">{desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -225,27 +193,22 @@ export default function About() {
         </AnimatedSection>
 
         {/* ════ TIMELINE ════ */}
-        <AnimatedSection className="border-t border-border/60">
-          <div className="mx-auto max-w-4xl px-6 py-16">
-            <motion.p variants={fadeUp(0)} className="mb-10 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+        <AnimatedSection className="border-t border-neutral-100">
+          <div className="mx-auto max-w-4xl px-6 md:px-8 py-16 md:py-20">
+            <motion.p variants={fadeUp(0)} className="eyebrow mb-8">
               My Journey
             </motion.p>
 
-            <div className="relative space-y-10 before:absolute before:left-[5px] before:top-2 before:h-full before:w-px before:bg-border">
+            <div className="relative space-y-10 before:absolute before:left-[5px] before:top-2 before:h-full before:w-px before:bg-neutral-200">
               {timeline.map(({ year, title, icon: Icon, description }, i) => (
-                <motion.div key={year} variants={fadeUp(i * 0.15)} className="relative pl-9">
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.3 + i * 0.15, type: "spring", stiffness: 350 }}
-                    className="absolute left-0 top-1 flex size-3 items-center justify-center rounded-full border-2 border-primary bg-background"
-                  />
+                <motion.div key={year} variants={fadeUp(i * 0.12)} className="relative pl-9">
+                  <span className="absolute left-0 top-1.5 flex size-3 items-center justify-center rounded-full border-2 border-[#0a0a0a] bg-white" />
                   <div className="flex items-center gap-2">
-                    <Icon className="size-4 text-primary" />
-                    <p className="text-xs font-bold uppercase tracking-wider text-primary">{year}</p>
+                    <Icon className="size-4 text-neutral-400" />
+                    <p className="font-mono text-[11px] uppercase tracking-wider text-neutral-400">{year}</p>
                   </div>
-                  <p className="mt-1 font-semibold text-foreground">{title}</p>
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{description}</p>
+                  <p className="mt-1 font-semibold text-[#0a0a0a]">{title}</p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-neutral-500">{description}</p>
                 </motion.div>
               ))}
             </div>
@@ -253,32 +216,32 @@ export default function About() {
         </AnimatedSection>
 
         {/* ════ GITHUB CONTRIBUTION GRAPH ════ */}
-        <AnimatedSection className="border-t border-border/60">
-          <div className="mx-auto max-w-4xl px-6 py-16">
-            <motion.p variants={fadeUp(0)} className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+        <AnimatedSection className="border-t border-neutral-100">
+          <div className="mx-auto max-w-4xl px-6 md:px-8 py-16 md:py-20">
+            <motion.p variants={fadeUp(0)} className="eyebrow mb-2">
               GitHub Activity
             </motion.p>
-            <motion.p variants={fadeUp(0.05)} className="mb-8 text-sm text-muted-foreground">
+            <motion.p variants={fadeUp(0.05)} className="mb-8 text-sm text-neutral-500">
               Contributions from{" "}
               <a
                 href="https://github.com/coderMayank69"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary hover:underline"
+                className="text-[#0a0a0a] font-medium hover:underline underline-offset-2"
               >
                 @coderMayank69
               </a>
             </motion.p>
-            <motion.div variants={fadeUp(0.1)} className="overflow-x-auto rounded-2xl border border-border/60 bg-card p-6">
+            <motion.div variants={fadeUp(0.1)} className="overflow-x-auto card-eng p-6">
               <GitHubCalendar
                 username="coderMayank69"
-                colorScheme="dark"
+                colorScheme="light"
                 fontSize={12}
                 blockSize={13}
                 blockMargin={4}
                 theme={{
-                  dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string, string, string, string, string],
                   light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"] as [string, string, string, string, string],
+                  dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string, string, string, string, string],
                 }}
               />
             </motion.div>
@@ -286,18 +249,18 @@ export default function About() {
         </AnimatedSection>
 
         {/* ════ LEETCODE STATS ════ */}
-        <AnimatedSection className="border-t border-border/60">
-          <div className="mx-auto max-w-4xl px-6 py-16">
-            <motion.p variants={fadeUp(0)} className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+        <AnimatedSection className="border-t border-neutral-100">
+          <div className="mx-auto max-w-4xl px-6 md:px-8 py-16 md:py-20">
+            <motion.p variants={fadeUp(0)} className="eyebrow mb-2">
               LeetCode Progress
             </motion.p>
-            <motion.p variants={fadeUp(0.05)} className="mb-6 text-sm text-muted-foreground">
+            <motion.p variants={fadeUp(0.05)} className="mb-6 text-sm text-neutral-500">
               Problem-solving on{" "}
               <a
                 href="https://leetcode.com/u/coderMayank69/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary hover:underline"
+                className="text-[#0a0a0a] font-medium hover:underline underline-offset-2"
               >
                 LeetCode @coderMayank69
               </a>
@@ -309,68 +272,60 @@ export default function About() {
         </AnimatedSection>
 
         {/* ════ CERTIFICATIONS TEASER ════ */}
-        <AnimatedSection className="border-t border-border/60">
-          <div className="mx-auto max-w-4xl px-6 py-16">
-            <motion.p variants={fadeUp(0)} className="mb-10 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+        <AnimatedSection className="border-t border-neutral-100">
+          <div className="mx-auto max-w-4xl px-6 md:px-8 py-16 md:py-20">
+            <motion.p variants={fadeUp(0)} className="eyebrow mb-8">
               Certifications
             </motion.p>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-2">
               {certificates.slice(0, 4).map((cert, idx) => (
                 <motion.div
                   key={cert.id}
-                  variants={fadeUp(idx * 0.1)}
-                  whileHover={{ scale: 1.02, y: -4 }}
-                  transition={{ type: "spring", stiffness: 280, damping: 22 }}
-                  className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card transition-shadow hover:border-primary/40 hover:shadow-[0_0_28px_rgba(99,102,241,0.2)]"
+                  variants={fadeUp(idx * 0.08)}
+                  className="card-eng group flex items-start gap-4 p-5"
                 >
-                  <div className={`relative flex h-24 w-full items-center justify-center bg-gradient-to-br ${CARD_GRADIENTS[idx % CARD_GRADIENTS.length]} overflow-hidden`}>
-                    <div
-                      className="absolute inset-0 opacity-20"
-                      style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)", backgroundSize: "28px 28px" }}
-                    />
-                    <Award className="relative z-10 size-7 text-white/90" />
+                  <div className="grid size-9 flex-shrink-0 place-items-center rounded-lg bg-neutral-50 border border-neutral-200">
+                    <Award className="size-4 text-neutral-600" />
                   </div>
-                  <div className="p-4">
-                    <p className="text-sm font-semibold text-foreground transition-colors group-hover:text-primary">{cert.title}</p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">{cert.issuer} · {cert.date}</p>
+                  <div className="min-w-0">
+                    <p className="font-semibold text-[#0a0a0a] text-sm leading-snug group-hover:underline underline-offset-2 truncate">
+                      {cert.title}
+                    </p>
+                    <p className="mt-1 text-xs text-neutral-500 font-mono">
+                      {cert.issuer} · {cert.date}
+                    </p>
                   </div>
                 </motion.div>
               ))}
             </div>
 
-            <motion.div variants={fadeUp(0.4)} className="mt-6">
-              <Button asChild variant="outline" className="btn-chai gap-2">
-                <Link href="/certifications">
-                  <Award className="size-4" />
-                  View all {certificates.length} certificates
-                  <ArrowRight className="size-4" />
-                </Link>
-              </Button>
+            <motion.div variants={fadeUp(0.3)} className="mt-6">
+              <Link href="/certifications" className="btn btn-outline btn-sm">
+                <Award className="size-4" />
+                View all {certificates.length} certificates
+                <ArrowRight className="size-4" />
+              </Link>
             </motion.div>
           </div>
         </AnimatedSection>
 
         {/* ════ SOCIAL LINKS ════ */}
-        <AnimatedSection className="border-t border-border/60">
-          <div className="mx-auto max-w-4xl px-6 py-16">
-            <motion.p variants={fadeUp(0)} className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+        <AnimatedSection className="border-t border-neutral-100">
+          <div className="mx-auto max-w-4xl px-6 md:px-8 py-16 md:py-20">
+            <motion.p variants={fadeUp(0)} className="eyebrow mb-6">
               Find Me Online
             </motion.p>
-            <motion.div variants={fadeUp(0.1)} className="flex flex-wrap gap-3">
+            <motion.div variants={fadeUp(0.1)} className="flex flex-wrap gap-2">
               {[
                 { label: "GitHub",   href: "https://github.com/coderMayank69"             },
                 { label: "LinkedIn", href: "https://www.linkedin.com/in/codermayank69/"   },
                 { label: "LeetCode", href: "https://leetcode.com/u/coderMayank69/"        },
                 { label: "Hashnode", href: "https://hashnode.com/@coderMayank"            },
               ].map(({ label, href }) => (
-                <motion.div key={label} whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                  <Button variant="outline" asChild className="btn-chai gap-2">
-                    <a href={href} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="size-4" />
-                      {label}
-                    </a>
-                  </Button>
-                </motion.div>
+                <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-sm">
+                  <ExternalLink className="size-3.5" />
+                  {label}
+                </a>
               ))}
             </motion.div>
           </div>

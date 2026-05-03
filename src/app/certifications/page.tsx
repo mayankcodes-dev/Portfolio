@@ -1,11 +1,5 @@
 "use client";
 
-/**
- * Certifications Page — Strapi-powered with static fallback
- * 2-column grid · Category filter · Framer Motion reveals
- * ChaiCode asymmetric button style
- */
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -27,27 +21,6 @@ interface CertItem {
   credentialId?: string;
 }
 
-const GRADIENT_PATTERNS = [
-  "from-violet-600 via-purple-600 to-indigo-700",
-  "from-indigo-600 via-blue-600 to-cyan-700",
-  "from-purple-700 via-pink-600 to-rose-600",
-  "from-cyan-600 via-teal-600 to-emerald-700",
-  "from-orange-600 via-amber-500 to-yellow-500",
-  "from-rose-600 via-red-600 to-orange-600",
-];
-
-const CATEGORY_ICONS: Record<string, string> = {
-  "Full Stack": "🚀",
-  Frontend:    "⚛️",
-  Backend:     "🖥️",
-  Language:    "💡",
-  Database:    "🗄️",
-  DevOps:      "🐳",
-  Security:    "🔐",
-  AI:          "🤖",
-  All:         "🏆",
-};
-
 function strapiToItem(c: StrapiCertificate): CertItem {
   return {
     id:            String(c.id),
@@ -63,43 +36,30 @@ function strapiToItem(c: StrapiCertificate): CertItem {
 }
 
 /* ── Individual cert card ── */
-function CertCard({ cert, gradient }: { cert: CertItem; gradient: string }) {
+function CertCard({ cert }: { cert: CertItem }) {
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.96 }}
-      transition={{ type: "spring", stiffness: 260, damping: 24 }}
-      whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(0,0,0,0.2)" }}
+      exit={{ opacity: 0, scale: 0.97 }}
+      transition={{ type: "spring", stiffness: 280, damping: 26 }}
       id={`cert-card-${cert.id}`}
-      className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card transition-all duration-300 hover:border-primary/40"
+      className="card-eng group relative flex flex-col overflow-hidden"
     >
-      {/* Header: issuer logo or gradient + award icon */}
-      <div className={`relative flex h-44 w-full items-center justify-center bg-gradient-to-br ${gradient} overflow-hidden`}>
-        <div
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: "linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
-          }}
-        />
-        <div className="relative z-10 flex flex-col items-center gap-3">
-          {cert.issuerLogo ? (
-            <div className="flex size-16 items-center justify-center rounded-2xl bg-white/20 p-2.5 ring-1 ring-white/30 shadow-xl backdrop-blur-sm">
-              <img src={cert.issuerLogo} alt={cert.issuer} className="h-full w-full object-contain" />
-            </div>
-          ) : (
-            <div className="flex size-14 items-center justify-center rounded-full bg-white/15 ring-1 ring-white/30 shadow-xl backdrop-blur-sm">
-              <Award className="size-7 text-white" />
-            </div>
-          )}
-          <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white/90 backdrop-blur-sm">
-            {cert.issuer}
-          </span>
-        </div>
+      {/* Header — icon + issuer */}
+      <div className="relative flex h-36 w-full items-center justify-center bg-neutral-50 border-b border-neutral-100">
+        {cert.issuerLogo ? (
+          <div className="flex size-14 items-center justify-center rounded-xl bg-white border border-neutral-200 p-2.5 shadow-sm">
+            <img src={cert.issuerLogo} alt={cert.issuer} className="h-full w-full object-contain" />
+          </div>
+        ) : (
+          <div className="flex size-12 items-center justify-center rounded-xl bg-white border border-neutral-200 shadow-sm">
+            <Award className="size-6 text-neutral-400" />
+          </div>
+        )}
 
-        {/* External link overlay */}
+        {/* External link on hover */}
         {cert.credentialUrl && (
           <a
             href={cert.credentialUrl}
@@ -107,35 +67,35 @@ function CertCard({ cert, gradient }: { cert: CertItem; gradient: string }) {
             rel="noopener noreferrer"
             id={`cert-link-${cert.id}`}
             aria-label={`View ${cert.title} credential`}
-            className="absolute right-3 top-3 z-20 flex size-8 items-center justify-center rounded-full bg-black/30 text-white opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100 hover:bg-black/50"
+            className="absolute right-3 top-3 z-10 flex size-7 items-center justify-center rounded-md bg-white border border-neutral-200 text-neutral-400 opacity-0 transition-opacity group-hover:opacity-100 hover:text-[#0a0a0a] hover:border-neutral-400"
           >
-            <ExternalLink className="size-4" />
+            <ExternalLink className="size-3.5" />
           </a>
         )}
 
         {/* Category badge */}
-        <span className="absolute bottom-3 left-3 z-10 rounded-full bg-black/30 px-2.5 py-1 text-xs font-medium text-white/90 backdrop-blur-sm">
+        <span className="absolute bottom-3 left-3 badge badge-neutral text-[10px]">
           {cert.category}
         </span>
       </div>
 
       {/* Body */}
-      <div className="p-5">
-        <h3 className="text-base font-bold leading-snug text-foreground transition-colors duration-200 group-hover:text-primary">
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="text-[15px] font-bold leading-snug text-[#0a0a0a] group-hover:underline underline-offset-2">
           {cert.title}
         </h3>
-        <p className="mt-1.5 text-sm text-muted-foreground">{cert.issuer}</p>
-        <div className="mt-4 flex items-center justify-between">
-          <span className="text-xs font-medium text-muted-foreground/70">{cert.date}</span>
+        <p className="mt-1.5 text-xs font-mono text-neutral-500">{cert.issuer}</p>
+        <div className="mt-auto flex items-center justify-between pt-4">
+          <span className="text-[11px] font-mono text-neutral-400">{cert.date}</span>
           {cert.credentialUrl && (
             <a
               href={cert.credentialUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary transition-all hover:bg-primary/15 hover:border-primary/60"
+              className="btn btn-outline btn-sm text-[11px]"
             >
               <ExternalLink className="size-3" />
-              View Credential
+              View
             </a>
           )}
         </div>
@@ -154,7 +114,6 @@ export default function CertificationsPage() {
   useEffect(() => {
     async function load() {
       try {
-        /* Try Strapi first */
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337"}/api/certificates?populate=image&sort=date:desc`,
           { next: { revalidate: 3600 } }
@@ -173,7 +132,6 @@ export default function CertificationsPage() {
         /* Strapi not available — use static fallback */
       }
 
-      /* Static fallback */
       setCerts(
         staticCertificates.map((c) => ({
           id:            c.id,
@@ -198,28 +156,21 @@ export default function CertificationsPage() {
   return (
     <>
       <SiteNav />
-      <main className="min-h-screen bg-background text-foreground">
+      <main className="min-h-screen bg-white text-[#0a0a0a]">
 
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden border-b border-border/60 px-6 pb-16 pt-8 md:pt-16">
-          {/* Ambient glow */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[480px] w-[700px] rounded-full opacity-20 blur-3xl"
-            style={{ background: "radial-gradient(ellipse, oklch(0.55 0.22 264 / 80%), transparent 70%)" }}
-          />
-
-          <div className="relative mx-auto max-w-5xl">
+        <section className="border-b border-neutral-100 px-6 md:px-8 pb-12 pt-8 md:pt-14">
+          <div className="mx-auto max-w-5xl">
             <Link
               href="/about"
-              className="mb-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card px-4 py-2 text-sm text-muted-foreground transition-all hover:border-primary/40 hover:text-foreground"
+              className="mb-6 inline-flex items-center gap-2 text-sm text-neutral-400 transition-colors hover:text-[#0a0a0a]"
             >
-              <ArrowLeft className="size-4" />
+              <ArrowLeft className="size-3.5" />
               Back to About
             </Link>
 
-            <div className="mt-6">
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-primary">
+            <div className="mt-4">
+              <span className="eyebrow">
                 <Award className="size-3" />
                 Certifications
               </span>
@@ -228,20 +179,18 @@ export default function CertificationsPage() {
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="mt-5 text-4xl font-extrabold tracking-tight md:text-6xl"
+              transition={{ duration: 0.5 }}
+              className="mt-4 font-extrabold tracking-tighter"
+              style={{ fontSize: "clamp(2.25rem, 5vw, 3.5rem)" }}
             >
-              My{" "}
-              <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Certifications
-              </span>
+              My <span className="text-neutral-400">Certifications</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground"
+              transition={{ duration: 0.5, delay: 0.08 }}
+              className="mt-4 max-w-2xl text-base md:text-lg leading-relaxed text-neutral-500"
             >
               A curated collection of professional certifications and achievements
               across frontend, backend, security, and more.
@@ -251,59 +200,53 @@ export default function CertificationsPage() {
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.4, delay: 0.16 }}
               className="mt-8 flex flex-wrap gap-2"
             >
               {categories.map((cat) => (
-                <motion.button
+                <button
                   key={cat}
                   id={`cert-filter-${cat.toLowerCase()}`}
                   onClick={() => setActiveCategory(cat)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.97 }}
                   className={[
-                    "btn-chai px-4 py-1.5 text-sm font-medium transition-all duration-200",
+                    "px-3.5 py-2 text-[13px] font-medium rounded-lg border transition-all",
                     activeCategory === cat
-                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                      : "border border-border/60 bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground",
+                      ? "bg-[#0a0a0a] text-white border-[#0a0a0a] shadow-sm"
+                      : "bg-white text-neutral-500 border-neutral-200 hover:border-neutral-400 hover:text-[#0a0a0a]",
                   ].join(" ")}
                 >
-                  {CATEGORY_ICONS[cat] ?? "📄"} {cat}
-                </motion.button>
+                  {cat}
+                </button>
               ))}
             </motion.div>
           </div>
         </section>
 
         {/* ── Grid ── */}
-        <section className="mx-auto max-w-5xl px-6 py-14">
+        <section className="mx-auto max-w-5xl px-6 md:px-8 py-12 md:py-16">
           {loading ? (
             <div className="flex items-center justify-center py-24">
-              <Loader2 className="size-8 animate-spin text-primary" />
+              <Loader2 className="size-6 animate-spin text-neutral-300" />
             </div>
           ) : (
             <>
-              <p className="mb-8 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="mb-6 font-mono text-[11px] uppercase tracking-wider text-neutral-400">
                 {filtered.length} certificate{filtered.length !== 1 ? "s" : ""}
                 {activeCategory !== "All" ? ` · ${activeCategory}` : ""}
               </p>
 
               <AnimatePresence mode="popLayout">
-                <motion.div className="grid gap-6 sm:grid-cols-2" layout>
-                  {filtered.map((cert, idx) => (
-                    <CertCard
-                      key={cert.id}
-                      cert={cert}
-                      gradient={GRADIENT_PATTERNS[idx % GRADIENT_PATTERNS.length]}
-                    />
+                <motion.div className="grid gap-4 sm:grid-cols-2" layout>
+                  {filtered.map((cert) => (
+                    <CertCard key={cert.id} cert={cert} />
                   ))}
                 </motion.div>
               </AnimatePresence>
 
               {filtered.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-24 text-center">
-                  <Award className="mb-4 size-12 text-muted-foreground/40" />
-                  <p className="text-lg font-semibold text-muted-foreground">
+                  <Award className="mb-4 size-12 text-neutral-200" />
+                  <p className="text-neutral-500">
                     No certificates in this category yet.
                   </p>
                 </div>

@@ -13,7 +13,6 @@ export default function CustomCursor() {
     const dot  = dotRef.current!;
     const ring = ringRef.current!;
 
-    // Force visible
     dot.style.display  = "block";
     ring.style.display = "block";
     document.body.style.cursor = "none";
@@ -23,47 +22,47 @@ export default function CustomCursor() {
     const onMove = (e: MouseEvent) => {
       mx = e.clientX;
       my = e.clientY;
-      gsap.set(dot, { x: mx - 5, y: my - 5 });
+      gsap.set(dot, { x: mx - 4, y: my - 4 });
     };
 
     const tick = gsap.ticker.add(() => {
-      rx += (mx - rx) * 0.13;
-      ry += (my - ry) * 0.13;
-      gsap.set(ring, { x: rx - 18, y: ry - 18 });
+      rx += (mx - rx) * 0.14;
+      ry += (my - ry) * 0.14;
+      gsap.set(ring, { x: rx - 16, y: ry - 16 });
     });
 
-    // States
     const onEnter = (e: Event) => {
       const el  = e.target as HTMLElement;
       const tag = el.tagName.toLowerCase();
-      const isBtn = tag === "button" || el.closest("button") !== null;
-      const isInput = ["input","textarea","select"].includes(tag);
+      const isBtn   = tag === "button" || el.closest("button") !== null;
+      const isInput = ["input", "textarea", "select"].includes(tag);
 
       if (isBtn) {
-        gsap.to(ring, { width: 52, height: 34, borderRadius: 8, borderColor: "#f97316", backgroundColor: "rgba(249,115,22,0.12)", duration: 0.25, ease: "power2.out" });
+        gsap.to(ring, { width: 48, height: 30, borderRadius: 8, borderColor: "#0a0a0a", backgroundColor: "rgba(10,10,10,0.06)", duration: 0.22, ease: "power2.out" });
       } else if (isInput) {
-        gsap.to(ring, { width: 18, height: 3,  borderRadius: 2, borderColor: "#f97316", backgroundColor: "rgba(249,115,22,0.5)",  duration: 0.2,  ease: "power2.out" });
+        gsap.to(ring, { width: 16, height: 2, borderRadius: 2, borderColor: "#0a0a0a", backgroundColor: "rgba(10,10,10,0.3)", duration: 0.18, ease: "power2.out" });
       } else {
-        gsap.to(ring, { width: 44, height: 44, borderRadius: 9999, borderColor: "#f97316", backgroundColor: "rgba(249,115,22,0.07)", duration: 0.25, ease: "power2.out" });
+        gsap.to(ring, { width: 40, height: 40, borderRadius: 9999, borderColor: "#0a0a0a", backgroundColor: "rgba(10,10,10,0.04)", duration: 0.22, ease: "power2.out" });
       }
-      gsap.to(dot, { scale: 0.5, duration: 0.2 });
+      gsap.to(dot, { scale: 0.5, duration: 0.18 });
       (el as HTMLElement).style.cursor = "none";
     };
 
     const onLeave = () => {
-      gsap.to(ring, { width: 36, height: 36, borderRadius: 9999, borderColor: "rgba(249,115,22,0.75)", backgroundColor: "transparent", duration: 0.35, ease: "elastic.out(1,0.6)" });
-      gsap.to(dot, { scale: 1, duration: 0.3, ease: "elastic.out(1,0.5)" });
+      gsap.to(ring, { width: 32, height: 32, borderRadius: 9999, borderColor: "rgba(10,10,10,0.4)", backgroundColor: "transparent", duration: 0.3, ease: "elastic.out(1,0.6)" });
+      gsap.to(dot, { scale: 1, duration: 0.25, ease: "elastic.out(1,0.5)" });
     };
 
-    const onDown = () => gsap.to([dot, ring], { scale: 0.75, duration: 0.1 });
-    const onUp   = () => gsap.to([dot, ring], { scale: 1,    duration: 0.4, ease: "elastic.out(1,0.5)" });
+    const onDown = () => gsap.to([dot, ring], { scale: 0.8, duration: 0.08 });
+    const onUp   = () => gsap.to([dot, ring], { scale: 1,   duration: 0.35, ease: "elastic.out(1,0.5)" });
 
     const TARGETS = "a, button, [role='button'], input, textarea, select, label";
-    const bind = () => document.querySelectorAll<HTMLElement>(TARGETS).forEach(el => {
-      el.addEventListener("mouseenter", onEnter);
-      el.addEventListener("mouseleave", onLeave);
-      el.style.cursor = "none";
-    });
+    const bind = () =>
+      document.querySelectorAll<HTMLElement>(TARGETS).forEach((el) => {
+        el.addEventListener("mouseenter", onEnter);
+        el.addEventListener("mouseleave", onLeave);
+        el.style.cursor = "none";
+      });
     bind();
 
     const obs = new MutationObserver(bind);
@@ -85,28 +84,29 @@ export default function CustomCursor() {
 
   return (
     <>
+      {/* Dot */}
       <div
         ref={dotRef}
         aria-hidden
         style={{
-          position:"fixed", top:0, left:0, zIndex:9999,
-          width:10, height:10, borderRadius:"50%",
-          background:"#f97316",
-          pointerEvents:"none", willChange:"transform",
-          boxShadow:"0 0 6px 2px rgba(249,115,22,0.5)",
-          display:"none",
+          position: "fixed", top: 0, left: 0, zIndex: 9999,
+          width: 8, height: 8, borderRadius: "50%",
+          background: "#0a0a0a",
+          pointerEvents: "none", willChange: "transform",
+          display: "none",
         }}
       />
+      {/* Ring */}
       <div
         ref={ringRef}
         aria-hidden
         style={{
-          position:"fixed", top:0, left:0, zIndex:9998,
-          width:36, height:36, borderRadius:"50%",
-          border:"1.5px solid rgba(249,115,22,0.75)",
-          background:"transparent",
-          pointerEvents:"none", willChange:"transform",
-          display:"none",
+          position: "fixed", top: 0, left: 0, zIndex: 9998,
+          width: 32, height: 32, borderRadius: "50%",
+          border: "1.5px solid rgba(10,10,10,0.4)",
+          background: "transparent",
+          pointerEvents: "none", willChange: "transform",
+          display: "none",
         }}
       />
     </>
