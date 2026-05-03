@@ -21,6 +21,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Navbar from "@/components/navbar";
+import { Footer } from "@/components/sections/footer";
 
 import { getHashnodePosts, formatPostDate, type HashnodePost } from "@/lib/hashnode";
 import { blogConfig } from "@/data/blog-config";
@@ -70,13 +72,15 @@ export default async function BlogPage() {
   const isPinned = blogConfig.featuredSlug !== null && featured?.slug === blogConfig.featuredSlug;
 
   return (
-    <main className="relative isolate min-h-screen overflow-x-clip bg-[linear-gradient(180deg,#fff8f1_0%,#ffffff_36%,#f8fafc_100%)] text-zinc-900">
+    <>
+      <Navbar />
+      <main className="relative isolate min-h-screen overflow-x-clip bg-[linear-gradient(180deg,#fff8f1_0%,#ffffff_36%,#f8fafc_100%)] text-zinc-900">
       {/* Decorative background glows */}
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-136 bg-[radial-gradient(circle_at_20%_0%,rgba(251,191,36,0.35),transparent_60%),radial-gradient(circle_at_85%_10%,rgba(249,115,22,0.2),transparent_45%)]" />
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(120,113,108,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(120,113,108,0.08)_1px,transparent_1px)] bg-[size:72px_72px]" />
 
       {/* ── Hero ── */}
-      <section className="mx-auto w-full max-w-6xl px-6 pb-8 pt-14 md:pt-20">
+      <section className="mx-auto w-full max-w-6xl px-6 pb-8 pt-6 md:pt-12">
         <div className="grid items-center gap-10 lg:grid-cols-[1.06fr_0.94fr]">
           {/* Left copy */}
           <div className="animate-in fade-in slide-in-from-bottom-6 duration-700">
@@ -330,6 +334,8 @@ export default async function BlogPage() {
           </CardContent>
         </Card>
       </section>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }
