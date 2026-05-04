@@ -276,7 +276,7 @@ export default function Home() {
                 alt="Mayank — Aspiring Software Engineer"
                 className="hero-photo absolute inset-0 w-full h-full object-cover"
                 style={{
-                  objectPosition: "50% 15%",
+                  objectPosition: "50% 30%",
                 }}
                 loading="eager"
               />
