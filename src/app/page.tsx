@@ -137,7 +137,7 @@ export default function Home() {
             – sidebar is a real 56px column at xl+ so it NEVER overlaps content
             – image column is much larger (560 / 760 / 920px) for an impactful photo */}
         <div
-          className="relative mx-auto max-w-[1600px] grid grid-cols-1 lg:grid-cols-[1fr_560px] xl:grid-cols-[56px_1fr_760px] 2xl:grid-cols-[56px_1fr_920px]"
+          className="relative mx-auto max-w-[1600px] grid grid-cols-1 lg:grid-cols-[1fr_640px] xl:grid-cols-[56px_1fr_860px] 2xl:grid-cols-[56px_1fr_1020px]"
           style={{ minHeight: "100dvh" }}
         >
 
