@@ -8,11 +8,11 @@ const imagesDir = path.join(__dirname, "../public/images");
 
 /* ── 1. Process hero image: high quality WebP + sharpening ── */
 async function processHero() {
-  const heroJpeg = path.join(imagesDir, "mayank-hero.jpeg");
+  const heroJpeg = path.join(imagesDir, "mayank-hero.png");
   const heroWebP = path.join(imagesDir, "mayank-hero.webp");
 
   if (!fs.existsSync(heroJpeg)) {
-    console.error("✗ mayank-hero.jpeg not found");
+    console.error("✗ mayank-hero.png not found");
     return;
   }
 

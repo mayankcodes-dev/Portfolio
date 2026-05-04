@@ -349,14 +349,14 @@ export default function Home() {
 
           {/* GitHub calendar — react-github-calendar gives proper block spacing */}
           <motion.div variants={fadeUp(0.1)} className="overflow-x-auto mb-6">
-            <div className="min-w-[700px] rounded-xl border border-neutral-200 bg-white px-6 pt-5 pb-4 shadow-sm">
+            <div className="min-w-[800px] rounded-xl border border-neutral-200 bg-white px-6 pt-5 pb-4 shadow-sm">
               <p className="text-xs font-mono text-neutral-400 mb-4 uppercase tracking-widest">GitHub Contributions</p>
               <GitHubCalendar
                 username="coderMayank69"
                 colorScheme="light"
                 fontSize={12}
-                blockSize={13}
-                blockMargin={5}
+                blockSize={12}
+                blockMargin={2}
                 theme={{
                   light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"] as [string,string,string,string,string],
                   dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string,string,string,string,string],
