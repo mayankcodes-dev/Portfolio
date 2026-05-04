@@ -8,12 +8,6 @@ import { projects } from "@/data/projects";
 import ProjectModal from "@/components/shared/project-modal";
 import type { Project } from "@/data/projects";
 
-const GithubIcon = ({ className = "" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
-    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.341-3.369-1.341-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.268 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.026 2.747-1.026.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.933.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
-  </svg>
-);
-
 /* Skeleton card for lazy loading */
 function SkeletonCard() {
   return (
@@ -150,7 +144,7 @@ export default function ProjectsSection() {
                       <img
                         src={project.image}
                         alt={project.title}
-                        className={`w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-105 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+                        className={`w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105 ${isLoaded ? "opacity-100" : "opacity-0"}`}
                         loading="lazy"
                         onLoad={() => markLoaded(project.id)}
                         onError={(e) => {
@@ -168,7 +162,7 @@ export default function ProjectsSection() {
                       <img
                         src={`https://api.microlink.io?url=${encodeURIComponent(project.link)}&screenshot=true&meta=false&embed=screenshot.url&waitFor=8000`}
                         alt={project.title}
-                        className={`w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-105 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+                        className={`w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105 ${isLoaded ? "opacity-100" : "opacity-0"}`}
                         loading="lazy"
                         onLoad={() => markLoaded(project.id)}
                         onError={() => markLoaded(project.id)}
@@ -216,7 +210,7 @@ export default function ProjectsSection() {
                           className="btn btn-outline btn-sm text-[12px]"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          <GithubIcon className="size-3.5" /> Code
+                          <svg viewBox="0 0 24 24" fill="currentColor" className="size-3.5" aria-hidden><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.56 9.56 0 0 1 12 6.84a9.56 9.56 0 0 1 2.5.34c1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg> Code
                         </a>
                       )}
                       {project.link && (
