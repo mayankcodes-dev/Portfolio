@@ -53,12 +53,6 @@ export const metadata: Metadata = {
     description:
       "Building polished web products with Next.js, TypeScript, and thoughtful engineering.",
   },
-  icons: {
-    icon: [
-      { url: "/favicon.png", type: "image/png" },
-    ],
-    apple: "/favicon-original.png",
-  },
   robots: {
     index: true,
     follow: true,

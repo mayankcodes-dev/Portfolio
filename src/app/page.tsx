@@ -1,12 +1,12 @@
 "use client";
 
 import { useLayoutEffect, useRef } from "react";
-import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { ArrowRight, Download, Award, Mail } from "lucide-react";
+import { ArrowRight, Award, Mail } from "lucide-react";
+import { useHeroStats } from "@/hooks/use-hero-stats";
 import Navbar from "@/components/navbar";
 import { Footer } from "@/components/sections/footer";
 import SkillsSection from "@/components/sections/skills-section";
@@ -53,15 +53,6 @@ const SOCIALS = [
   },
 ];
 
-const STATS = [
-  { value: "5+", label: "Projects" },
-  { value: "10+", label: "Certs" },
-  { value: "6+", label: "Months" },
-  { value: "∞", label: "Coffee" },
-];
-
-const STACK = ["React", "Next.js", "TypeScript", "Node.js", "MongoDB", "Tailwind"];
-
 /* ─── Fade-up variant helper ─── */
 const fadeUp = (delay = 0) => ({
   hidden: { opacity: 0, y: 20 },
@@ -90,6 +81,7 @@ export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
   const heroLeftRef = useRef<HTMLDivElement>(null);
   const heroRightRef = useRef<HTMLDivElement>(null);
+  const stats = useHeroStats();
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -109,7 +101,7 @@ export default function Home() {
 
       {/* ══════════════════════════ HERO ══════════════════════════ */}
       <main id="hero" className="relative w-full overflow-hidden bg-[#f9f9f9]" style={{ minHeight: "100dvh" }}>
-        {/* Subtle dot-grid background */}
+        {/* Dot-grid background */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -120,7 +112,7 @@ export default function Home() {
           aria-hidden
         />
 
-        {/* Vertical rotated label — left side */}
+        {/* Vertical rotated label */}
         <div className="absolute left-5 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-3 z-10">
           <span className="font-mono text-[10px] text-neutral-400 uppercase tracking-[0.25em] rotate-[-90deg] whitespace-nowrap">
             Full-Stack Developer
@@ -134,19 +126,29 @@ export default function Home() {
           {/* ── LEFT COLUMN ── */}
           <div ref={heroRightRef} className="flex flex-col justify-center py-24 lg:py-0 z-10">
 
-            {/* Stats row */}
+            {/* Live stats row */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="flex gap-10 mb-8"
             >
-              {STATS.slice(0, 2).map(({ value, label }) => (
-                <div key={label} className="flex flex-col">
-                  <span className="text-3xl md:text-4xl font-black tracking-tighter text-[#0a0a0a]">{value}</span>
-                  <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-widest mt-0.5">{label}</span>
-                </div>
-              ))}
+              <div className="flex flex-col">
+                <span className="text-3xl md:text-4xl font-black tracking-tighter text-[#0a0a0a]">
+                  {stats.loading
+                    ? <span className="inline-block w-16 h-9 rounded bg-neutral-100 animate-pulse" />
+                    : stats.problems}
+                </span>
+                <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-widest mt-0.5">Problems</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-3xl md:text-4xl font-black tracking-tighter text-[#0a0a0a]">
+                  {stats.loading
+                    ? <span className="inline-block w-20 h-9 rounded bg-neutral-100 animate-pulse" />
+                    : stats.contributions}
+                </span>
+                <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-widest mt-0.5">Contributions</span>
+              </div>
             </motion.div>
 
             {/* Giant Hello */}
@@ -163,20 +165,17 @@ export default function Home() {
               </h1>
             </motion.div>
 
-            {/* Subtitle */}
+            {/* Minimal subtitle */}
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="mt-4 text-neutral-500 text-base md:text-lg max-w-sm leading-relaxed"
             >
-              — It&apos;s{" "}
-              <span className="text-[#0a0a0a] font-semibold">Mayank</span>, an aspiring{" "}
-              <span className="text-[#0a0a0a] font-semibold">Software Engineer</span>{" "}
-              building production-grade web apps.
+              — It&apos;s Mayank, an aspiring Software Engineer.
             </motion.p>
 
-            {/* Social icons row */}
+            {/* Social icons */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -201,35 +200,6 @@ export default function Home() {
               ))}
             </motion.div>
 
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-8 flex flex-wrap gap-3"
-            >
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => scrollTo("projects")}
-                className="btn btn-primary btn-lg"
-                id="hero-view-work"
-              >
-                View my work <ArrowRight className="size-4" />
-              </motion.button>
-              <motion.a
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                href="https://drive.google.com/file/d/1HH8bHTrCKS_YGufdW8zs5rgTZcf6xIp8/view?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-outline btn-lg"
-                id="hero-resume"
-              >
-                <Download className="size-4" /> Resume
-              </motion.a>
-            </motion.div>
-
             {/* Scroll hint */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -237,19 +207,18 @@ export default function Home() {
               transition={{ delay: 1.2, duration: 0.6 }}
               className="mt-16 hidden lg:flex items-center gap-2 text-neutral-400"
             >
-              <motion.div
+              <motion.span
                 animate={{ y: [0, 6, 0] }}
                 transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
                 className="text-[11px] font-mono uppercase tracking-widest"
               >
                 Scroll down ↓
-              </motion.div>
+              </motion.span>
             </motion.div>
           </div>
 
           {/* ── RIGHT COLUMN — Full-height photo ── */}
           <div ref={heroLeftRef} className="relative hidden lg:block self-stretch" style={{ minHeight: "100dvh" }}>
-            {/* Photo — grayscale by default, full color on hover */}
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
@@ -259,16 +228,16 @@ export default function Home() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/images/mayank2.jpg"
+                src="/images/mayank10.jpg"
                 alt="Mayank — Aspiring Software Engineer"
                 className="w-full h-full object-cover object-top transition-all duration-700 ease-in-out grayscale group-hover:grayscale-0 group-hover:scale-[1.02]"
               />
-              {/* Gradient fade on left edge to blend into background */}
+              {/* Left gradient blend */}
               <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#f9f9f9] to-transparent z-10" />
               {/* Bottom fade */}
               <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#f9f9f9] to-transparent z-10" />
 
-              {/* Floating availability badge */}
+              {/* Availability badge */}
               <div className="absolute bottom-10 left-4 z-20 flex items-center gap-2 rounded-xl border border-neutral-200 bg-white/90 backdrop-blur-sm px-4 py-2.5 shadow-md">
                 <span className="status-dot" />
                 <span className="text-xs font-semibold text-[#0a0a0a] whitespace-nowrap">Open to internships</span>
@@ -305,7 +274,7 @@ export default function Home() {
             </p>
           </motion.div>
           <motion.div variants={fadeUp(0.1)} className="overflow-x-auto">
-            <div className="min-w-[800px] rounded-xl border border-neutral-200 bg-neutral-50 p-6 shadow-sm">
+            <div className="min-w-[700px] rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
               <GitHubCalendar
                 username="coderMayank69"
                 colorScheme="light"
@@ -327,11 +296,8 @@ export default function Home() {
 
       {/* ══════════════════════════ CERTIFICATIONS ══════════════════════════ */}
       <Section className="relative border-t border-neutral-100 bg-[#fafafa]" id="certs">
-        {/* Background grid */}
         <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" aria-hidden />
-
         <div className="relative mx-auto max-w-6xl px-6 md:px-8 py-20 md:py-28 z-10">
-
           <motion.div variants={fadeUp(0)} className="mb-10 flex items-end justify-between gap-4">
             <div>
               <p className="eyebrow mb-2">Certifications</p>
@@ -353,11 +319,9 @@ export default function Home() {
                 whileHover={{ y: -3 }}
                 className="card-eng group flex items-start gap-4 p-5"
               >
-                {/* Icon box */}
                 <div className="grid size-9 flex-shrink-0 place-items-center rounded-lg bg-neutral-50 border border-neutral-200">
                   <Award className="size-4 text-neutral-600" />
                 </div>
-
                 <div className="min-w-0">
                   <p className="font-semibold text-[#0a0a0a] text-sm leading-snug group-hover:underline underline-offset-2 truncate">
                     {cert.title}
@@ -381,10 +345,7 @@ export default function Home() {
       {/* ══════════════════════════ CONTACT CTA ══════════════════════════ */}
       <Section id="contact" className="border-t border-neutral-100 bg-[#fafafa]">
         <div className="mx-auto max-w-6xl px-6 md:px-8 py-24 md:py-32">
-
-          {/* Large typographic CTA — inspired by mdsaban/unosend */}
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-
             <div>
               <p className="eyebrow mb-4">Let&apos;s connect</p>
               <h2 className="font-extrabold tracking-tighter text-[#0a0a0a]" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}>
@@ -394,7 +355,6 @@ export default function Home() {
                 I&apos;m actively looking for internships and freelance projects.
                 If you have an idea, let&apos;s make it happen.
               </p>
-
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link href="/contact" className="btn btn-primary btn-lg" id="cta-contact">
                   <Mail className="size-4" /> Get in touch
@@ -414,7 +374,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right — quick info card */}
             <div className="card-eng p-8 space-y-4">
               {[
                 { icon: "📬", label: "Email", value: "mayankbca96325@gmail.com" },
