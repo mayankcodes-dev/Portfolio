@@ -53,8 +53,15 @@ function SkeletonCard() {
   );
 }
 
-/* Only show pinned projects on the homepage */
-const pinnedProjects = projects.filter((p) => p.isPinned);
+/* Pinned projects in explicit order: YelpCamp → QuickStay → Restraunt Elite */
+const PINNED_ORDER = ["yelp", "quickstay", "restraunt-elite"];
+const pinnedProjects = projects
+  .filter((p) => p.isPinned)
+  .sort((a, b) => {
+    const ai = PINNED_ORDER.indexOf(a.id);
+    const bi = PINNED_ORDER.indexOf(b.id);
+    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+  });
 
 export default function ProjectsSection() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);

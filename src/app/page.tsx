@@ -12,6 +12,12 @@ import { Footer } from "@/components/sections/footer";
 import SkillsSection from "@/components/sections/skills-section";
 import ProjectsSection from "@/components/sections/projects-section";
 import { certificates } from "@/data/certificates";
+import dynamic from "next/dynamic";
+
+const GitHubCalendar = dynamic(
+  () => import("./about/github-calendar-wrapper"),
+  { ssr: false, loading: () => <div className="h-32 w-full animate-pulse rounded-lg bg-neutral-100" /> }
+);
 
 
 gsap.registerPlugin(ScrollToPlugin);
@@ -319,48 +325,78 @@ export default function Home() {
       {/* ══════════════════════════ SKILLS ══════════════════════════ */}
       <SkillsSection />
 
-      {/* ══════════════════════════ GITHUB CONTRIBUTIONS ══════════════════════════ */}
+      {/* ══════════════════════════ DEV ACTIVITY ══════════════════════════ */}
       <Section className="border-t border-neutral-100 bg-white" id="github-activity">
         <div className="mx-auto max-w-6xl px-6 md:px-8 py-16 md:py-20">
-          <motion.div variants={fadeUp(0)} className="mb-8 flex items-end justify-between gap-4">
+          <motion.div variants={fadeUp(0)} className="mb-10 flex items-end justify-between gap-4">
             <div>
               <p className="eyebrow mb-2">Activity</p>
-              <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">GitHub Contributions</h2>
+              <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">Dev Activity</h2>
               <p className="mt-2 text-sm text-neutral-500">
-                Contributions from{" "}
-                <a
-                  href="https://github.com/coderMayank69"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#0a0a0a] font-medium hover:underline underline-offset-2"
-                >
-                  @coderMayank69
-                </a>
+                Coding every day —{" "}
+                <a href="https://github.com/coderMayank69" target="_blank" rel="noopener noreferrer"
+                  className="text-[#0a0a0a] font-medium hover:underline underline-offset-2">GitHub</a>
+                {" "}·{" "}
+                <a href="https://leetcode.com/u/coderMayank69/" target="_blank" rel="noopener noreferrer"
+                  className="text-[#0a0a0a] font-medium hover:underline underline-offset-2">LeetCode</a>
               </p>
             </div>
-            <a
-              href="https://github.com/coderMayank69"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden md:inline-flex items-center gap-1.5 btn btn-outline btn-sm"
-            >
-              View Profile <ArrowRight className="size-3.5" />
+            <a href="https://github.com/coderMayank69" target="_blank" rel="noopener noreferrer"
+              className="hidden md:inline-flex items-center gap-1.5 btn btn-outline btn-sm">
+              GitHub <ArrowRight className="size-3.5" />
             </a>
           </motion.div>
 
-          <motion.div variants={fadeUp(0.1)} className="overflow-x-auto">
-            <div className="min-w-[700px] rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
-              {/* ghchart — zero-dependency, always renders, no CORS issues */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="https://ghchart.rshah.org/216e39/coderMayank69"
-                alt="coderMayank69's GitHub Contribution Graph"
-                className="w-full h-auto"
-                loading="lazy"
+          {/* GitHub calendar — react-github-calendar gives proper block spacing */}
+          <motion.div variants={fadeUp(0.1)} className="overflow-x-auto mb-6">
+            <div className="min-w-[700px] rounded-xl border border-neutral-200 bg-white px-6 pt-5 pb-4 shadow-sm">
+              <p className="text-xs font-mono text-neutral-400 mb-4 uppercase tracking-widest">GitHub Contributions</p>
+              <GitHubCalendar
+                username="coderMayank69"
+                colorScheme="light"
+                fontSize={12}
+                blockSize={13}
+                blockMargin={5}
+                theme={{
+                  light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"] as [string,string,string,string,string],
+                  dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string,string,string,string,string],
+                }}
               />
-              <p className="mt-3 text-[11px] text-neutral-400 font-mono text-right">
-                Last 12 months of activity
-              </p>
+            </div>
+          </motion.div>
+
+          {/* LeetCode stats card */}
+          <motion.div variants={fadeUp(0.2)} className="grid sm:grid-cols-2 gap-4">
+            {/* Solved count */}
+            <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm flex items-center gap-5">
+              <div className="grid size-12 flex-shrink-0 place-items-center rounded-xl bg-[#FFA116]/10">
+                <svg viewBox="0 0 24 24" fill="#FFA116" className="size-6">
+                  <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0z"/>
+                </svg>
+              </div>
+              <div>
+                <p className="text-xs text-neutral-400 font-mono uppercase tracking-widest mb-0.5">LeetCode</p>
+                <p className="text-2xl font-extrabold text-[#0a0a0a]">{stats.problems}</p>
+                <p className="text-xs text-neutral-500">problems solved</p>
+              </div>
+              <a href="https://leetcode.com/u/coderMayank69/" target="_blank" rel="noopener noreferrer"
+                className="ml-auto btn btn-outline btn-sm text-xs">Profile →</a>
+            </div>
+
+            {/* GitHub contributions count */}
+            <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm flex items-center gap-5">
+              <div className="grid size-12 flex-shrink-0 place-items-center rounded-xl bg-[#0a0a0a]/5">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="size-6 text-[#0a0a0a]">
+                  <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.56 9.56 0 0 1 12 6.84a9.56 9.56 0 0 1 2.5.34c1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10z"/>
+                </svg>
+              </div>
+              <div>
+                <p className="text-xs text-neutral-400 font-mono uppercase tracking-widest mb-0.5">GitHub</p>
+                <p className="text-2xl font-extrabold text-[#0a0a0a]">{stats.contributions}</p>
+                <p className="text-xs text-neutral-500">contributions this year</p>
+              </div>
+              <a href="https://github.com/coderMayank69" target="_blank" rel="noopener noreferrer"
+                className="ml-auto btn btn-outline btn-sm text-xs">Profile →</a>
             </div>
           </motion.div>
         </div>
