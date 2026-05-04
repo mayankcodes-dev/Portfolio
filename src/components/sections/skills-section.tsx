@@ -97,17 +97,25 @@ export default function SkillsSection() {
                   </p>
                 </div>
 
-                {/* Level bar */}
+                {/* Level bar — 4 dashes, color by level */}
                 <div className="flex gap-1 w-full">
-                  {[1, 2, 3, 4, 5].map((dot) => (
-                    <div
-                      key={dot}
-                      className={[
-                        "h-[3px] flex-1 rounded-full transition-all",
-                        dot <= skill.level ? "bg-[#0a0a0a]" : "bg-neutral-100",
-                      ].join(" ")}
-                    />
-                  ))}
+                  {[1, 2, 3, 4].map((dot) => {
+                    let activeColor = "bg-neutral-200";
+                    if (dot <= skill.level) {
+                      if (skill.level === 1) activeColor = "bg-orange-400";
+                      else if (skill.level === 2) activeColor = "bg-yellow-400";
+                      else activeColor = "bg-green-500"; // 3 or 4
+                    }
+                    return (
+                      <div
+                        key={dot}
+                        className={[
+                          "h-[3px] flex-1 rounded-full transition-all duration-300",
+                          dot <= skill.level ? activeColor : "bg-neutral-100",
+                        ].join(" ")}
+                      />
+                    );
+                  })}
                 </div>
               </motion.div>
             ))}

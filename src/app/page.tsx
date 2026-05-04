@@ -51,6 +51,11 @@ const SOCIALS = [
     label: "Email",
     path: "M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z",
   },
+  {
+    href: "https://drive.google.com/file/d/1HH8bHTrCKS_YGufdW8zs5rgTZcf6xIp8/view?usp=sharing",
+    label: "Resume",
+    path: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6zm2-5h8v1.5H8V15zm0-3h8v1.5H8V12zm0-3h4v1.5H8V9z",
+  },
 ];
 
 /* ─── Fade-up variant helper ─── */
@@ -183,20 +188,25 @@ export default function Home() {
               className="mt-8 flex items-center gap-2"
             >
               {SOCIALS.map(({ href, label, path }) => (
-                <motion.a
-                  key={label}
-                  href={href}
-                  target={href.startsWith("mailto") ? undefined : "_blank"}
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  whileHover={{ scale: 1.08, y: -2 }}
-                  whileTap={{ scale: 0.92 }}
-                  className="grid size-10 place-items-center rounded-xl border border-neutral-200 bg-white text-neutral-500 hover:border-neutral-400 hover:text-[#0a0a0a] transition-all duration-200 shadow-sm hover:shadow-md"
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="size-[15px]" aria-hidden>
-                    <path d={path} />
-                  </svg>
-                </motion.a>
+                <div key={label} className="relative group/tip">
+                  {/* Tooltip */}
+                  <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#0a0a0a] px-2 py-1 text-[10px] font-mono text-white opacity-0 transition-opacity duration-150 group-hover/tip:opacity-100 z-50">
+                    {label}
+                  </span>
+                  <motion.a
+                    href={href}
+                    target={href.startsWith("mailto") ? undefined : "_blank"}
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    whileHover={{ scale: 1.08, y: -2 }}
+                    whileTap={{ scale: 0.92 }}
+                    className="grid size-10 place-items-center rounded-xl border border-neutral-200 bg-white text-neutral-500 hover:border-neutral-400 hover:text-[#0a0a0a] transition-all duration-200 shadow-sm hover:shadow-md"
+                  >
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="size-[15px]" aria-hidden>
+                      <path d={path} />
+                    </svg>
+                  </motion.a>
+                </div>
               ))}
             </motion.div>
 
