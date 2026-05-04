@@ -12,15 +12,7 @@ import { Footer } from "@/components/sections/footer";
 import SkillsSection from "@/components/sections/skills-section";
 import ProjectsSection from "@/components/sections/projects-section";
 import { certificates } from "@/data/certificates";
-import dynamic from "next/dynamic";
 
-const GitHubCalendar = dynamic(
-  () => import("./about/github-calendar-wrapper"),
-  {
-    ssr: false,
-    loading: () => <div className="h-32 animate-pulse rounded-xl bg-neutral-50 border border-neutral-100" />,
-  }
-);
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -84,15 +76,12 @@ function Section({ children, className = "", id }: { children: React.ReactNode; 
 
 export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
-  const heroLeftRef = useRef<HTMLDivElement>(null);
   const heroRightRef = useRef<HTMLDivElement>(null);
   const stats = useHeroStats();
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.timeline({ defaults: { ease: "power3.out" } })
-        .from(heroRightRef.current, { opacity: 0, y: 32, duration: 0.8 })
-        .from(heroLeftRef.current, { opacity: 0, x: -24, duration: 0.75 }, "-=0.5");
+      gsap.from(heroRightRef.current, { opacity: 0, y: 32, duration: 0.8, ease: "power3.out" });
     }, rootRef);
     return () => ctx.revert();
   }, []);
@@ -105,7 +94,7 @@ export default function Home() {
       <Navbar />
 
       {/* ══════════════════════════ HERO ══════════════════════════ */}
-      <main id="hero" className="relative w-full overflow-hidden bg-[#f9f9f9]" style={{ minHeight: "100dvh" }}>
+      <main id="hero" className="relative w-full bg-[#f9f9f9]" style={{ minHeight: "100dvh" }}>
         {/* Dot-grid background */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -126,7 +115,7 @@ export default function Home() {
         </div>
 
         {/* Main grid: text left, photo right */}
-        <div className="relative mx-auto max-w-7xl px-8 md:px-16 grid grid-cols-1 lg:grid-cols-[1fr_420px] xl:grid-cols-[1fr_500px] min-h-dvh items-center gap-0">
+        <div className="relative mx-auto max-w-7xl px-8 md:px-16 grid grid-cols-1 lg:grid-cols-[1fr_420px] xl:grid-cols-[1fr_500px] gap-0" style={{ minHeight: "100dvh" }}>
 
           {/* ── LEFT COLUMN ── */}
           <div ref={heroRightRef} className="flex flex-col justify-center py-24 lg:py-0 z-10">
@@ -229,15 +218,14 @@ export default function Home() {
 
           {/* ── RIGHT COLUMN — Full-height photo ── */}
           <div
-            ref={heroLeftRef}
             className="relative hidden lg:block"
-            style={{ height: "100dvh" }}
+            style={{ position: "sticky", top: 0, height: "100dvh", alignSelf: "start", overflow: "hidden" }}
           >
             <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="group absolute inset-0 overflow-hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="group absolute inset-0"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -272,34 +260,45 @@ export default function Home() {
       {/* ══════════════════════════ GITHUB CONTRIBUTIONS ══════════════════════════ */}
       <Section className="border-t border-neutral-100 bg-white" id="github-activity">
         <div className="mx-auto max-w-6xl px-6 md:px-8 py-16 md:py-20">
-          <motion.div variants={fadeUp(0)} className="mb-8">
-            <p className="eyebrow mb-2">Activity</p>
-            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">GitHub Contributions</h2>
-            <p className="mt-2 text-sm text-neutral-500">
-              Contributions from{" "}
-              <a
-                href="https://github.com/coderMayank69"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#0a0a0a] font-medium hover:underline underline-offset-2"
-              >
-                @coderMayank69
-              </a>
-            </p>
+          <motion.div variants={fadeUp(0)} className="mb-8 flex items-end justify-between gap-4">
+            <div>
+              <p className="eyebrow mb-2">Activity</p>
+              <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">GitHub Contributions</h2>
+              <p className="mt-2 text-sm text-neutral-500">
+                Contributions from{" "}
+                <a
+                  href="https://github.com/coderMayank69"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#0a0a0a] font-medium hover:underline underline-offset-2"
+                >
+                  @coderMayank69
+                </a>
+              </p>
+            </div>
+            <a
+              href="https://github.com/coderMayank69"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:inline-flex items-center gap-1.5 btn btn-outline btn-sm"
+            >
+              View Profile <ArrowRight className="size-3.5" />
+            </a>
           </motion.div>
+
           <motion.div variants={fadeUp(0.1)} className="overflow-x-auto">
             <div className="min-w-[700px] rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
-              <GitHubCalendar
-                username="coderMayank69"
-                colorScheme="light"
-                fontSize={12}
-                blockSize={13}
-                blockMargin={4}
-                theme={{
-                  light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"] as [string, string, string, string, string],
-                  dark: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string, string, string, string, string],
-                }}
+              {/* ghchart — zero-dependency, always renders, no CORS issues */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://ghchart.rshah.org/216e39/coderMayank69"
+                alt="coderMayank69's GitHub Contribution Graph"
+                className="w-full h-auto"
+                loading="lazy"
               />
+              <p className="mt-3 text-[11px] text-neutral-400 font-mono text-right">
+                Last 12 months of activity
+              </p>
             </div>
           </motion.div>
         </div>
