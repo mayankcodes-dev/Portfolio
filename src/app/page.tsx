@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import gsap from "gsap";
@@ -78,6 +78,21 @@ export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
   const heroRightRef = useRef<HTMLDivElement>(null);
   const stats = useHeroStats();
+
+  /* ── Cursor spotlight state (for hero image) ── */
+  const [cursorPos, setCursorPos] = useState({ x: -300, y: -300 });
+  const [imgHovering, setImgHovering] = useState(false);
+
+  const handleImgMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCursorPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  }, []);
+
+  const handleImgEnter = useCallback(() => setImgHovering(true), []);
+  const handleImgLeave = useCallback(() => {
+    setImgHovering(false);
+    setCursorPos({ x: -300, y: -300 });
+  }, []);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -216,28 +231,51 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* ── RIGHT COLUMN — Full-height photo ── */}
+          {/* ── RIGHT COLUMN — cursor spotlight photo ── */}
           <div
             className="relative hidden lg:block"
             style={{ position: "sticky", top: 0, height: "100dvh", alignSelf: "start", overflow: "hidden" }}
+            onMouseMove={handleImgMouseMove}
+            onMouseEnter={handleImgEnter}
+            onMouseLeave={handleImgLeave}
           >
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="group absolute inset-0"
+              className="absolute inset-0"
             >
+              {/* ── Base layer: greyscale ── */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/images/mayank.webp"
+                src="/images/mayank-hero.webp"
                 alt="Mayank — Aspiring Software Engineer"
-                className="w-full h-full object-cover object-top transition-all duration-700 ease-in-out grayscale group-hover:grayscale-0 group-hover:scale-[1.02]"
+                className="w-full h-full object-cover object-top"
+                style={{ filter: "grayscale(100%) contrast(1.05) brightness(0.97)" }}
                 loading="eager"
               />
-              {/* Left gradient blend */}
-              <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#f9f9f9] to-transparent z-10 pointer-events-none" />
+
+              {/* ── Color reveal layer: masked to cursor spotlight ── */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/mayank-hero.webp"
+                alt=""
+                aria-hidden
+                className="absolute inset-0 w-full h-full object-cover object-top pointer-events-none select-none"
+                style={{
+                  opacity: imgHovering ? 1 : 0,
+                  transition: "opacity 0.35s ease",
+                  WebkitMaskImage: `radial-gradient(circle 130px at ${cursorPos.x}px ${cursorPos.y}px, black 0%, black 35%, transparent 70%)`,
+                  maskImage: `radial-gradient(circle 130px at ${cursorPos.x}px ${cursorPos.y}px, black 0%, black 35%, transparent 70%)`,
+                }}
+              />
+
+              {/* Left gradient blend into page bg */}
+              <div className="absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-[#f9f9f9] to-transparent z-10 pointer-events-none" />
               {/* Bottom fade */}
-              <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#f9f9f9] to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#f9f9f9] to-transparent z-10 pointer-events-none" />
+              {/* Top subtle fade */}
+              <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#f9f9f9]/60 to-transparent z-10 pointer-events-none" />
 
               {/* Availability badge */}
               <div className="absolute bottom-10 left-4 z-20 flex items-center gap-2 rounded-xl border border-neutral-200 bg-white/90 backdrop-blur-sm px-4 py-2.5 shadow-md">

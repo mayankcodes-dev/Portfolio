@@ -82,7 +82,7 @@ export const projects: Project[] = [
       "Production-style full-stack campground review app with authentication, image uploads, interactive maps, and secure middleware.",
     longDescription:
       "YelpCamp features complete CRUD with MVC architecture, Passport.js authentication, role-based authorization, Joi validation, Cloudinary media handling, MapTiler geolocation/maps, session management with connect-mongo, and HTTP security headers. Built to practice secure, scalable web products end to end.",
-    image: "",
+    image: "/images/yelp.webp",
     technologies: ["Node.js", "Express", "MongoDB", "Mongoose", "Passport.js", "Cloudinary", "MapTiler"],
     link: "https://yelpcamp-1-wcof.onrender.com/",
     github: "https://github.com/coderMayank69/YELPCAMP",
