@@ -151,19 +151,25 @@ export default function Home() {
           aria-hidden
         />
 
-        {/* Vertical rotated label */}
-        <div className="absolute left-5 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-3 z-10">
-          <span className="font-mono text-[10px] text-neutral-400 uppercase tracking-[0.25em] rotate-[-90deg] whitespace-nowrap">
-            Full-Stack Developer
-          </span>
-          <div className="w-px h-16 bg-neutral-200" />
-        </div>
+        {/* Main grid: [sidebar] | content | photo
+            – sidebar is a real 56px column at xl+ so it NEVER overlaps content
+            – image column is much larger (560 / 760 / 920px) for an impactful photo */}
+        <div
+          className="relative mx-auto max-w-[1600px] grid grid-cols-1 lg:grid-cols-[1fr_560px] xl:grid-cols-[56px_1fr_760px] 2xl:grid-cols-[56px_1fr_920px]"
+          style={{ minHeight: "100dvh" }}
+        >
 
-        {/* Main grid: text left, photo right */}
-        <div className="relative mx-auto max-w-[1600px] px-0 md:px-0 grid grid-cols-1 lg:grid-cols-[1fr_520px] xl:grid-cols-[1fr_680px] 2xl:grid-cols-[1fr_800px] gap-0" style={{ minHeight: "100dvh" }}>
+          {/* ── SIDEBAR — vertical label (xl+ only, proper grid column) ── */}
+          <div className="hidden xl:flex flex-col items-center justify-center gap-4 border-r border-neutral-100 select-none">
+            <div className="w-px h-14 bg-neutral-200" />
+            <span className="font-mono text-[10px] text-neutral-400 uppercase tracking-[0.25em] -rotate-90 whitespace-nowrap">
+              Full-Stack Developer
+            </span>
+            <div className="w-px h-14 bg-neutral-200" />
+          </div>
 
-          {/* ── LEFT COLUMN ── */}
-          <div ref={heroRightRef} className="flex flex-col justify-center py-24 lg:py-0 z-10 px-8 md:px-16 lg:pl-16 lg:pr-0">
+          {/* ── CONTENT COLUMN ── */}
+          <div ref={heroRightRef} className="flex flex-col justify-center py-24 lg:py-0 z-10 px-8 md:px-14 lg:pl-14 lg:pr-8 xl:pl-10 xl:pr-6">
 
             {/* Live stats row */}
             <motion.div
@@ -197,8 +203,8 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
               <h1
-                className="font-black tracking-tighter leading-[0.9] text-[#0a0a0a] select-none"
-                style={{ fontSize: "clamp(6rem, 18vw, 13rem)" }}
+                className="font-black tracking-tighter leading-[0.88] text-[#0a0a0a] select-none"
+                style={{ fontSize: "clamp(5.5rem, 15vw, 12rem)" }}
               >
                 Hello.
               </h1>
@@ -209,7 +215,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-4 text-neutral-500 text-base md:text-lg leading-relaxed whitespace-nowrap"
+              className="mt-4 text-neutral-500 text-base md:text-lg leading-relaxed"
             >
               — It&apos;s Mayank, an aspiring Software Engineer.
             </motion.p>
@@ -219,7 +225,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-8 flex items-center gap-2"
+              className="mt-8 flex items-center flex-wrap gap-2"
             >
               {SOCIALS.map(({ href, label, path }) => (
                 <div key={label} className="relative group/tip">
@@ -261,7 +267,7 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* ── RIGHT COLUMN — cursor spotlight photo ── */}
+          {/* ── PHOTO COLUMN — cursor spotlight ── */}
           <div
             className="relative hidden lg:block"
             style={{ position: "sticky", top: 0, height: "100dvh", alignSelf: "start", overflow: "hidden" }}
@@ -275,7 +281,7 @@ export default function Home() {
               transition={{ duration: 1, delay: 0.2 }}
               className="absolute inset-0"
             >
-              {/* ── Base layer: greyscale, face fills the column ── */}
+              {/* ── Base layer: greyscale ── */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/mayank-hero.webp"
@@ -283,14 +289,14 @@ export default function Home() {
                 className="absolute inset-0 w-full h-full"
                 style={{
                   objectFit: "cover",
-                  objectPosition: "50% 25%",
+                  objectPosition: "50% 15%",
                   filter: "grayscale(100%) contrast(1.08) brightness(0.96) saturate(0)",
                   imageRendering: "crisp-edges",
                 }}
                 loading="eager"
               />
 
-              {/* ── Color reveal layer: full-image colour on hover ── */}
+              {/* ── Color reveal layer on hover ── */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/mayank-hero.webp"
@@ -299,18 +305,18 @@ export default function Home() {
                 className="absolute inset-0 w-full h-full pointer-events-none select-none"
                 style={{
                   objectFit: "cover",
-                  objectPosition: "50% 25%",
+                  objectPosition: "50% 15%",
                   opacity: imgHovering ? 1 : 0,
                   transition: "opacity 0.5s ease",
                 }}
               />
 
-              {/* Left gradient blend into page bg */}
-              <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#f9f9f9] to-transparent z-10 pointer-events-none" />
+              {/* Left edge gradient — blends into page bg */}
+              <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[#f9f9f9] to-transparent z-10 pointer-events-none" />
               {/* Bottom fade */}
-              <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#f9f9f9] to-transparent z-10 pointer-events-none" />
-              {/* Top subtle fade */}
-              <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#f9f9f9]/70 to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#f9f9f9] to-transparent z-10 pointer-events-none" />
+              {/* Top fade */}
+              <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#f9f9f9]/60 to-transparent z-10 pointer-events-none" />
 
               {/* Availability badge */}
               <div className="absolute bottom-10 left-8 z-20 flex items-center gap-2 rounded-xl border border-neutral-200 bg-white/90 backdrop-blur-sm px-4 py-2.5 shadow-md">
