@@ -393,7 +393,7 @@ export default function Home() {
               <div>
                 <p className="text-xs text-neutral-400 font-mono uppercase tracking-widest mb-0.5">GitHub</p>
                 <p className="text-2xl font-extrabold text-[#0a0a0a]">{stats.contributions}</p>
-                <p className="text-xs text-neutral-500">contributions this year</p>
+                <p className="text-xs text-neutral-500">total contributions</p>
               </div>
               <a href="https://github.com/coderMayank69" target="_blank" rel="noopener noreferrer"
                 className="ml-auto btn btn-outline btn-sm text-xs">Profile →</a>

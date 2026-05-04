@@ -44,7 +44,7 @@ export function useHeroStats(): HeroStats {
 
         // GitHub contributions via free public API (no token needed)
         const ghFetch = fetch(
-          "https://github-contributions-api.jogruber.de/v4/coderMayank69?y=last",
+          "https://github-contributions-api.jogruber.de/v4/coderMayank69",
           { cache: "no-store" }
         )
           .then((r) => r.json())
