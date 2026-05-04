@@ -384,18 +384,19 @@ export default function Home() {
           <motion.div variants={fadeUp(0.1)} className="mb-6">
             <div className="rounded-xl border border-neutral-200 bg-white shadow-sm px-6 pt-5 pb-5">
               <p className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest mb-4">GitHub Contributions</p>
-              <GitHubCalendar
-                username="coderMayank69"
-                colorScheme="light"
-                fontSize={11}
-                blockSize={13}
-                blockMargin={4}
-                style={{ width: "100%" }}
-                theme={{
-                  light: ["#ebebeb", "#c6e6c8", "#74c47a", "#339a3e", "#1a6326"] as [string,string,string,string,string],
-                  dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string,string,string,string,string],
-                }}
-              />
+              <div className="github-calendar-wrapper overflow-x-auto">
+                <GitHubCalendar
+                  username="coderMayank69"
+                  colorScheme="light"
+                  fontSize={12}
+                  blockSize={14}
+                  blockMargin={5}
+                  theme={{
+                    light: ["#ebebeb", "#c6e6c8", "#74c47a", "#339a3e", "#1a6326"] as [string,string,string,string,string],
+                    dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string,string,string,string,string],
+                  }}
+                />
+              </div>
             </div>
           </motion.div>
 
