@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ArrowRight, Award, Mail } from "lucide-react";
 import { useHeroStats } from "@/hooks/use-hero-stats";
+import { type HashnodePost } from "@/lib/hashnode";
 import Navbar from "@/components/navbar";
 import { Footer } from "@/components/sections/footer";
 import SkillsSection from "@/components/sections/skills-section";
@@ -15,7 +16,7 @@ import { certificates } from "@/data/certificates";
 import dynamic from "next/dynamic";
 
 const GitHubCalendar = dynamic(
-  () => import("./about/github-calendar-wrapper"),
+  () => import("@/components/shared/github-calendar-wrapper"),
   { ssr: false, loading: () => <div className="h-32 w-full animate-pulse rounded-lg bg-neutral-100" /> }
 );
 
@@ -85,12 +86,13 @@ export default function Home() {
   const heroRightRef = useRef<HTMLDivElement>(null);
   const stats = useHeroStats();
 
-  /* ── Cursor reveal — large soft radial with lerp smoothing ── */
+  /* ── Cursor spotlight — lerp-smoothed circular clip-path reveal ── */
   const [cursorPos, setCursorPos] = useState({ x: -400, y: -400 });
   const [imgHovering, setImgHovering] = useState(false);
   const targetPosRef = useRef({ x: -400, y: -400 });
   const currentPosRef = useRef({ x: -400, y: -400 });
   const animFrameRef = useRef<number | null>(null);
+  const [latestPost, setLatestPost] = useState<HashnodePost | null>(null);
 
   const handleImgMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -129,6 +131,23 @@ export default function Home() {
       gsap.from(heroRightRef.current, { opacity: 0, y: 32, duration: 0.8, ease: "power3.out" });
     }, rootRef);
     return () => ctx.revert();
+  }, []);
+
+  /* ── Fetch latest blog post (client-side, non-blocking) ── */
+  useLayoutEffect(() => {
+    fetch("https://gql.hashnode.com", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `query { publication(host: "codermayank69.hashnode.dev") { posts(first: 1) { edges { node { title brief slug url publishedAt readTimeInMinutes coverImage { url } tags { name } } } } } }`,
+      }),
+    })
+      .then((r) => r.json())
+      .then((json) => {
+        const node = json?.data?.publication?.posts?.edges?.[0]?.node;
+        if (node) setLatestPost(node);
+      })
+      .catch(() => {});
   }, []);
 
   const scrollTo = (id: string) =>
@@ -281,7 +300,7 @@ export default function Home() {
               transition={{ duration: 1, delay: 0.2 }}
               className="absolute inset-0"
             >
-              {/* ── Base layer: greyscale ── */}
+              {/* ── Base layer: always grayscale ── */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/mayank-hero.webp"
@@ -291,12 +310,11 @@ export default function Home() {
                   objectFit: "cover",
                   objectPosition: "50% 22%",
                   filter: "grayscale(100%) contrast(1.08) brightness(0.96) saturate(0)",
-                  imageRendering: "crisp-edges",
                 }}
                 loading="eager"
               />
 
-              {/* ── Color reveal layer on hover ── */}
+              {/* ── Color layer: revealed only inside spotlight circle ── */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/mayank-hero.webp"
@@ -306,8 +324,12 @@ export default function Home() {
                 style={{
                   objectFit: "cover",
                   objectPosition: "50% 22%",
-                  opacity: imgHovering ? 1 : 0,
-                  transition: "opacity 0.5s ease",
+                  clipPath: imgHovering
+                    ? `circle(120px at ${cursorPos.x}px ${cursorPos.y}px)`
+                    : "circle(0px at -400px -400px)",
+                  transition: imgHovering
+                    ? "clip-path 0.05s linear"
+                    : "clip-path 0.4s ease",
                 }}
               />
 
@@ -416,6 +438,79 @@ export default function Home() {
 
       {/* ══════════════════════════ PROJECTS ══════════════════════════ */}
       <ProjectsSection />
+
+      {/* ══════════════════════════ LATEST BLOG ══════════════════════════ */}
+      {latestPost && (
+        <Section className="border-t border-neutral-100 bg-white" id="blog-preview">
+          <div className="mx-auto max-w-6xl px-6 md:px-8 py-16 md:py-20">
+            <motion.div variants={fadeUp(0)} className="mb-8 flex items-end justify-between gap-4">
+              <div>
+                <p className="eyebrow mb-2">Blog</p>
+                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">Latest article</h2>
+              </div>
+              <Link
+                href="/blog"
+                className="hidden md:inline-flex items-center gap-1.5 btn btn-outline btn-sm"
+              >
+                All posts <ArrowRight className="size-3.5" />
+              </Link>
+            </motion.div>
+
+            <motion.a
+              variants={fadeUp(0.1)}
+              href={latestPost.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group grid gap-0 md:grid-cols-[auto_1fr] rounded-2xl border border-neutral-200 bg-white shadow-sm overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all duration-300"
+            >
+              {/* Cover image */}
+              {latestPost.coverImage?.url && (
+                <div className="md:w-64 lg:w-80 h-48 md:h-auto overflow-hidden shrink-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={latestPost.coverImage.url}
+                    alt={latestPost.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              )}
+              {/* Content */}
+              <div className="flex flex-col justify-between p-6 md:p-8">
+                <div>
+                  {latestPost.tags?.slice(0, 2).map((t: { name: string }) => (
+                    <span key={t.name} className="badge badge-neutral text-[11px] mr-1.5 mb-3">
+                      {t.name}
+                    </span>
+                  ))}
+                  <h3 className="text-xl md:text-2xl font-bold tracking-tight text-[#0a0a0a] group-hover:underline underline-offset-2 leading-snug">
+                    {latestPost.title}
+                  </h3>
+                  {latestPost.brief && (
+                    <p className="mt-3 text-neutral-500 text-sm leading-relaxed line-clamp-2">
+                      {latestPost.brief}
+                    </p>
+                  )}
+                </div>
+                <div className="mt-5 flex items-center justify-between">
+                  <div className="flex items-center gap-4 font-mono text-[11px] text-neutral-400">
+                    <span>{new Date(latestPost.publishedAt).toLocaleDateString("en-IN", { year: "numeric", month: "short", day: "numeric" })}</span>
+                    <span>{latestPost.readTimeInMinutes ?? 5} min read</span>
+                  </div>
+                  <span className="text-sm font-semibold text-[#0a0a0a] group-hover:underline underline-offset-2 flex items-center gap-1">
+                    Read post <ArrowRight className="size-3.5" />
+                  </span>
+                </div>
+              </div>
+            </motion.a>
+
+            <div className="mt-4 text-center md:hidden">
+              <Link href="/blog" className="btn btn-outline btn-sm">
+                All posts <ArrowRight className="size-3.5" />
+              </Link>
+            </div>
+          </div>
+        </Section>
+      )}
 
       {/* ══════════════════════════ CERTIFICATIONS ══════════════════════════ */}
       <Section className="relative border-t border-neutral-100 bg-[#fafafa]" id="certs">
