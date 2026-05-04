@@ -164,7 +164,7 @@ export default function Home() {
             >
               <h1
                 className="font-black tracking-tighter leading-[0.9] text-[#0a0a0a] select-none"
-                style={{ fontSize: "clamp(5rem, 15vw, 10rem)" }}
+                style={{ fontSize: "clamp(6rem, 18vw, 13rem)" }}
               >
                 Hello.
               </h1>
@@ -175,7 +175,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-4 text-neutral-500 text-base md:text-lg max-w-sm leading-relaxed"
+              className="mt-4 text-neutral-500 text-base md:text-lg leading-relaxed whitespace-nowrap"
             >
               — It&apos;s Mayank, an aspiring Software Engineer.
             </motion.p>
