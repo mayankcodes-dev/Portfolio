@@ -275,7 +275,7 @@ export default function Home() {
               transition={{ duration: 1, delay: 0.2 }}
               className="absolute inset-0"
             >
-              {/* ── Base layer: greyscale, image anchored to top-center so face is prominent ── */}
+              {/* ── Base layer: greyscale, pushed up so full head is visible ── */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/mayank-hero.webp"
@@ -283,7 +283,7 @@ export default function Home() {
                 className="absolute inset-0 w-full h-full"
                 style={{
                   objectFit: "cover",
-                  objectPosition: "50% 15%",
+                  objectPosition: "50% 0%",
                   filter: "grayscale(100%) contrast(1.08) brightness(0.96) saturate(0)",
                   imageRendering: "crisp-edges",
                 }}
@@ -299,7 +299,7 @@ export default function Home() {
                 className="absolute inset-0 w-full h-full pointer-events-none select-none"
                 style={{
                   objectFit: "cover",
-                  objectPosition: "50% 15%",
+                  objectPosition: "50% 0%",
                   opacity: imgHovering ? 1 : 0,
                   transition: "opacity 0.4s ease",
                   WebkitMaskImage: `radial-gradient(circle 420px at ${cursorPos.x}px ${cursorPos.y}px, black 0%, black 45%, rgba(0,0,0,0.5) 65%, transparent 100%)`,
@@ -354,23 +354,23 @@ export default function Home() {
             </a>
           </motion.div>
 
-          {/* GitHub calendar — professional look with proper spacing */}
-          <motion.div variants={fadeUp(0.1)} className="overflow-x-auto mb-6">
-            <div className="rounded-xl border border-neutral-200 bg-white px-6 pt-5 pb-5 shadow-sm" style={{ minWidth: 780 }}>
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest">GitHub Contributions</p>
+          {/* GitHub calendar — card fits calendar exactly, outer div scrolls */}
+          <motion.div variants={fadeUp(0.1)} className="mb-6">
+            <div className="overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm">
+              <div className="px-6 pt-5 pb-5 w-max min-w-full">
+                <p className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest mb-4">GitHub Contributions</p>
+                <GitHubCalendar
+                  username="coderMayank69"
+                  colorScheme="light"
+                  fontSize={11}
+                  blockSize={13}
+                  blockMargin={4}
+                  theme={{
+                    light: ["#ebebeb", "#c6e6c8", "#74c47a", "#339a3e", "#1a6326"] as [string,string,string,string,string],
+                    dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string,string,string,string,string],
+                  }}
+                />
               </div>
-              <GitHubCalendar
-                username="coderMayank69"
-                colorScheme="light"
-                fontSize={11}
-                blockSize={13}
-                blockMargin={4}
-                theme={{
-                  light: ["#f0f0f0", "#c6e6c8", "#74c47a", "#339a3e", "#1a6326"] as [string,string,string,string,string],
-                  dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string,string,string,string,string],
-                }}
-              />
             </div>
           </motion.div>
 
