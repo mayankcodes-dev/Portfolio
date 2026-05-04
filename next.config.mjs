@@ -2,6 +2,7 @@
 const nextConfig = {
   /* React Compiler disabled — causes 404 on client components with GSAP */
   // reactCompiler: true,
+  /* Turbopack: removed hardcoded path, let it auto-detect workspace root */
 
   images: {
     remotePatterns: [

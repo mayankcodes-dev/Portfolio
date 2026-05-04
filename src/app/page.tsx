@@ -266,7 +266,7 @@ export default function Home() {
                 blockMargin={4}
                 theme={{
                   light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"] as [string, string, string, string, string],
-                  dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string, string, string, string, string],
+                  dark: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string, string, string, string, string],
                 }}
               />
             </div>
@@ -281,7 +281,7 @@ export default function Home() {
       <Section className="relative border-t border-neutral-100 bg-[#fafafa]" id="certs">
         {/* Background grid */}
         <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" aria-hidden />
-        
+
         <div className="relative mx-auto max-w-6xl px-6 md:px-8 py-20 md:py-28 z-10">
 
           <motion.div variants={fadeUp(0)} className="mb-10 flex items-end justify-between gap-4">
