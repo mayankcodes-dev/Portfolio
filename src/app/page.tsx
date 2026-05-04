@@ -266,11 +266,11 @@ export default function Home() {
                 alt="Mayank — Aspiring Software Engineer"
                 className="hero-photo absolute w-full object-cover"
                 style={{
-                  height: "115%",
-                  top: "-8%",
+                  height: "130%",
+                  top: "-18%",
                   left: 0,
                   right: 0,
-                  objectPosition: "50% 30%",
+                  objectPosition: "50% 22%",
                 }}
                 loading="eager"
               />
