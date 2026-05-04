@@ -160,7 +160,7 @@ export default function Home() {
           </div>
 
           {/* ── CONTENT COLUMN ── */}
-          <div ref={heroRightRef} className="flex flex-col justify-center py-24 lg:py-0 z-10 px-8 md:px-14 lg:pl-14 lg:pr-8 xl:pl-10 xl:pr-6">
+          <div ref={heroRightRef} className="flex flex-col justify-end py-24 lg:py-0 lg:pb-[12vh] z-10 px-8 md:px-14 lg:pl-14 lg:pr-8 xl:pl-10 xl:pr-6">
 
             {/* Live stats row */}
             <motion.div
@@ -274,13 +274,9 @@ export default function Home() {
               <img
                 src="/images/mayank-hero.webp"
                 alt="Mayank — Aspiring Software Engineer"
-                className="hero-photo absolute w-full object-cover"
+                className="hero-photo absolute inset-0 w-full h-full object-cover"
                 style={{
-                  height: "130%",
-                  top: "-20%",
-                  left: 0,
-                  right: 0,
-                  objectPosition: "50% 20%",
+                  objectPosition: "50% 15%",
                 }}
                 loading="eager"
               />
