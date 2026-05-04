@@ -292,34 +292,70 @@ export default function Contact() {
         </section>
 
         {/* ── Google Maps ── */}
-        <section className="border-t border-neutral-100">
+        <section className="border-t border-neutral-100 bg-[#fafafa]">
           <div className="mx-auto max-w-5xl px-6 md:px-8 py-14">
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="eyebrow mb-6"
+              transition={{ duration: 0.4 }}
+              className="mb-6 flex items-center justify-between"
             >
-              Based in Lucknow
-            </motion.p>
+              <div>
+                <p className="eyebrow mb-1">Location</p>
+                <h2 className="text-xl font-bold tracking-tight text-[#0a0a0a]">
+                  Based in Lucknow, India
+                </h2>
+              </div>
+              <a
+                href="https://maps.app.goo.gl/WHHrY1Vy3UARDXgC8"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-outline btn-sm hidden sm:flex items-center gap-1.5"
+              >
+                <MapPin className="size-3.5" />
+                Get Directions
+              </a>
+            </motion.div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="overflow-hidden rounded-xl border border-neutral-200"
-              style={{ height: "360px" }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="relative overflow-hidden rounded-2xl border border-neutral-200 shadow-sm"
+              style={{ height: "400px" }}
             >
               <iframe
-                title="Lucknow, Krishna Nagar location map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56850.67614696629!2d80.93040647294921!3d26.874964999999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bfdb6a44a6e3b%3A0x2bb9d9d7dc2b03f4!2sKrishna%20Nagar%2C%20Lucknow%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1714666400000!5m2!1sen!2sin"
+                title="Mayank's location — Krishna Nagar, Lucknow"
+                src="https://maps.google.com/maps?q=Krishna+Nagar,+Lucknow,+Uttar+Pradesh,+India&t=&z=15&ie=UTF8&iwloc=&output=embed"
                 width="100%"
                 height="100%"
-                style={{ border: 0, filter: "grayscale(0.15) contrast(1.02)" }}
+                style={{ border: 0, filter: "grayscale(0.1) contrast(1.05) saturate(0.9)" }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
+              {/* Bottom info bar overlay */}
+              <div className="absolute bottom-0 inset-x-0 bg-white/90 backdrop-blur-sm border-t border-neutral-100 px-5 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-[#0a0a0a] text-white">
+                    <MapPin className="size-4" />
+                  </span>
+                  <div>
+                    <p className="text-xs font-semibold text-[#0a0a0a]">Krishna Nagar, Lucknow</p>
+                    <p className="text-[11px] text-neutral-400">Uttar Pradesh, India · IST (UTC+5:30)</p>
+                  </div>
+                </div>
+                <a
+                  href="https://maps.app.goo.gl/WHHrY1Vy3UARDXgC8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] font-semibold text-[#0a0a0a] hover:text-neutral-600 flex items-center gap-1 transition-colors"
+                >
+                  Open in Maps <ExternalLink className="size-3" />
+                </a>
+              </div>
             </motion.div>
           </div>
         </section>
