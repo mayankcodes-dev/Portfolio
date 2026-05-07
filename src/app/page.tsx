@@ -265,7 +265,7 @@ export default function Home() {
                 src="/images/mayank-hero.webp"
                 alt="Mayank — Aspiring Software Engineer"
                 className="hero-photo absolute inset-0 w-full h-full object-cover"
-                style={{ objectPosition: "50% 35%" }}
+                style={{ objectPosition: "50% 45%" }}
                 loading="eager"
               />
 
