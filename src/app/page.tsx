@@ -266,9 +266,9 @@ export default function Home() {
                 alt="Mayank — Aspiring Software Engineer"
                 className="hero-photo absolute inset-0 w-full h-full object-cover"
                 style={{
-                  objectPosition: "50% 15%",
-                  transform: "scale(1.55)",
-                  transformOrigin: "50% 30%",
+                  objectPosition: "50% 8%",
+                  transform: "scale(1.75)",
+                  transformOrigin: "50% 5%",
                 }}
                 loading="eager"
               />
