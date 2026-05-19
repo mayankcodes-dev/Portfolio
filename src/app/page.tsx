@@ -387,15 +387,6 @@ export default function Home() {
       <ProjectsSection />
 
 
-            <div className="mt-4 text-center md:hidden">
-              <Link href="/blog" className="btn btn-outline btn-sm">
-                All posts <ArrowRight className="size-3.5" />
-              </Link>
-            </div>
-          </div>
-        </Section>
-      )}
-
       {/* ══════════════════════════ CERTIFICATIONS ══════════════════════════ */}
       <Section className="relative border-t border-neutral-100 bg-[#fafafa]" id="certs">
         <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" aria-hidden />
