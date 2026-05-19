@@ -1,8 +1,16 @@
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /* React Compiler disabled — causes 404 on client components with GSAP */
   // reactCompiler: true,
-  /* Turbopack: removed hardcoded path, let it auto-detect workspace root */
+  /* Turbopack: explicitly set workspace root to silence multi-lockfile warning */
+  turbopack: {
+    root: __dirname,
+  },
 
   images: {
     remotePatterns: [
