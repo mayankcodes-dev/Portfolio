@@ -84,18 +84,7 @@ export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
   const heroRightRef = useRef<HTMLDivElement>(null);
   const heroPhotoRef = useRef<HTMLDivElement>(null);
-  const [hoverPos, setHoverPos] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
   const stats = useHeroStats();
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!heroPhotoRef.current) return;
-    const rect = heroPhotoRef.current.getBoundingClientRect();
-    setHoverPos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -245,9 +234,6 @@ export default function Home() {
             ref={heroPhotoRef}
             className="relative hidden lg:block group/hero"
             style={{ position: "sticky", top: 0, height: "100dvh", alignSelf: "start", overflow: "hidden" }}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
           >
             <motion.div
               initial={{ opacity: 0, scale: 1.04 }}
@@ -255,29 +241,13 @@ export default function Home() {
               transition={{ duration: 1.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="absolute inset-0"
             >
-              {/* Grayscale Base */}
+              {/* Full Color Base Image */}
               <img
                 src="/images/mayank-hero.png"
                 alt="Mayank — Aspiring Software Engineer"
-                className="hero-photo absolute bottom-[2vh] left-[65%] -translate-x-1/2 w-full max-w-[950px] h-[96dvh] object-cover object-top grayscale opacity-60 mix-blend-luminosity"
+                className="hero-photo absolute bottom-[1vh] left-[65%] -translate-x-1/2 w-full max-w-[1050px] h-[98dvh] object-cover object-top"
                 loading="eager"
               />
-
-              {/* Colored Overlay Wrapper with Soft Spotlight Mask effect */}
-              <div
-                className={`absolute inset-0 pointer-events-none transition-opacity duration-500 ease-out ${isHovering ? 'opacity-100' : 'opacity-0'}`}
-                style={{
-                  WebkitMaskImage: `radial-gradient(500px circle at ${hoverPos.x}px ${hoverPos.y}px, black 15%, transparent 100%)`,
-                  maskImage: `radial-gradient(500px circle at ${hoverPos.x}px ${hoverPos.y}px, black 15%, transparent 100%)`,
-                }}
-              >
-                <img
-                  src="/images/mayank-hero.png"
-                  alt=""
-                  className="hero-photo absolute bottom-[2vh] left-[65%] -translate-x-1/2 w-full max-w-[950px] h-[96dvh] object-cover object-top contrast-[1.2] saturate-[1.15] brightness-[1.05]"
-                  aria-hidden
-                />
-              </div>
 
               {/* Left edge gradient — blends into page bg */}
               <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#f9f9f9] to-transparent z-10 pointer-events-none" />

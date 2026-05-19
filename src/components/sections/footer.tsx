@@ -151,7 +151,7 @@ export function Footer() {
         >
           <h2
             className="footer-brand-name font-black uppercase tracking-tighter text-[#0a0a0a] leading-[0.85] w-full flex justify-between"
-            style={{ fontSize: "clamp(4.5rem, 18vw, 15.5rem)" }}
+            style={{ fontSize: "clamp(3rem, 14.5vw, 15.5rem)" }}
             aria-hidden
           >
             <span>M</span>
