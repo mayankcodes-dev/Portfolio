@@ -265,11 +265,7 @@ export default function Home() {
                 src="/images/mayank-hero.png"
                 alt="Mayank — Aspiring Software Engineer"
                 className="hero-photo absolute inset-0 w-full h-full object-cover"
-                style={{
-                  objectPosition: "50% 8%",
-                  transform: "scale(1.75)",
-                  transformOrigin: "50% 5%",
-                }}
+                style={{ objectPosition: "50% 20%" }}
                 loading="eager"
               />
 
