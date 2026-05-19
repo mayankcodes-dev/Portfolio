@@ -264,8 +264,7 @@ export default function Home() {
               <img
                 src="/images/mayank-hero.png"
                 alt="Mayank — Aspiring Software Engineer"
-                className="hero-photo absolute inset-0 w-full h-full object-cover"
-                style={{ objectPosition: "center 10%" }}
+                className="hero-photo absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[550px] h-[95vh] object-cover object-top"
                 loading="eager"
               />
 
