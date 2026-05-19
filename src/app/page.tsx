@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, MouseEvent } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import gsap from "gsap";
@@ -84,9 +84,21 @@ function Section({ children, className = "", id }: { children: React.ReactNode; 
 export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
   const heroRightRef = useRef<HTMLDivElement>(null);
+  const heroPhotoRef = useRef<HTMLDivElement>(null);
+  const [hoverPos, setHoverPos] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
   const stats = useHeroStats();
 
   const [latestPost, setLatestPost] = useState<HashnodePost | null>(null);
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!heroPhotoRef.current) return;
+    const rect = heroPhotoRef.current.getBoundingClientRect();
+    setHoverPos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
 
 
   useLayoutEffect(() => {
@@ -137,7 +149,7 @@ export default function Home() {
             – sidebar is a real 56px column at xl+ so it NEVER overlaps content
             – image column is much larger (560 / 760 / 920px) for an impactful photo */}
         <div
-          className="relative mx-auto max-w-[1600px] grid grid-cols-1 lg:grid-cols-[360px_1fr] xl:grid-cols-[56px_360px_1fr]"
+          className="relative mx-auto max-w-[1600px] grid grid-cols-1 lg:grid-cols-[480px_1fr] xl:grid-cols-[56px_480px_1fr]"
           style={{ minHeight: "100dvh" }}
         >
 
@@ -251,8 +263,12 @@ export default function Home() {
 
           {/* ── PHOTO COLUMN — smooth grayscale-to-color on hover ── */}
           <div
+            ref={heroPhotoRef}
             className="relative hidden lg:block group/hero"
             style={{ position: "sticky", top: 0, height: "100dvh", alignSelf: "start", overflow: "hidden" }}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
           >
             <motion.div
               initial={{ opacity: 0, scale: 1.04 }}
@@ -260,23 +276,39 @@ export default function Home() {
               transition={{ duration: 1.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="absolute inset-0"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
+              {/* Grayscale Base */}
               <img
                 src="/images/mayank-hero.png"
                 alt="Mayank — Aspiring Software Engineer"
-                className="hero-photo absolute bottom-0 left-[55%] -translate-x-1/2 w-full max-w-[850px] h-[100dvh] object-cover object-top contrast-[1.15] saturate-[1.1] brightness-[1.05]"
+                className="hero-photo absolute bottom-[2vh] left-[65%] -translate-x-1/2 w-full max-w-[950px] h-[96dvh] object-cover object-top grayscale opacity-60 mix-blend-luminosity"
                 loading="eager"
               />
 
+              {/* Colored Overlay Wrapper with Soft Spotlight Mask effect */}
+              <div
+                className={`absolute inset-0 pointer-events-none transition-opacity duration-500 ease-out ${isHovering ? 'opacity-100' : 'opacity-0'}`}
+                style={{
+                  WebkitMaskImage: `radial-gradient(500px circle at ${hoverPos.x}px ${hoverPos.y}px, black 15%, transparent 100%)`,
+                  maskImage: `radial-gradient(500px circle at ${hoverPos.x}px ${hoverPos.y}px, black 15%, transparent 100%)`,
+                }}
+              >
+                <img
+                  src="/images/mayank-hero.png"
+                  alt=""
+                  className="hero-photo absolute bottom-[2vh] left-[65%] -translate-x-1/2 w-full max-w-[950px] h-[96dvh] object-cover object-top contrast-[1.2] saturate-[1.15] brightness-[1.05]"
+                  aria-hidden
+                />
+              </div>
+
               {/* Left edge gradient — blends into page bg */}
-              <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[#f9f9f9] to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#f9f9f9] to-transparent z-10 pointer-events-none" />
               {/* Bottom fade */}
               <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#f9f9f9] to-transparent z-10 pointer-events-none" />
               {/* Top fade */}
-              <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#f9f9f9]/60 to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#f9f9f9]/80 to-transparent z-10 pointer-events-none" />
 
               {/* Availability badge */}
-              <div className="absolute bottom-16 left-[25%] lg:left-[30%] xl:left-[35%] z-20 flex items-center gap-2 rounded-xl border border-neutral-200 bg-white/90 backdrop-blur-sm px-4 py-2.5 shadow-md">
+              <div className="absolute bottom-[15%] left-[40%] xl:left-[45%] z-20 flex items-center gap-2 rounded-xl border border-neutral-200 bg-white/90 backdrop-blur-sm px-4 py-2.5 shadow-md">
                 <span className="status-dot" />
                 <span className="text-xs font-semibold text-[#0a0a0a] whitespace-nowrap">Open to internships</span>
               </div>

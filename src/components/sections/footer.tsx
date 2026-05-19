@@ -147,14 +147,19 @@ export function Footer() {
           variants={fadeUp(0.2)}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="mt-16 md:mt-24 overflow-hidden select-none"
+          className="mt-16 md:mt-24 overflow-hidden select-none w-full"
         >
           <h2
-            className="footer-brand-name text-center font-black uppercase tracking-tighter text-[#0a0a0a] leading-[0.85]"
-            style={{ fontSize: "clamp(5rem, 18vw, 16rem)" }}
+            className="footer-brand-name font-black uppercase tracking-tighter text-[#0a0a0a] leading-[0.85] w-full flex justify-between"
+            style={{ fontSize: "clamp(4.5rem, 18vw, 15.5rem)" }}
             aria-hidden
           >
-            Mayank
+            <span>M</span>
+            <span>A</span>
+            <span>Y</span>
+            <span>A</span>
+            <span>N</span>
+            <span>K</span>
           </h2>
         </motion.div>
 
