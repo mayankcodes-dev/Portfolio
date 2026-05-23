@@ -9,6 +9,7 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ArrowRight, Award, Mail } from "lucide-react";
 import { useHeroStats } from "@/hooks/use-hero-stats";
 import Navbar from "@/components/navbar";
+import Logo from "@/components/logo";
 import { Footer } from "@/components/sections/footer";
 import SkillsSection from "@/components/sections/skills-section";
 import ProjectsSection from "@/components/sections/projects-section";
@@ -102,128 +103,146 @@ export default function Home() {
       <Navbar />
 
       {/* ══════════════════════════ HERO ══════════════════════════ */}
-      <main id="hero" className="relative w-full bg-[#f9f9f9]" style={{ minHeight: "100dvh" }}>
-        {/* Dot-grid background */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(circle, #d4d4d4 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
-            opacity: 0.35,
-          }}
-          aria-hidden
-        />
+      <main id="hero" className="relative w-full bg-white" style={{ minHeight: "100dvh" }}>
+        {/* HERO HEADER (Desktop-only layout matching mockup) */}
+        <header className="absolute top-0 left-0 right-0 z-30 hidden lg:flex items-center justify-between px-12 py-8 max-w-[1600px] mx-auto w-full">
+          <div className="flex items-center">
+            <Logo size={32} />
+          </div>
+          <nav className="flex items-center gap-10 text-[13px] font-medium text-neutral-500">
+            <button onClick={() => scrollTo("skills")} className="hover:text-black transition-colors cursor-pointer font-sans">
+              About Me
+            </button>
+            <button onClick={() => scrollTo("projects")} className="hover:text-black transition-colors cursor-pointer font-sans">
+              Portfolio
+            </button>
+            <button onClick={() => scrollTo("certs")} className="hover:text-black transition-colors cursor-pointer font-sans">
+              Certificates
+            </button>
+            <button onClick={() => scrollTo("contact")} className="hover:text-black transition-colors cursor-pointer font-sans">
+              Contact
+            </button>
+          </nav>
+          <div>
+            <a
+              href="mailto:mayankbca96325@gmail.com"
+              className="text-[13px] font-semibold text-neutral-800 hover:text-black transition-colors pb-0.5 border-b border-neutral-300 hover:border-black flex items-center gap-1 cursor-pointer font-sans"
+            >
+              Book A Call <span className="text-[10px]">↗</span>
+            </a>
+          </div>
+        </header>
 
-        {/* Main grid: [sidebar] | content | photo
-            – sidebar is a real 56px column at xl+ so it NEVER overlaps content
-            – image column is much larger (560 / 760 / 920px) for an impactful photo */}
+        {/* Main grid: [sidebar] | content | photo */}
         <div
-          className="relative mx-auto max-w-[1600px] grid grid-cols-1 lg:grid-cols-[480px_1fr] xl:grid-cols-[56px_480px_1fr]"
+          className="relative mx-auto max-w-[1600px] grid grid-cols-1 lg:grid-cols-[500px_1fr] xl:grid-cols-[72px_540px_1fr]"
           style={{ minHeight: "100dvh" }}
         >
 
-          {/* ── SIDEBAR — vertical label (xl+ only, proper grid column) ── */}
-          <div className="hidden xl:flex flex-col items-center justify-center gap-4 border-r border-neutral-100 select-none">
-            <div className="w-px h-14 bg-neutral-200" />
-            <span className="font-mono text-[10px] text-neutral-400 uppercase tracking-[0.25em] -rotate-90 whitespace-nowrap">
-              Full-Stack Developer
+          {/* ── SIDEBAR — vertical label & line (xl+ only) ── */}
+          <div className="hidden xl:flex flex-col items-center justify-between py-16 border-r border-neutral-100 select-none text-neutral-400 font-mono text-[10px] relative h-full">
+            <span className="uppercase tracking-[0.25em] -rotate-90 whitespace-nowrap my-16 origin-center text-neutral-400">
+              Software Engineer
             </span>
-            <div className="w-px h-14 bg-neutral-200" />
+            <div className="w-px h-32 bg-neutral-200" />
+            <span className="uppercase tracking-widest leading-none mt-auto text-neutral-400">
+              2026
+            </span>
           </div>
 
           {/* ── CONTENT COLUMN ── */}
-          <div ref={heroRightRef} className="flex flex-col justify-end py-24 lg:py-0 lg:pb-[12vh] z-10 px-8 md:px-14 lg:pl-14 lg:pr-8 xl:pl-10 xl:pr-6">
-
-            {/* Live stats row */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="flex gap-10 mb-8"
-            >
-              <div className="flex flex-col">
-                <span className="text-3xl md:text-4xl font-black tracking-tighter text-[#0a0a0a]">
-                  {stats.loading
-                    ? <span className="inline-block w-16 h-9 rounded bg-neutral-100 animate-pulse" />
-                    : stats.problems}
-                </span>
-                <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-widest mt-0.5">Problems</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-3xl md:text-4xl font-black tracking-tighter text-[#0a0a0a]">
-                  {stats.loading
-                    ? <span className="inline-block w-20 h-9 rounded bg-neutral-100 animate-pulse" />
-                    : stats.contributions}
-                </span>
-                <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-widest mt-0.5">Contributions</span>
-              </div>
-            </motion.div>
-
-            {/* Giant Hello */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <h1
-                className="font-black tracking-tighter leading-[0.88] text-[#0a0a0a] select-none"
-                style={{ fontSize: "clamp(5.5rem, 15vw, 12rem)" }}
+          <div ref={heroRightRef} className="flex flex-col justify-between pt-32 pb-12 lg:pt-40 lg:pb-16 z-10 px-8 md:px-14 lg:pl-14 lg:pr-8 xl:pl-16 xl:pr-10 relative h-full">
+            <div className="flex-1 flex flex-col justify-center">
+              {/* Live stats row */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="flex gap-16 mb-12 lg:mb-16"
               >
-                Hello.
-              </h1>
-            </motion.div>
-
-            {/* Minimal subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-4 text-neutral-500 text-base md:text-lg leading-relaxed whitespace-nowrap"
-            >
-              — It&apos;s Mayank, an aspiring Software Engineer.
-            </motion.p>
-
-            {/* Social icons */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-8 flex items-center flex-wrap gap-2"
-            >
-              {SOCIALS.map(({ href, label, path }) => (
-                <div key={label} className="relative group/tip">
-                  {/* Tooltip */}
-                  <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#0a0a0a] px-2 py-1 text-[10px] font-mono text-white opacity-0 transition-opacity duration-150 group-hover/tip:opacity-100 z-50">
-                    {label}
+                <div className="flex flex-col">
+                  <span className="text-4xl md:text-5xl font-light tracking-tight text-[#0a0a0a] leading-none">
+                    +{stats.loading ? "..." : stats.problems}
                   </span>
-                  <motion.a
-                    href={href}
-                    target={href.startsWith("mailto") ? undefined : "_blank"}
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    whileHover={{ scale: 1.08, y: -2 }}
-                    whileTap={{ scale: 0.92 }}
-                    className="grid size-10 place-items-center rounded-xl border border-neutral-200 bg-white text-neutral-500 hover:border-neutral-400 hover:text-[#0a0a0a] transition-all duration-200 shadow-sm hover:shadow-md"
-                  >
-                    <svg viewBox="0 0 24 24" fill="currentColor" className="size-[15px]" aria-hidden>
-                      <path d={path} />
-                    </svg>
-                  </motion.a>
+                  <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-widest mt-2">
+                    Problems Solved
+                  </span>
                 </div>
-              ))}
-            </motion.div>
+                <div className="flex flex-col">
+                  <span className="text-4xl md:text-5xl font-light tracking-tight text-[#0a0a0a] leading-none">
+                    +{stats.loading ? "..." : stats.contributions}
+                  </span>
+                  <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-widest mt-2">
+                    Contributions
+                  </span>
+                </div>
+              </motion.div>
 
-            {/* Scroll hint */}
+              {/* Giant Hello */}
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <h1
+                  className="font-light tracking-tight leading-[0.9] text-[#0a0a0a] select-none text-[6.5rem] sm:text-[8rem] md:text-[9.5rem] lg:text-[11rem] xl:text-[12rem]"
+                >
+                  Hello
+                </h1>
+              </motion.div>
+
+              {/* Minimal subtitle */}
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-6 text-neutral-500 text-base md:text-lg leading-relaxed font-light italic"
+              >
+                — It&apos;s Mayank, an aspiring Software Engineer.
+              </motion.p>
+
+              {/* Social icons */}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-8 flex items-center flex-wrap gap-2.5"
+              >
+                {SOCIALS.map(({ href, label, path }) => (
+                  <div key={label} className="relative group/tip">
+                    <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#0a0a0a] px-2 py-1 text-[10px] font-mono text-white opacity-0 transition-opacity duration-150 group-hover/tip:opacity-100 z-50 font-sans">
+                      {label}
+                    </span>
+                    <motion.a
+                      href={href}
+                      target={href.startsWith("mailto") ? undefined : "_blank"}
+                      rel="noopener noreferrer"
+                      aria-label={label}
+                      whileHover={{ scale: 1.08, y: -2 }}
+                      whileTap={{ scale: 0.92 }}
+                      className="grid size-10 place-items-center rounded-xl border border-neutral-200 bg-white text-neutral-500 hover:border-neutral-400 hover:text-[#0a0a0a] transition-all duration-200 shadow-sm hover:shadow-md"
+                    >
+                      <svg viewBox="0 0 24 24" fill="currentColor" className="size-[15px]" aria-hidden>
+                        <path d={path} />
+                      </svg>
+                    </motion.a>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Scroll hint at the bottom */}
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.6, duration: 0.8 }}
-              className="mt-16 hidden lg:flex items-center gap-2 text-neutral-400"
+              className="mt-16 flex items-center gap-2 text-neutral-400"
             >
               <motion.span
                 animate={{ y: [0, 6, 0] }}
                 transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                className="text-[11px] font-mono uppercase tracking-widest"
+                className="text-[11px] font-mono uppercase tracking-widest cursor-pointer hover:text-black transition-colors"
+                onClick={() => scrollTo("skills")}
               >
                 Scroll down ↓
               </motion.span>
@@ -242,22 +261,22 @@ export default function Home() {
               transition={{ duration: 1.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="absolute inset-0"
             >
-              {/* Full Color Base Image — LCP: priority + WebP */}
+              {/* Grayscale Base Image — LCP: priority + WebP */}
               <Image
                 src="/images/mayank-hero.webp"
                 alt="Mayank — Aspiring Software Engineer"
                 fill
                 priority
                 sizes="(max-width: 1024px) 0px, 60vw"
-                className="absolute bottom-[-2vh] left-[65%] xl:left-[70%] -translate-x-1/2 !w-[150%] !max-w-[1300px] object-cover object-top"
+                className="absolute bottom-[-2vh] left-[65%] xl:left-[70%] -translate-x-1/2 !w-[150%] !max-w-[1300px] object-cover object-top filter grayscale contrast-[1.05] brightness-[0.98] transition-all duration-700 group-hover/hero:grayscale-0"
               />
 
               {/* Left edge gradient — blends into page bg */}
-              <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#f9f9f9] to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
               {/* Bottom fade */}
-              <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#f9f9f9] to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none" />
               {/* Top fade */}
-              <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#f9f9f9]/80 to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white/80 to-transparent z-10 pointer-events-none" />
 
               {/* Availability badge */}
               <div className="absolute bottom-[25%] left-[30%] xl:left-[35%] z-20 flex items-center gap-2 rounded-xl border border-neutral-200 bg-white/90 backdrop-blur-sm px-4 py-2.5 shadow-md">

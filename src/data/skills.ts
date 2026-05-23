@@ -55,6 +55,7 @@ export const skillCategories: SkillCategory[] = [
       { name: "Python", level: 3, logo: `${DI}/python/python-original.svg`, color: "#3776AB" },
       { name: "Java", level: 4, logo: `${DI}/java/java-original.svg`, color: "#ED8B00" },
       { name: "C", level: 3, logo: `${DI}/c/c-original.svg`, color: "#A8B9CC" },
+      { name: "SQL", level: 3, logo: "https://cdn.simpleicons.org/sqlite", color: "#003B57" },
     ],
   },
   {
