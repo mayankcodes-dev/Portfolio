@@ -99,7 +99,7 @@ export default async function BlogPage() {
         {/* ── Hero ── */}
         <section className="relative border-b border-neutral-100 bg-[#fafafa]">
           <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" aria-hidden />
-          <div className="relative z-10 mx-auto w-full max-w-6xl px-6 md:px-8 pb-12 pt-8 md:pt-14">
+          <div className="relative z-10 mx-auto w-full max-w-8xl px-6 md:px-8 pb-12 pt-8 md:pt-14">
             <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
 
               {/* Left copy */}
@@ -208,7 +208,7 @@ export default async function BlogPage() {
 
         {/* ── Latest Posts Grid ── */}
         {gridPosts.length > 0 && (
-          <section className="mx-auto w-full max-w-6xl px-6 md:px-8 py-12 md:py-16">
+          <section className="mx-auto w-full max-w-8xl px-6 md:px-8 py-12 md:py-16">
             <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="eyebrow">Latest Articles</p>
@@ -290,7 +290,7 @@ export default async function BlogPage() {
 
         {/* ── Empty state ── */}
         {posts.length === 0 && (
-          <section className="mx-auto w-full max-w-6xl px-6 py-16 text-center">
+          <section className="mx-auto w-full max-w-8xl px-6 py-16 text-center">
             <p className="text-neutral-400 text-lg">
               Could not load posts right now.{" "}
               <Link
@@ -306,7 +306,7 @@ export default async function BlogPage() {
         )}
 
         {/* ── CTA Banner ── */}
-        <section className="mx-auto w-full max-w-6xl px-6 md:px-8 pb-16 pt-6 md:pb-20">
+        <section className="mx-auto w-full max-w-8xl px-6 md:px-8 pb-16 pt-6 md:pb-20">
           <div className="card-eng text-center px-6 py-12 md:py-16">
             <p className="eyebrow mb-4">More on Hashnode</p>
             <h3 className="text-2xl md:text-3xl font-bold tracking-tight max-w-lg mx-auto">

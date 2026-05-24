@@ -60,8 +60,8 @@ export function Footer() {
   const inView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
-    <footer ref={ref} className="border-t border-neutral-200 bg-white">
-      <div className="mx-auto max-w-6xl px-6 md:px-8 py-16 md:py-20">
+    <footer ref={ref} className="border-t border-neutral-200 bg-white w-full overflow-hidden">
+      <div className="mx-auto max-w-8xl px-6 md:px-8 pt-16 md:pt-20 pb-0">
         <motion.div
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
@@ -159,7 +159,7 @@ export function Footer() {
         </h2>
       </motion.div>
 
-      <div className="mx-auto max-w-6xl px-6 md:px-8 pb-10 md:pb-12 pt-4">
+      <div className="mx-auto max-w-8xl px-6 md:px-8 pb-10 md:pb-12 pt-4">
         {/* ── Bottom bar — below brand name ── */}
         <motion.div
           variants={fadeUp(0.3)}

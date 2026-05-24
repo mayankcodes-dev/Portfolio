@@ -76,7 +76,7 @@ export default function ProjectsSection() {
         {/* Background grid */}
         <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" aria-hidden />
 
-        <div className="relative mx-auto max-w-6xl px-6 md:px-8 py-20 md:py-28 z-10">
+        <div className="relative mx-auto max-w-8xl px-6 md:px-8 py-20 md:py-28 z-10">
 
           {/* ── Header ── */}
           <motion.div

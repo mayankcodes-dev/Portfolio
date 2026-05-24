@@ -10,7 +10,7 @@ export default function SkillsSection() {
 
   return (
     <section id="skills" className="border-t border-neutral-100">
-      <div className="mx-auto max-w-6xl px-6 md:px-8 py-20 md:py-28">
+      <div className="mx-auto max-w-8xl px-6 md:px-8 py-20 md:py-28">
 
         {/* ── Header ── */}
         <motion.div

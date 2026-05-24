@@ -268,7 +268,7 @@ export default function Home() {
 
       {/* ══════════════════════════ DEV ACTIVITY ══════════════════════════ */}
       <Section className="border-t border-neutral-100 bg-white" id="github-activity">
-        <div className="mx-auto max-w-6xl px-6 md:px-8 py-16 md:py-20">
+        <div className="mx-auto max-w-8xl px-6 md:px-8 py-16 md:py-20">
           <motion.div variants={fadeUp(0)} className="mb-10 flex items-end justify-between gap-4">
             <div>
               <p className="eyebrow mb-2">Activity</p>
@@ -352,7 +352,7 @@ export default function Home() {
       {/* ══════════════════════════ CERTIFICATIONS ══════════════════════════ */}
       <Section className="relative border-t border-neutral-100 bg-[#fafafa]" id="certs">
         <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" aria-hidden />
-        <div className="relative mx-auto max-w-6xl px-6 md:px-8 py-20 md:py-28 z-10">
+        <div className="relative mx-auto max-w-8xl px-6 md:px-8 py-20 md:py-28 z-10">
           <motion.div variants={fadeUp(0)} className="mb-10 flex items-end justify-between gap-4">
             <div>
               <p className="eyebrow mb-2">Certifications</p>
@@ -399,7 +399,7 @@ export default function Home() {
 
       {/* ══════════════════════════ CONTACT CTA ══════════════════════════ */}
       <Section id="contact" className="border-t border-neutral-100 bg-[#fafafa]">
-        <div className="mx-auto max-w-6xl px-6 md:px-8 py-24 md:py-32">
+        <div className="mx-auto max-w-8xl px-6 md:px-8 py-24 md:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <p className="eyebrow mb-4">Let&apos;s connect</p>

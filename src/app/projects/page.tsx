@@ -45,7 +45,7 @@ export default function ProjectsPage() {
         {/* ── Hero ── */}
         <section className="relative border-b border-neutral-100 pb-12 pt-8 md:pt-14 bg-[#fafafa]">
           <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" aria-hidden />
-          <div className="relative z-10 mx-auto max-w-6xl px-6 md:px-8">
+          <div className="relative z-10 mx-auto max-w-8xl px-6 md:px-8">
             <motion.div
               initial="hidden"
               animate="visible"
@@ -110,7 +110,7 @@ export default function ProjectsPage() {
         </section>
 
         {/* ── Project Grid ── */}
-        <section className="mx-auto max-w-6xl px-6 md:px-8 py-12 md:py-16">
+        <section className="mx-auto max-w-8xl px-6 md:px-8 py-12 md:py-16">
           <p className="mb-6 font-mono text-[11px] uppercase tracking-wider text-neutral-400">
             {sorted.length} project{sorted.length !== 1 ? "s" : ""}
           </p>
@@ -246,7 +246,7 @@ export default function ProjectsPage() {
 
         {/* ── CTA ── */}
         <section className="border-t border-neutral-100">
-          <div className="mx-auto max-w-6xl px-6 md:px-8 py-16 md:py-20 text-center">
+          <div className="mx-auto max-w-8xl px-6 md:px-8 py-16 md:py-20 text-center">
             <motion.h2
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
