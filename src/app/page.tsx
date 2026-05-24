@@ -87,6 +87,19 @@ export default function Home() {
   const heroPhotoRef = useRef<HTMLDivElement>(null);
   const stats = useHeroStats();
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    e.currentTarget.style.setProperty("--mouse-x", `${x}%`);
+    e.currentTarget.style.setProperty("--mouse-y", `${y}%`);
+    e.currentTarget.style.setProperty("--spotlight-opacity", "1");
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.currentTarget.style.setProperty("--spotlight-opacity", "0");
+  };
+
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(heroRightRef.current, { opacity: 0, y: 32, duration: 0.8, ease: "power3.out" });
@@ -222,8 +235,10 @@ export default function Home() {
           {/* ── PHOTO COLUMN — sticky, fills viewport height ── */}
           <div
             ref={heroPhotoRef}
-            className="relative hidden lg:block group/hero"
+            className="relative hidden lg:block group/hero cursor-none"
             style={{ position: "sticky", top: 0, height: "100dvh", alignSelf: "end", overflow: "hidden" }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
           >
             <motion.div
               initial={{ opacity: 0, scale: 1.04 }}
@@ -231,15 +246,34 @@ export default function Home() {
               transition={{ duration: 1.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="absolute inset-0"
             >
-              {/* Hero photo — fills column, aligned to the bottom-right and slightly zoomed */}
+              {/* Layer 1: Base Grayscale Image */}
               <Image
                 src="/images/mayank-hero-cropped.webp"
-                alt="Mayank — Aspiring Software Engineer"
+                alt="Mayank — Base Grayscale"
                 fill
                 priority
                 sizes="(max-width: 1024px) 0px, 60vw"
-                className="absolute inset-0 w-full h-full object-contain object-[right_bottom] scale-[1.08] translate-y-10 origin-bottom-right filter grayscale contrast-[1.05] brightness-[0.98] transition-all duration-700 group-hover/hero:grayscale-0"
+                className="absolute inset-0 w-full h-full object-contain object-[right_bottom] scale-[1.08] translate-y-[60px] origin-bottom-right filter grayscale contrast-[1.05] brightness-[0.98]"
               />
+
+              {/* Layer 2: Colorful Foreground Image with spotlight mask */}
+              <div 
+                className="absolute inset-0 transition-opacity duration-500 ease-out"
+                style={{ opacity: "var(--spotlight-opacity, 0)" }}
+              >
+                <Image
+                  src="/images/mayank-hero-cropped.webp"
+                  alt="Mayank — Colorful Spotlight"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 0px, 60vw"
+                  className="absolute inset-0 w-full h-full object-contain object-[right_bottom] scale-[1.08] translate-y-[60px] origin-bottom-right filter contrast-[1.05] brightness-[0.98]"
+                  style={{
+                    maskImage: "radial-gradient(circle 120px at var(--mouse-x, 50%) var(--mouse-y, 50%), black 20%, transparent 100%)",
+                    WebkitMaskImage: "radial-gradient(circle 120px at var(--mouse-x, 50%) var(--mouse-y, 50%), black 20%, transparent 100%)",
+                  }}
+                />
+              </div>
 
               {/* Left edge gradient — blends into white */}
               <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />

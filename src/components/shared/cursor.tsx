@@ -24,12 +24,12 @@ export default function CustomCursor() {
     const onMove = (e: MouseEvent) => {
       mx = e.clientX;
       my = e.clientY;
-      gsap.set(dot, { x: mx - 4, y: my - 4 });
     };
 
     const tick = gsap.ticker.add(() => {
       rx += (mx - rx) * 0.084;
       ry += (my - ry) * 0.084;
+      gsap.set(dot, { x: mx - 4, y: my - 4 });
       gsap.set(ring, { x: rx - 16, y: ry - 16 });
     });
 
