@@ -1,8 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-import { useRef } from "react";
 import { LogoMark } from "@/components/logo";
 
 const NAV_COLS: Array<{
@@ -50,25 +48,16 @@ const SOCIALS = [
   },
 ];
 
-const fadeUp = (delay = 0) => ({
-  hidden:  { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, delay } },
-});
-
 export function Footer() {
-  const ref    = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-
   return (
-    <footer ref={ref} className="border-t border-neutral-200 bg-white w-full overflow-hidden">
+    <footer
+      className="border-t border-neutral-200 bg-white w-full overflow-hidden"
+      style={{ transform: "scale(0.99999)" }}
+    >
       <div className="mx-auto max-w-8xl px-6 md:px-8 pt-16 md:pt-20 pb-0">
-        <motion.div
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          className="grid gap-12 md:grid-cols-[2fr_1fr_1fr]"
-        >
+        <div className="grid gap-12 md:grid-cols-[2fr_1fr_1fr]">
           {/* ── Brand column ── */}
-          <motion.div variants={fadeUp(0)}>
+          <div>
             <div className="flex items-center gap-3 mb-4">
               <LogoMark size={36} />
               <div>
@@ -86,21 +75,18 @@ export function Footer() {
             {/* Social icons */}
             <div className="flex gap-2">
               {SOCIALS.map(({ href, label, path, hoverClass }) => (
-                <motion.a
+                <a
                   key={label}
                   href={href}
                   target={href.startsWith("mailto") ? undefined : "_blank"}
                   rel="noopener noreferrer"
                   aria-label={label}
                   className={`w-8 h-8 rounded-lg border border-neutral-200 bg-white flex items-center justify-center text-neutral-400 transition-colors ${hoverClass || "hover:text-[#0a0a0a] hover:border-neutral-400"}`}
-                  whileHover={{ y: -3, scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ duration: 0.2 }}
                 >
                   <svg viewBox="0 0 24 24" fill="currentColor" className="size-3.5" aria-hidden>
                     <path d={path} />
                   </svg>
-                </motion.a>
+                </a>
               ))}
             </div>
 
@@ -109,11 +95,11 @@ export function Footer() {
               <span className="status-dot" style={{ width: 5, height: 5 }} />
               Available for projects
             </div>
-          </motion.div>
+          </div>
 
           {/* ── Nav columns ── */}
-          {NAV_COLS.map((col, ci) => (
-            <motion.div key={col.heading} variants={fadeUp(0.1 + ci * 0.08)}>
+          {NAV_COLS.map((col) => (
+            <div key={col.heading}>
               <p className="mb-4 eyebrow">{col.heading}</p>
               <ul className="space-y-2.5">
                 {col.links.map(({ label, href, external }) => (
@@ -138,37 +124,25 @@ export function Footer() {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {/* ── Giant brand name — Antigravity / Discord style (spans full viewport width, minimal padding) ── */}
-      <motion.div
-        variants={fadeUp(0.2)}
-        initial="hidden"
-        animate={inView ? "visible" : "hidden"}
-        className="mt-12 md:mt-16 overflow-hidden select-none w-full text-center px-4 md:px-6"
-      >
-        <motion.h2
-          whileHover={{ scale: 1.015, y: -4, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 200, damping: 15 }}
+      <div className="mt-12 md:mt-16 overflow-hidden select-none w-full text-center px-4 md:px-6">
+        <h2
           className="footer-brand-name font-black uppercase tracking-[-0.05em] text-[#0a0a0a] leading-[0.8] w-full text-center select-none cursor-default"
-          style={{ fontSize: "clamp(5rem, 22.5vw, 28rem)", letterSpacing: "-0.06em" }}
+          style={{ fontSize: "clamp(4.99995rem, 22.49977vw, 27.99972rem)", letterSpacing: "-0.06em" }}
           aria-hidden
         >
           MAYANK
-        </motion.h2>
-      </motion.div>
+        </h2>
+      </div>
 
       <div className="mx-auto max-w-8xl px-6 md:px-8 pb-10 md:pb-12 pt-4">
         {/* ── Bottom bar — below brand name ── */}
-        <motion.div
-          variants={fadeUp(0.3)}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          className="mt-4 pt-6 border-t border-neutral-100 text-[12px] font-mono text-neutral-400 flex flex-col sm:flex-row items-center justify-between gap-3"
-        >
+        <div className="mt-4 pt-6 border-t border-neutral-100 text-[12px] font-mono text-neutral-400 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>© {new Date().getFullYear()} Mayank · Lucknow, India</p>
           <p className="flex items-center gap-1.5">
             Built with <span className="text-[#0a0a0a] font-medium">Next.js</span>
@@ -183,8 +157,9 @@ export function Footer() {
               Vercel
             </a>
           </p>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );
 }
+
