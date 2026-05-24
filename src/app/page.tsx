@@ -238,13 +238,13 @@ export default function Home() {
                 fill
                 priority
                 sizes="(max-width: 1024px) 0px, 60vw"
-                className="absolute inset-0 w-full h-full object-contain object-[right_bottom] scale-[1.08] origin-bottom-right filter grayscale contrast-[1.05] brightness-[0.98] transition-all duration-700 group-hover/hero:grayscale-0"
+                className="absolute inset-0 w-full h-full object-contain object-[right_bottom] scale-[1.08] translate-y-5 origin-bottom-right filter grayscale contrast-[1.05] brightness-[0.98] transition-all duration-700 group-hover/hero:grayscale-0"
               />
 
               {/* Left edge gradient — blends into white */}
               <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-              {/* Bottom fade */}
-              <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none" />
+              {/* Bottom fade — intensified with solid white base and via color */}
+              <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-white via-white/70 to-transparent z-10 pointer-events-none" />
               {/* Top fade — subtle */}
               <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white/40 to-transparent z-10 pointer-events-none" />
 
