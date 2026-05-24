@@ -150,13 +150,15 @@ export function Footer() {
         animate={inView ? "visible" : "hidden"}
         className="mt-12 md:mt-16 overflow-hidden select-none w-full text-center px-4 md:px-6"
       >
-        <h2
-          className="footer-brand-name font-black uppercase tracking-[-0.05em] text-[#0a0a0a] leading-[0.8] w-full text-center select-none"
+        <motion.h2
+          whileHover={{ scale: 1.015, y: -4, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 200, damping: 15 }}
+          className="footer-brand-name font-black uppercase tracking-[-0.05em] text-[#0a0a0a] leading-[0.8] w-full text-center select-none cursor-default"
           style={{ fontSize: "clamp(5rem, 22.5vw, 28rem)", letterSpacing: "-0.06em" }}
           aria-hidden
         >
           MAYANK
-        </h2>
+        </motion.h2>
       </motion.div>
 
       <div className="mx-auto max-w-8xl px-6 md:px-8 pb-10 md:pb-12 pt-4">
