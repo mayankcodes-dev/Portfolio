@@ -253,10 +253,10 @@ export default function Home() {
                 fill
                 priority
                 sizes="(max-width: 1024px) 0px, 60vw"
-                className="absolute inset-0 w-full h-full object-contain object-[right_bottom] scale-[1.08] translate-y-[60px] origin-bottom-right filter grayscale contrast-[1.05] brightness-[0.98]"
+                className="absolute inset-0 w-full h-full object-contain object-[right_bottom] scale-[1.08] translate-y-[100px] origin-bottom-right filter grayscale contrast-[1.05] brightness-[0.98]"
               />
 
-              {/* Layer 2: Colorful Foreground Image with spotlight mask */}
+              {/* Layer 2: Colorful Foreground Image with vertical cylindrical spotlight mask */}
               <div 
                 className="absolute inset-0 transition-opacity duration-500 ease-out"
                 style={{ opacity: "var(--spotlight-opacity, 0)" }}
@@ -267,10 +267,10 @@ export default function Home() {
                   fill
                   priority
                   sizes="(max-width: 1024px) 0px, 60vw"
-                  className="absolute inset-0 w-full h-full object-contain object-[right_bottom] scale-[1.08] translate-y-[60px] origin-bottom-right filter contrast-[1.05] brightness-[0.98]"
+                  className="absolute inset-0 w-full h-full object-contain object-[right_bottom] scale-[1.08] translate-y-[100px] origin-bottom-right filter contrast-[1.05] brightness-[0.98]"
                   style={{
-                    maskImage: "radial-gradient(circle 120px at var(--mouse-x, 50%) var(--mouse-y, 50%), black 20%, transparent 100%)",
-                    WebkitMaskImage: "radial-gradient(circle 120px at var(--mouse-x, 50%) var(--mouse-y, 50%), black 20%, transparent 100%)",
+                    maskImage: "linear-gradient(to right, transparent calc(var(--mouse-x, 50%) - 160px), black calc(var(--mouse-x, 50%) - 40px), black calc(var(--mouse-x, 50%) + 40px), transparent calc(var(--mouse-x, 50%) + 160px))",
+                    WebkitMaskImage: "linear-gradient(to right, transparent calc(var(--mouse-x, 50%) - 160px), black calc(var(--mouse-x, 50%) - 40px), black calc(var(--mouse-x, 50%) + 40px), transparent calc(var(--mouse-x, 50%) + 160px))",
                   }}
                 />
               </div>
