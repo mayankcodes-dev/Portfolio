@@ -152,18 +152,18 @@ export default function Home() {
                 className="flex gap-16 mb-12 lg:mb-16"
               >
                 <div className="flex flex-col">
-                  <span className="text-4xl md:text-5xl font-bold tracking-tight text-[#0a0a0a] leading-none">
+                  <span className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0a0a0a] leading-none">
                     {stats.loading ? "—" : stats.problems}
                   </span>
-                  <span className="text-[11px] font-sans text-neutral-400 uppercase tracking-[0.18em] mt-2">
+                  <span className="text-[12.5px] font-sans text-neutral-400 uppercase tracking-[0.18em] mt-2">
                     Problems
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-4xl md:text-5xl font-bold tracking-tight text-[#0a0a0a] leading-none">
+                  <span className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0a0a0a] leading-none">
                     {stats.loading ? "—" : stats.contributions}
                   </span>
-                  <span className="text-[11px] font-sans text-neutral-400 uppercase tracking-[0.18em] mt-2">
+                  <span className="text-[12.5px] font-sans text-neutral-400 uppercase tracking-[0.18em] mt-2">
                     Contributions
                   </span>
                 </div>
@@ -187,7 +187,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-6 text-neutral-500 text-lg md:text-xl leading-relaxed font-sans font-light italic"
+                className="mt-6 text-neutral-500 text-lg md:text-xl leading-relaxed font-sans font-light"
               >
                 — It&apos;s Mayank, an aspiring Software Engineer.
               </motion.p>
