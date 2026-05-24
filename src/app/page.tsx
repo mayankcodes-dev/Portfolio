@@ -155,7 +155,7 @@ export default function Home() {
                 transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
               >
                 <h1
-                  className="font-black tracking-[-0.04em] leading-[0.88] text-[#0a0a0a] select-none text-[6.5rem] sm:text-[8rem] md:text-[9.5rem] lg:text-[11rem] xl:text-[12rem]"
+                  className="font-black tracking-[-0.04em] leading-[0.88] text-[#0a0a0a] select-none text-[7rem] sm:text-[9.5rem] md:text-[11rem] lg:text-[13rem] xl:text-[14.5rem]"
                 >
                   Hello.
                 </h1>
@@ -223,7 +223,7 @@ export default function Home() {
           <div
             ref={heroPhotoRef}
             className="relative hidden lg:block group/hero"
-            style={{ position: "sticky", top: 0, height: "100dvh", alignSelf: "start", overflow: "hidden" }}
+            style={{ position: "sticky", top: 0, height: "100dvh", alignSelf: "end", overflow: "hidden" }}
           >
             <motion.div
               initial={{ opacity: 0, scale: 1.04 }}
@@ -231,14 +231,14 @@ export default function Home() {
               transition={{ duration: 1.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="absolute inset-0"
             >
-              {/* Hero photo — fills column, person framed from shoulders up */}
+              {/* Hero photo — fills column, aligned to the bottom */}
               <Image
                 src="/images/mayank-hero-cropped.webp"
                 alt="Mayank — Aspiring Software Engineer"
                 fill
                 priority
                 sizes="(max-width: 1024px) 0px, 60vw"
-                className="absolute inset-0 w-full h-full object-contain object-top filter grayscale contrast-[1.05] brightness-[0.98] transition-all duration-700 group-hover/hero:grayscale-0"
+                className="absolute inset-0 w-full h-full object-cover object-[center_bottom] filter grayscale contrast-[1.05] brightness-[0.98] transition-all duration-700 group-hover/hero:grayscale-0"
               />
 
               {/* Left edge gradient — blends into white */}
@@ -256,7 +256,7 @@ export default function Home() {
 
               {/* Year label — top right */}
               <div className="absolute top-6 right-6 z-20 font-mono text-[10px] text-neutral-400 uppercase tracking-widest">
-                26|26
+                2026
               </div>
             </motion.div>
           </div>
