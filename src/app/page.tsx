@@ -29,31 +29,37 @@ const SOCIALS = [
     href: "https://github.com/coderMayank69",
     label: "GitHub",
     path: "M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.341-3.369-1.341-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.268 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.026 2.747-1.026.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.933.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z",
+    hoverClass: "hover:text-[#24292e] hover:border-[#24292e]/40",
   },
   {
     href: "https://www.linkedin.com/in/codermayank69/",
     label: "LinkedIn",
     path: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z",
+    hoverClass: "hover:text-[#0A66C2] hover:border-[#0A66C2]/40",
   },
   {
     href: "https://leetcode.com/u/coderMayank69/",
     label: "LeetCode",
     path: "M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z",
+    hoverClass: "hover:text-[#FFA116] hover:border-[#FFA116]/40",
   },
   {
     href: "https://codermayank69.hashnode.dev/",
     label: "Blog",
     path: "M13.205.043a13.01 13.01 0 0 0-9.23 3.816A13.038 13.038 0 0 0 .043 13.1c.066 7.18 5.984 12.998 13.162 12.998 7.117 0 13.018-5.836 13.018-13.021 0-7.228-5.877-13.077-13.018-13.034zm1.245 16.918a3.437 3.437 0 0 1-4.864 0 3.44 3.44 0 0 1 0-4.865 3.438 3.438 0 0 1 4.864 0 3.44 3.44 0 0 1 0 4.865z",
+    hoverClass: "hover:text-[#2962FF] hover:border-[#2962FF]/40",
   },
   {
     href: "mailto:mayankbca96325@gmail.com",
     label: "Email",
     path: "M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z",
+    hoverClass: "hover:text-[#EA4335] hover:border-[#EA4335]/40",
   },
   {
     href: "https://drive.google.com/file/d/1HH8bHTrCKS_YGufdW8zs5rgTZcf6xIp8/view?usp=sharing",
     label: "Resume",
     path: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6zm2-5h8v1.5H8V15zm0-3h8v1.5H8V12zm0-3h4v1.5H8V9z",
+    hoverClass: "hover:text-[#0F9D58] hover:border-[#0F9D58]/40",
   },
 ];
 
@@ -193,7 +199,7 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
                 className="mt-8 flex items-center flex-wrap gap-2.5"
               >
-                {SOCIALS.map(({ href, label, path }) => (
+                {SOCIALS.map(({ href, label, path, hoverClass }) => (
                   <div key={label} className="relative group/tip">
                     <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#0a0a0a] px-2 py-1 text-[10px] font-mono text-white opacity-0 transition-opacity duration-150 group-hover/tip:opacity-100 z-50 font-sans">
                       {label}
@@ -205,7 +211,7 @@ export default function Home() {
                       aria-label={label}
                       whileHover={{ scale: 1.08, y: -2 }}
                       whileTap={{ scale: 0.92 }}
-                      className="grid size-10 place-items-center rounded-xl border border-neutral-200 bg-white text-neutral-500 hover:border-neutral-400 hover:text-[#0a0a0a] transition-all duration-200 shadow-sm hover:shadow-md"
+                      className={`grid size-10 place-items-center rounded-xl border border-neutral-200 bg-white text-neutral-500 transition-all duration-200 shadow-sm hover:shadow-md ${hoverClass}`}
                     >
                       <svg viewBox="0 0 24 24" fill="currentColor" className="size-[15px]" aria-hidden>
                         <path d={path} />
@@ -216,21 +222,26 @@ export default function Home() {
               </motion.div>
             </div>
 
-            {/* Scroll hint at the bottom */}
+            {/* Scroll hint at the bottom & availability badge */}
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.6, duration: 0.8 }}
-              className="mt-16 flex items-center gap-2 text-neutral-400"
+              className="mt-16 flex items-center gap-5 text-neutral-400"
             >
               <motion.span
                 animate={{ y: [0, 6, 0] }}
                 transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                className="text-[11px] font-mono uppercase tracking-widest cursor-pointer hover:text-black transition-colors"
+                className="text-[11px] font-mono uppercase tracking-widest cursor-pointer hover:text-black transition-colors flex-shrink-0"
                 onClick={() => scrollTo("skills")}
               >
                 Scroll down ↓
               </motion.span>
+
+              <div className="flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-3 py-1.5 shadow-sm">
+                <span className="status-dot" style={{ width: 6, height: 6 }} />
+                <span className="text-[10px] font-semibold text-[#0a0a0a] whitespace-nowrap">Open to internships</span>
+              </div>
             </motion.div>
           </div>
 
@@ -283,12 +294,6 @@ export default function Home() {
               <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-white via-white/70 to-transparent z-10 pointer-events-none" />
               {/* Top fade — subtle */}
               <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white/40 to-transparent z-10 pointer-events-none" />
-
-              {/* Availability badge — sits just below centre of image */}
-              <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 backdrop-blur-sm px-4 py-2 shadow-md">
-                <span className="status-dot" />
-                <span className="text-xs font-semibold text-[#0a0a0a] whitespace-nowrap">Open to internships</span>
-              </div>
 
               {/* Year label — top right */}
               <div className="absolute top-6 right-6 z-20 font-mono text-[10px] text-neutral-400 uppercase tracking-widest">
