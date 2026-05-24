@@ -120,7 +120,7 @@ export default function Home() {
     <div ref={rootRef} className="w-full bg-white text-[#0a0a0a]">
       <Navbar />
 
-       {/* ══════════════════════════ HERO ══════════════════════════ */}
+      {/* ══════════════════════════ HERO ══════════════════════════ */}
       <main id="hero" className="relative w-full bg-white" style={{ minHeight: "100dvh" }}>
         {/* Background grid */}
         <div className="absolute inset-0 bg-grid opacity-[0.18] pointer-events-none" aria-hidden />
@@ -187,7 +187,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-6 text-neutral-500 text-lg md:text-xl leading-relaxed font-sans font-light"
+                className="mt-6 text-neutral-500 text-xl md:text-xl leading-relaxed font-sans font-light"
               >
                 — It&apos;s Mayank, an aspiring Software Engineer.
               </motion.p>
@@ -270,7 +270,7 @@ export default function Home() {
               />
 
               {/* Layer 2: Colorful Foreground Image with vertical cylindrical spotlight mask */}
-              <div 
+              <div
                 className="absolute inset-0 transition-opacity duration-500 ease-out"
                 style={{ opacity: "var(--spotlight-opacity, 0)" }}
               >
@@ -341,8 +341,8 @@ export default function Home() {
                   blockSize={14}
                   blockMargin={5}
                   theme={{
-                    light: ["#ebebeb", "#c6e6c8", "#74c47a", "#339a3e", "#1a6326"] as [string,string,string,string,string],
-                    dark:  ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string,string,string,string,string],
+                    light: ["#ebebeb", "#c6e6c8", "#74c47a", "#339a3e", "#1a6326"] as [string, string, string, string, string],
+                    dark: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string, string, string, string, string],
                   }}
                 />
               </div>
@@ -355,7 +355,7 @@ export default function Home() {
             <motion.div variants={fadeUp(0.2)} whileHover={{ y: -3, transition: { duration: 0.2 } }} className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm flex items-center gap-5 transition-shadow hover:shadow-md">
               <div className="grid size-12 flex-shrink-0 place-items-center rounded-xl bg-[#FFA116]/10">
                 <svg viewBox="0 0 24 24" fill="#FFA116" className="size-6">
-                  <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0z"/>
+                  <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0z" />
                 </svg>
               </div>
               <div>
@@ -371,7 +371,7 @@ export default function Home() {
             <motion.div variants={fadeUp(0.25)} whileHover={{ y: -3, transition: { duration: 0.2 } }} className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm flex items-center gap-5 transition-shadow hover:shadow-md">
               <div className="grid size-12 flex-shrink-0 place-items-center rounded-xl bg-[#0a0a0a]/5">
                 <svg viewBox="0 0 24 24" fill="currentColor" className="size-6 text-[#0a0a0a]">
-                  <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.56 9.56 0 0 1 12 6.84a9.56 9.56 0 0 1 2.5.34c1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10z"/>
+                  <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.56 9.56 0 0 1 12 6.84a9.56 9.56 0 0 1 2.5.34c1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10z" />
                 </svg>
               </div>
               <div>
