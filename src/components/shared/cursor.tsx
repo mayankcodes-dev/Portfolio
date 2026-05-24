@@ -28,8 +28,8 @@ export default function CustomCursor() {
     };
 
     const tick = gsap.ticker.add(() => {
-      rx += (mx - rx) * 0.14;
-      ry += (my - ry) * 0.14;
+      rx += (mx - rx) * 0.084;
+      ry += (my - ry) * 0.084;
       gsap.set(ring, { x: rx - 16, y: ry - 16 });
     });
 

@@ -142,7 +142,7 @@ export default function Home() {
           {/* ── SIDEBAR — vertical label & line (xl+ only) ── */}
           <div className="hidden xl:flex flex-col items-center justify-between py-16 border-r border-neutral-100 select-none text-neutral-400 font-mono text-[10px] relative h-full">
             <span className="uppercase tracking-[0.25em] -rotate-90 whitespace-nowrap my-16 origin-center text-neutral-400">
-              Software Engineer
+              Full-Stack Developer
             </span>
             <div className="w-px h-32 bg-neutral-200" />
             <span className="uppercase tracking-widest leading-none mt-auto text-neutral-400">
@@ -161,18 +161,18 @@ export default function Home() {
                 className="flex gap-16 mb-12 lg:mb-16"
               >
                 <div className="flex flex-col">
-                  <span className="text-4xl md:text-5xl font-light tracking-tight text-[#0a0a0a] leading-none">
-                    +{stats.loading ? "..." : stats.problems}
+                  <span className="text-4xl md:text-5xl font-bold tracking-tight text-[#0a0a0a] leading-none">
+                    {stats.loading ? "..." : stats.problems}
                   </span>
-                  <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-widest mt-2">
-                    Problems Solved
+                  <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-[0.18em] mt-2">
+                    Problems
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-4xl md:text-5xl font-light tracking-tight text-[#0a0a0a] leading-none">
-                    +{stats.loading ? "..." : stats.contributions}
+                  <span className="text-4xl md:text-5xl font-bold tracking-tight text-[#0a0a0a] leading-none">
+                    {stats.loading ? "..." : stats.contributions}+
                   </span>
-                  <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-widest mt-2">
+                  <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-[0.18em] mt-2">
                     Contributions
                   </span>
                 </div>
@@ -185,9 +185,9 @@ export default function Home() {
                 transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
               >
                 <h1
-                  className="font-light tracking-tight leading-[0.9] text-[#0a0a0a] select-none text-[6.5rem] sm:text-[8rem] md:text-[9.5rem] lg:text-[11rem] xl:text-[12rem]"
+                  className="font-black tracking-[-0.04em] leading-[0.88] text-[#0a0a0a] select-none text-[6.5rem] sm:text-[8rem] md:text-[9.5rem] lg:text-[11rem] xl:text-[12rem]"
                 >
-                  Hello
+                  Hello.
                 </h1>
               </motion.div>
 
