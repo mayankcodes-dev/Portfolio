@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, Award, Mail } from "lucide-react";
 import { useHeroStats } from "@/hooks/use-hero-stats";
 import Navbar from "@/components/navbar";
@@ -21,7 +22,7 @@ const GitHubCalendar = dynamic(
 );
 
 
-gsap.registerPlugin(ScrollToPlugin);
+gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
 
 /* ─── Socials ─── */
 const SOCIALS = [
@@ -89,6 +90,7 @@ function Section({ children, className = "", id }: { children: React.ReactNode; 
 
 export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const mainContentRef = useRef<HTMLDivElement>(null);
   const heroRightRef = useRef<HTMLDivElement>(null);
   const heroPhotoRef = useRef<HTMLDivElement>(null);
   const stats = useHeroStats();
@@ -109,6 +111,33 @@ export default function Home() {
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(heroRightRef.current, { opacity: 0, y: 32, duration: 0.8, ease: "power3.out" });
+
+      /* ── mdsaban-style footer scroll animation ── */
+      /* As the footer scrolls into view, the main content wrapper
+         scales down to 0.9 and gains rounded bottom corners — exact
+         same technique as mdsaban.com (scrub: 0.5 for smooth follow) */
+      if (mainContentRef.current) {
+        gsap.fromTo(
+          mainContentRef.current,
+          {
+            scale: 1,
+            borderBottomLeftRadius: "0px",
+            borderBottomRightRadius: "0px",
+          },
+          {
+            scale: 0.92,
+            borderBottomLeftRadius: "40px",
+            borderBottomRightRadius: "40px",
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: "footer",
+              start: "top 90%",
+              end: "top 20%",
+              scrub: 0.5,
+            },
+          }
+        );
+      }
     }, rootRef);
     return () => ctx.revert();
   }, []);
@@ -117,11 +146,21 @@ export default function Home() {
     gsap.to(window, { duration: 1, ease: "power2.inOut", scrollTo: { y: `#${id}`, offsetY: 80 } });
 
   return (
-    <div ref={rootRef} className="w-full bg-white text-[#0a0a0a]">
+    <div ref={rootRef} className="w-full bg-black overflow-x-hidden">
+      {/* ── Scalable content wrapper (mdsaban scroll effect target) ── */}
+      <div
+        ref={mainContentRef}
+        className="relative w-full bg-white text-[#0a0a0a]"
+        style={{ transformOrigin: "top center", willChange: "transform" }}
+      >
       <Navbar />
 
-      {/* ══════════════════════════ HERO ══════════════════════════ */}
-      <main id="hero" className="relative w-full bg-white" style={{ minHeight: "100dvh" }}>
+      {/* ────────────────────────── HERO ────────────────────────── */}
+      <main
+        id="hero"
+        className="relative w-full bg-white"
+        style={{ minHeight: "100dvh" }}
+      >
         {/* Background grid */}
         <div className="absolute inset-0 bg-grid opacity-[0.18] pointer-events-none" aria-hidden />
 
@@ -271,8 +310,11 @@ export default function Home() {
 
               {/* Layer 2: Colorful Foreground Image with vertical cylindrical spotlight mask */}
               <div
-                className="absolute inset-0 transition-opacity duration-500 ease-out"
-                style={{ opacity: "var(--spotlight-opacity, 0)" }}
+                className="absolute inset-0"
+                style={{
+                  opacity: "var(--spotlight-opacity, 0)",
+                  transition: "opacity 800ms cubic-bezier(0.4, 0, 0.2, 1)",
+                }}
               >
                 <Image
                   src="/images/mayank-hero-cropped.webp"
@@ -499,6 +541,8 @@ export default function Home() {
           </div>
         </div>
       </Section>
+
+      </div>{/* end mainContentRef scaling wrapper */}
 
       <Footer />
     </div>
