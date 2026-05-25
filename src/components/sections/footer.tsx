@@ -50,10 +50,7 @@ const SOCIALS = [
 
 export function Footer() {
   return (
-    <footer
-      className="w-full overflow-hidden bg-[#0a0a0a]"
-      style={{ borderRadius: "40px 40px 0 0" }}
-    >
+    <footer className="w-full overflow-hidden bg-black">
       <div className="mx-auto max-w-8xl px-6 md:px-8 pt-16 md:pt-20 pb-0">
         <div className="grid gap-12 md:grid-cols-[2fr_1fr_1fr]">
           {/* ── Brand column ── */}
