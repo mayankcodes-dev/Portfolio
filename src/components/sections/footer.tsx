@@ -1,5 +1,6 @@
 "use client";
 
+import { forwardRef } from "react";
 import Link from "next/link";
 import { LogoMark } from "@/components/logo";
 
@@ -48,9 +49,9 @@ const SOCIALS = [
   },
 ];
 
-export function Footer() {
+export const Footer = forwardRef<HTMLElement>(function Footer(_, ref) {
   return (
-    <footer className="w-full overflow-hidden bg-black">
+    <footer ref={ref} className="w-full overflow-hidden bg-black">
       <div className="mx-auto max-w-8xl px-6 md:px-8 pt-16 md:pt-20 pb-0">
         <div className="grid gap-12 md:grid-cols-[2fr_1fr_1fr]">
           {/* ── Brand column ── */}
@@ -161,4 +162,4 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+});

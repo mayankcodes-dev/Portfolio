@@ -91,6 +91,7 @@ function Section({ children, className = "", id }: { children: React.ReactNode; 
 export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLElement>(null);
   const heroRightRef = useRef<HTMLDivElement>(null);
   const heroPhotoRef = useRef<HTMLDivElement>(null);
   const stats = useHeroStats();
@@ -109,37 +110,34 @@ export default function Home() {
   };
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
+    // Hero entrance animation
+    if (heroRightRef.current) {
       gsap.from(heroRightRef.current, { opacity: 0, y: 32, duration: 0.8, ease: "power3.out" });
+    }
 
-      /* ── mdsaban-style footer scroll animation ── */
-      /* As the footer scrolls into view, the main content wrapper
-         scales down to 0.9 and gains rounded bottom corners — exact
-         same technique as mdsaban.com (scrub: 0.5 for smooth follow) */
-      if (mainContentRef.current) {
-        gsap.fromTo(
-          mainContentRef.current,
-          {
-            scale: 1,
-            borderBottomLeftRadius: "0px",
-            borderBottomRightRadius: "0px",
+    /* ── Exact mdsaban.com scroll animation ──
+       The white content wrapper scales from 1→0.9 and gains
+       rounded bottom corners as footer scrolls into view.
+       scrub: 0.5 makes it follow the scroll position smoothly.
+       No start/end = ScrollTrigger defaults (top bottom → bottom top)
+       which means the animation runs for the full footer scroll duration. */
+    if (mainContentRef.current && footerRef.current) {
+      gsap.fromTo(
+        mainContentRef.current,
+        { scale: 1, borderRadius: "0" },
+        {
+          scale: 0.9,
+          borderRadius: "0 0 40px 40px",
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: footerRef.current,
+            scrub: 0.5,
           },
-          {
-            scale: 0.92,
-            borderBottomLeftRadius: "40px",
-            borderBottomRightRadius: "40px",
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: "footer",
-              start: "top 90%",
-              end: "top 20%",
-              scrub: 0.5,
-            },
-          }
-        );
-      }
-    }, rootRef);
-    return () => ctx.revert();
+        }
+      );
+    }
+
+    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
 
   const scrollTo = (id: string) =>
@@ -147,10 +145,10 @@ export default function Home() {
 
   return (
     <div ref={rootRef} className="w-full bg-black overflow-x-hidden">
-      {/* ── Scalable content wrapper (mdsaban scroll effect target) ── */}
+      {/* ── White content wrapper — scales + gets rounded bottom corners on scroll ── */}
       <div
         ref={mainContentRef}
-        className="relative w-full bg-white text-[#0a0a0a]"
+        className="relative w-full bg-white text-[#0a0a0a] overflow-hidden"
         style={{ transformOrigin: "top center", willChange: "transform" }}
       >
       <Navbar />
@@ -544,7 +542,7 @@ export default function Home() {
 
       </div>{/* end mainContentRef scaling wrapper */}
 
-      <Footer />
+      <Footer ref={footerRef} />
     </div>
   );
 }
