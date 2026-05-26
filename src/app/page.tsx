@@ -9,7 +9,6 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, Award, Mail } from "lucide-react";
 import { useHeroStats } from "@/hooks/use-hero-stats";
-import { useTypewriter } from "@/hooks/use-typewriter";
 import Navbar from "@/components/navbar";
 import { Footer } from "@/components/sections/footer";
 import SkillsSection from "@/components/sections/skills-section";
@@ -117,11 +116,7 @@ export default function Home() {
   const heroPhotoRef = useRef<HTMLDivElement>(null);
   const stats = useHeroStats();
 
-  // Sidebar cycling roles
-  const typeText = useTypewriter(
-    ["MERN Stack", "Problem Solver", "Open Source", "UI Builder"],
-    70, 35, 2000
-  );
+
 
   // Animated stat counters (count up from 0 when data loads)
   const problemsCount      = useCountUp(stats.loading ? 0 : Number(stats.problems)      || 0);
@@ -202,10 +197,9 @@ export default function Home() {
           {/* ── SIDEBAR — vertical labels & line (xl+ only) ── */}
           <div className="hidden xl:flex flex-col items-center justify-center border-r border-neutral-100 select-none font-mono relative" style={{ height: "100dvh", position: "sticky", top: 0 }}>
             <div className="flex flex-col items-center gap-24">
-              {/* Static label & cycling typewriter role side-by-side */}
+              {/* Static label */}
               <span className="uppercase tracking-[0.22em] -rotate-90 whitespace-nowrap origin-center text-neutral-400 text-[9px]">
-                Full-Stack Developer <span className="text-neutral-300 font-sans mx-1.5">|</span> <span className="text-neutral-300">{typeText}</span>
-                <span className="inline-block w-[1.5px] h-[0.9em] bg-neutral-300 ml-[2px] align-middle animate-blink" />
+                Full-Stack Developer
               </span>
 
               {/* Vertical line below */}
