@@ -20,15 +20,18 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
+    // On non-home pages, always show navbar immediately
+    if (pathname !== "/") {
+      setScrolled(true);
+      return;
+    }
     const onScroll = () => {
-      // Show navbar when scrolled past 80% of the viewport height (Hero section)
       setScrolled(window.scrollY > window.innerHeight * 0.8);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
-    // Run once on mount to set initial state
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [pathname]);
 
   useEffect(() => setMenuOpen(false), [pathname]);
 

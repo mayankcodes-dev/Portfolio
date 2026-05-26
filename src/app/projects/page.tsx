@@ -177,7 +177,7 @@ export default function ProjectsPage() {
                       <img
                         src={project.image}
                         alt={project.title}
-                        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        className="h-full w-full object-cover object-top"
                         loading="lazy"
                         onError={(e) => {
                           const img = e.currentTarget;
@@ -193,18 +193,18 @@ export default function ProjectsPage() {
                       <img
                         src={`https://api.microlink.io?url=${encodeURIComponent(project.link)}&screenshot=true&meta=false&embed=screenshot.url&waitFor=8000`}
                         alt={project.title}
-                        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        className="h-full w-full object-cover object-top"
                         loading="lazy"
                       />
                     ) : (
-                      <Code2 className="size-16 text-neutral-200 transition-transform duration-300 group-hover:scale-110 group-hover:text-neutral-300" />
+                      <Code2 className="size-16 text-neutral-200" />
                     )}
                   </div>
 
                   {/* Content */}
                   <div className="flex flex-1 flex-col gap-3 p-5">
                     <div>
-                      <h2 className="font-bold text-[15px] text-[#0a0a0a] group-hover:underline underline-offset-2">
+                      <h2 className="font-bold text-[15px] text-[#0a0a0a]">
                         {project.title}
                       </h2>
                       <p className="mt-1.5 text-sm leading-relaxed text-neutral-500 line-clamp-2">

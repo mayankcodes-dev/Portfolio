@@ -4,22 +4,44 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ScrollProgress() {
-  const [progress, setProgress] = useState(0);
-  const [showTop, setShowTop] = useState(false);
+  const [progress, setProgress]     = useState(0);
+  const [showTop, setShowTop]       = useState(false);
+  const [inFooter, setInFooter]     = useState(false);
 
   useEffect(() => {
     const update = () => {
-      const el = document.documentElement;
-      const scrollTop = el.scrollTop || document.body.scrollTop;
+      const el          = document.documentElement;
+      const scrollTop   = el.scrollTop || document.body.scrollTop;
       const scrollHeight = el.scrollHeight - el.clientHeight;
-      const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      const pct         = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+
       setProgress(pct);
       setShowTop(scrollTop > 300);
+
+      // Detect when footer (black bg) is visible
+      // Switch scrollbar to dark theme when within ~200px of bottom
+      setInFooter(scrollHeight > 0 && scrollTop > scrollHeight - 200);
     };
+
     window.addEventListener("scroll", update, { passive: true });
     update();
     return () => window.removeEventListener("scroll", update);
   }, []);
+
+  // Inject scrollbar theme class onto <html>
+  useEffect(() => {
+    const html = document.documentElement;
+    if (inFooter) {
+      html.classList.add("scrollbar-dark");
+      html.classList.remove("scrollbar-light");
+    } else {
+      html.classList.add("scrollbar-light");
+      html.classList.remove("scrollbar-dark");
+    }
+    return () => {
+      html.classList.remove("scrollbar-dark", "scrollbar-light");
+    };
+  }, [inFooter]);
 
   return (
     <>

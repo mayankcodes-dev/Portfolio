@@ -616,3 +616,47 @@ button, [role="button"] {
 .animate-blink {
   animation: blink 0.9s step-end infinite;
 }
+
+/* ════════════════════════════════════════════════════════════
+   DYNAMIC SCROLLBAR — white on portfolio, black on footer
+   ════════════════════════════════════════════════════════════ */
+
+/* Light scrollbar — portfolio (white bg) */
+html.scrollbar-light {
+  scrollbar-color: #d4d4d4 #ffffff;
+  scrollbar-width: thin;
+}
+html.scrollbar-light::-webkit-scrollbar {
+  width: 8px;
+}
+html.scrollbar-light::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+html.scrollbar-light::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  border-radius: 999px;
+  border: 2px solid #ffffff;
+}
+html.scrollbar-light::-webkit-scrollbar-thumb:hover {
+  background: #a3a3a3;
+}
+
+/* Dark scrollbar — footer (black bg) */
+html.scrollbar-dark {
+  scrollbar-color: #404040 #000000;
+  scrollbar-width: thin;
+}
+html.scrollbar-dark::-webkit-scrollbar {
+  width: 8px;
+}
+html.scrollbar-dark::-webkit-scrollbar-track {
+  background: #000000;
+}
+html.scrollbar-dark::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 999px;
+  border: 2px solid #000000;
+}
+html.scrollbar-dark::-webkit-scrollbar-thumb:hover {
+  background: #737373;
+}

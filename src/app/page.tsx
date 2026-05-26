@@ -117,14 +117,14 @@ export default function Home() {
   const heroPhotoRef = useRef<HTMLDivElement>(null);
   const stats = useHeroStats();
 
-  // Typewriter cycling subtitle
+  // Sidebar cycling roles
   const typeText = useTypewriter(
-    ["Full-Stack Developer", "MERN Stack Engineer", "Problem Solver", "Open-Source Contributor"],
-    72, 38, 1800
+    ["MERN Stack", "Problem Solver", "Open Source", "UI Builder"],
+    70, 35, 2000
   );
 
   // Animated stat counters (count up from 0 when data loads)
-  const problemsCount     = useCountUp(stats.loading ? 0 : Number(stats.problems)     || 0);
+  const problemsCount      = useCountUp(stats.loading ? 0 : Number(stats.problems)      || 0);
   const contributionsCount = useCountUp(stats.loading ? 0 : Number(stats.contributions) || 0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -199,12 +199,24 @@ export default function Home() {
           style={{ minHeight: "100dvh" }}
         >
 
-          {/* ── SIDEBAR — vertical label & line (xl+ only) ── */}
-          <div className="hidden xl:flex flex-col items-center justify-center border-r border-neutral-100 select-none text-neutral-400 font-mono text-[10px] relative" style={{ height: "100dvh", position: "sticky", top: 0 }}>
-            <div className="flex flex-col items-center gap-6">
+          {/* ── SIDEBAR — vertical labels & line (xl+ only) ── */}
+          <div className="hidden xl:flex flex-col items-center justify-center border-r border-neutral-100 select-none font-mono relative" style={{ height: "100dvh", position: "sticky", top: 0 }}>
+            <div className="flex flex-col items-center gap-5">
+              {/* Cycling typewriter role — above the line */}
+              <span className="uppercase tracking-[0.2em] -rotate-90 whitespace-nowrap origin-center text-neutral-300 text-[8px] min-w-[80px] text-center">
+                {typeText}
+                <span className="inline-block w-[1.5px] h-[0.9em] bg-neutral-300 ml-[2px] align-middle animate-blink" />
+              </span>
+
+              {/* Divider dot */}
+              <span className="w-1 h-1 rounded-full bg-neutral-300" />
+
+              {/* Static label */}
               <span className="uppercase tracking-[0.22em] -rotate-90 whitespace-nowrap origin-center text-neutral-400 text-[9px]">
                 Full-Stack Developer
               </span>
+
+              {/* Vertical line below */}
               <div className="w-px h-20 bg-neutral-300" />
             </div>
           </div>
@@ -250,18 +262,14 @@ export default function Home() {
                 </h1>
               </motion.div>
 
-              {/* Typewriter subtitle */}
+              {/* Static subtitle */}
               <motion.p
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
                 className="mt-6 text-neutral-500 text-xl md:text-xl leading-relaxed font-sans font-light"
               >
-                — It&apos;s Mayank,{" "}
-                <span className="text-[#0a0a0a] font-medium">
-                  {typeText}
-                  <span className="inline-block w-[2px] h-[1.1em] bg-[#0a0a0a] ml-[2px] align-middle animate-blink" />
-                </span>
+                — It&apos;s Mayank, an aspiring Software Engineer.
               </motion.p>
 
               {/* Social icons */}
