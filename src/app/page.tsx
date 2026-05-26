@@ -221,7 +221,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="flex gap-8 sm:gap-16 mb-12 lg:mb-16"
+                className="flex justify-between gap-4 mb-12 lg:mb-16 max-w-[180px] sm:max-w-[210px]"
               >
                 <div className="flex flex-col group cursor-default">
                   <span className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0a0a0a] leading-none tabular-nums transition-all group-hover:scale-105 origin-left">
