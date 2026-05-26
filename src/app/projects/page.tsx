@@ -15,6 +15,7 @@ const GithubIcon = ({ className = "" }: { className?: string }) => (
 
 import SiteNav from "@/components/layout/site-nav";
 import { Footer } from "@/components/sections/footer";
+import FooterScrollWrapper from "@/components/shared/footer-scroll-wrapper";
 import { projects } from "@/data/projects";
 
 const TABS = [
@@ -66,7 +67,8 @@ export default function ProjectsPage() {
   return (
     <>
       <SiteNav />
-      <main className="min-h-screen bg-white text-[#0a0a0a]">
+      <FooterScrollWrapper footer={<Footer />}>
+        <main className="min-h-screen bg-white text-[#0a0a0a]">
 
         {/* ── Hero ── */}
         <section className="relative border-b border-neutral-100 pb-12 pt-8 md:pt-14 bg-[#fafafa]">
@@ -312,8 +314,8 @@ export default function ProjectsPage() {
           </div>
         </section>
 
-      </main>
-      <Footer />
+        </main>
+      </FooterScrollWrapper>
       <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
     </>
   );

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import SiteNav from "@/components/layout/site-nav";
 import { Footer } from "@/components/sections/footer";
+import FooterScrollWrapper from "@/components/shared/footer-scroll-wrapper";
 import { certificates as staticCertificates, certCategories as staticCategories } from "@/data/certificates";
 import type { StrapiCertificate } from "@/lib/strapi";
 import { ExternalLink, Award, ArrowLeft, Loader2 } from "lucide-react";
@@ -168,7 +169,8 @@ export default function CertificationsPage() {
   return (
     <>
       <SiteNav />
-      <main className="min-h-screen bg-white text-[#0a0a0a]">
+      <FooterScrollWrapper footer={<Footer />}>
+        <main className="min-h-screen bg-white text-[#0a0a0a]">
 
         {/* ── Hero ── */}
         <section className="relative border-b border-neutral-100 px-6 md:px-8 pb-12 pt-8 md:pt-14 bg-[#fafafa]">
@@ -261,8 +263,8 @@ export default function CertificationsPage() {
             </>
           )}
         </section>
-      </main>
-      <Footer />
+        </main>
+      </FooterScrollWrapper>
     </>
   );
 }

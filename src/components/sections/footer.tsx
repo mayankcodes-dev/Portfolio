@@ -15,7 +15,6 @@ const NAV_COLS: Array<{
       { label: "Home",         href: "/"               },
       { label: "Projects",     href: "/projects"       },
       { label: "Certificates", href: "/certifications" },
-      { label: "Blog",         href: "/blog"           },
       { label: "Contact",      href: "/contact"        },
     ],
   },
@@ -68,8 +67,11 @@ export const Footer = forwardRef<HTMLElement>(function Footer(_, ref) {
           {/* ── Brand column ── */}
           <div>
             <div className="flex items-center gap-3 mb-4">
-              {/* LogoMark inverted — white on dark */}
-              <div className="invert">
+              {/* LogoMark — hover reveals full color */}
+              <div
+                className="invert transition-[filter] duration-300 hover:invert-0 hover:drop-shadow-[0_0_8px_rgba(99,102,241,0.5)]"
+                title="Mayank's portfolio"
+              >
                 <LogoMark size={36} />
               </div>
               <div>

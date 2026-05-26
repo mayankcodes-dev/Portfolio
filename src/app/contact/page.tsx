@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { Mail, ExternalLink, Send, CheckCircle, AlertCircle, MapPin, Clock, Briefcase, Copy, Check } from "lucide-react";
 import SiteNav from "@/components/layout/site-nav";
 import { Footer } from "@/components/sections/footer";
+import FooterScrollWrapper from "@/components/shared/footer-scroll-wrapper";
 import { useToast, ToastContainer } from "@/components/shared/toast";
 
 type FormState = "idle" | "sending" | "success" | "error";
@@ -95,10 +96,11 @@ export default function Contact() {
   return (
     <>
       <SiteNav />
-      <main className="min-h-screen bg-white text-[#0a0a0a]">
+      <FooterScrollWrapper footer={<Footer />}>
+        <main className="min-h-screen bg-white text-[#0a0a0a]">
 
-        {/* ── Hero ── */}
-        <section className="relative bg-[#fafafa]">
+          {/* ── Hero ── */}
+          <section className="relative bg-[#fafafa]">
           <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" aria-hidden />
           <div className="relative z-10 mx-auto max-w-5xl px-6 md:px-8 pb-10 pt-8 md:pt-16">
             <motion.div
@@ -356,12 +358,34 @@ export default function Contact() {
               className="relative overflow-hidden rounded-2xl border border-neutral-200 shadow-sm"
               style={{ height: "400px" }}
             >
+              {/* Blue glowing pulse on Lucknow location */}
+              <div
+                aria-hidden
+                className="absolute z-10 pointer-events-none"
+                style={{
+                  /* Approximate pixel position of Krishna Nagar, Lucknow in the embed */
+                  top: "42%", left: "53%",
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                {/* Outer pulse ring */}
+                <span
+                  className="absolute inline-flex rounded-full bg-blue-400 opacity-60 animate-ping"
+                  style={{ width: 36, height: 36, top: "50%", left: "50%", transform: "translate(-50%,-50%)" }}
+                />
+                {/* Inner dot */}
+                <span
+                  className="relative inline-flex rounded-full bg-blue-500 shadow-[0_0_16px_6px_rgba(59,130,246,0.55)]"
+                  style={{ width: 14, height: 14, display: "block" }}
+                />
+              </div>
+
               <iframe
                 title="Mayank's location — Krishna Nagar, Lucknow"
                 src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14245.368439659092!2d80.88758535!3d26.797233399999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1777930972403!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
-                style={{ border: 0, filter: "grayscale(0.1) contrast(1.05) saturate(0.9)" }}
+                style={{ border: 0, filter: "grayscale(0.1) contrast(1.05) saturate(0.9)", pointerEvents: "none" }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -390,8 +414,8 @@ export default function Contact() {
           </div>
         </section>
 
-      </main>
-      <Footer />
+        </main>
+      </FooterScrollWrapper>
       <ToastContainer toasts={toasts} onClose={removeToast} />
     </>
   );
