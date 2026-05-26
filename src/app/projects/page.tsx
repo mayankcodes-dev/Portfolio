@@ -18,11 +18,14 @@ import { Footer } from "@/components/sections/footer";
 import { projects } from "@/data/projects";
 
 const TABS = [
+  { label: "All",       value: "all"      },
   { label: "Freelance", value: "freelance" },
-  { label: "Personal",  value: "personal" },
-  { label: "Group",     value: "group" },
+  { label: "Personal",  value: "personal"  },
+  { label: "Group",     value: "group"     },
 ] as const;
 type TabValue = typeof TABS[number]["value"];
+
+const TYPE_ORDER: Record<string, number> = { freelance: 0, personal: 1, group: 2 };
 
 const fadeUp = (delay = 0) => ({
   hidden:  { opacity: 0, y: 20 },
@@ -30,12 +33,20 @@ const fadeUp = (delay = 0) => ({
 });
 
 export default function ProjectsPage() {
-  const [tab, setTab] = useState<TabValue>("freelance");
+  const [tab, setTab] = useState<TabValue>("all");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const filtered = projects.filter(p => p.type === tab);
+  const filtered = tab === "all" ? projects : projects.filter(p => p.type === tab);
 
-  const sorted = [...filtered].sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0));
+  const sorted = [...filtered].sort((a, b) => {
+    // Pinned first, then by type order, then alphabetically
+    if (b.isPinned !== a.isPinned) return (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0);
+    if (tab === "all") {
+      const typeOrder = TYPE_ORDER[a.type] - TYPE_ORDER[b.type];
+      if (typeOrder !== 0) return typeOrder;
+    }
+    return a.title.localeCompare(b.title);
+  });
 
   return (
     <>
@@ -86,7 +97,9 @@ export default function ProjectsPage() {
               {/* Filter tabs */}
               <motion.div variants={fadeUp(0.16)} className="mt-8 flex flex-wrap gap-2">
                 {TABS.map(({ label, value }) => {
-                  const count = projects.filter(p => p.type === value).length;
+                  const count = value === "all"
+                    ? projects.length
+                    : projects.filter(p => p.type === value).length;
                   return (
                     <button
                       key={value}
@@ -112,7 +125,7 @@ export default function ProjectsPage() {
         {/* ── Project Grid ── */}
         <section className="mx-auto max-w-6xl px-6 md:px-8 py-12 md:py-16">
           <p className="mb-6 font-mono text-[11px] uppercase tracking-wider text-neutral-400">
-            {sorted.length} project{sorted.length !== 1 ? "s" : ""}
+            {tab === "all" ? `${sorted.length} total` : `${sorted.length} project${sorted.length !== 1 ? "s" : ""}`}
           </p>
 
           <AnimatePresence mode="popLayout">
@@ -236,7 +249,7 @@ export default function ProjectsPage() {
             </motion.div>
           </AnimatePresence>
 
-          {filtered.length === 0 && (
+          {sorted.length === 0 && (
             <div className="flex flex-col items-center justify-center py-24 text-center">
               <Code2 className="mb-4 size-12 text-neutral-200" />
               <p className="text-neutral-500">No projects in this category yet.</p>
