@@ -53,8 +53,8 @@ function SkeletonCard() {
   );
 }
 
-/* Pinned projects in explicit order: YelpCamp → QuickStay → Restraunt Elite */
-const PINNED_ORDER = ["yelp", "quickstay", "restraunt-elite"];
+/* Pinned projects in explicit order: YelpCamp → QuickStay → Reducate University */
+const PINNED_ORDER = ["yelp", "quickstay", "reducate-university"];
 const pinnedProjects = projects
   .filter((p) => p.isPinned)
   .sort((a, b) => {
