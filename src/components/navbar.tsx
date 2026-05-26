@@ -16,7 +16,22 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const pathname   = usePathname();
+  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    // On sub-pages, always show navbar immediately
+    if (pathname !== "/") {
+      setScrolled(true);
+      return;
+    }
+    const onScroll = () => {
+      setScrolled(window.scrollY > window.innerHeight * 0.18);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [pathname]);
 
   useEffect(() => setMenuOpen(false), [pathname]);
 
@@ -27,7 +42,11 @@ export default function Navbar() {
     <>
       <nav
         aria-label="Main navigation"
-        className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] md:w-auto"
+        className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 w-[90%] md:w-auto ${
+          pathname !== "/" || scrolled
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-8 pointer-events-none"
+        }`}
       >
         <div
           className="flex items-center justify-between md:justify-center rounded-full transition-all duration-300 bg-white/95 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-neutral-200 px-4 md:px-6 py-2"
