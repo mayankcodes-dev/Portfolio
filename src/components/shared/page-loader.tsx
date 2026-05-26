@@ -64,7 +64,13 @@ export default function PageLoader() {
       }, line.delay)
     );
 
-    const exitTimer = setTimeout(() => setExiting(true), TOTAL_DURATION);
+    const exitTimer = setTimeout(() => {
+      setExiting(true);
+      if (typeof window !== "undefined") {
+        (window as any).__loaderFinished = true;
+        window.dispatchEvent(new Event("loaderFinished"));
+      }
+    }, TOTAL_DURATION);
     const doneTimer = setTimeout(() => setDone(true), TOTAL_DURATION + 450);
 
     return () => {

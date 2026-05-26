@@ -122,9 +122,23 @@ export default function Home() {
   const statsRef = useRef<HTMLDivElement>(null);
   const statsInView = useInView(statsRef, { once: true, margin: "-50px" });
 
-  // Animated stat counters (count up from 0 when data loads and element is in view)
-  const problemsCount      = useCountUp(stats.loading ? 0 : Number(stats.problems)      || 0, 1400, statsInView && !stats.loading);
-  const contributionsCount = useCountUp(stats.loading ? 0 : Number(stats.contributions) || 0, 1400, statsInView && !stats.loading);
+  const [loaderDone, setLoaderDone] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ((window as any).__loaderFinished) {
+        setLoaderDone(true);
+        return;
+      }
+      const handleLoaderFinished = () => setLoaderDone(true);
+      window.addEventListener("loaderFinished", handleLoaderFinished);
+      return () => window.removeEventListener("loaderFinished", handleLoaderFinished);
+    }
+  }, []);
+
+  // Animated stat counters (count up from 0 when data loads, element is in view, and loader finishes)
+  const problemsCount      = useCountUp(stats.loading ? 0 : Number(stats.problems)      || 0, 1400, statsInView && !stats.loading && loaderDone);
+  const contributionsCount = useCountUp(stats.loading ? 0 : Number(stats.contributions) || 0, 1400, statsInView && !stats.loading && loaderDone);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
