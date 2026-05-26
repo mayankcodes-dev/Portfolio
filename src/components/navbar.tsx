@@ -26,7 +26,7 @@ export default function Navbar() {
       return;
     }
     const onScroll = () => {
-      setScrolled(window.scrollY > window.innerHeight * 0.18);
+      setScrolled(window.scrollY > window.innerHeight * 0.30);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();

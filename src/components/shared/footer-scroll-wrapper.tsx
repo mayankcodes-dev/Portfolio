@@ -1,6 +1,10 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { useLayoutEffect, useRef, type ReactNode } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface Props {
   children: ReactNode;
@@ -9,19 +13,54 @@ interface Props {
 }
 
 /**
- * Wraps <main> content + <Footer> so that they layout naturally.
- * Removed the GSAP scaling animation to eliminate visual scroll gaps and ensure fixed positioning works perfectly.
+ * Wraps <main> content + <Footer> so that:
+ *  - The white content wrapper scales 1→0.95 and gets rounded bottom corners
+ *    as the footer scrolls into view (exact mdsaban.com effect).
+ *  - Works on every sub-page without GSAP logic in each page file.
  */
 export default function FooterScrollWrapper({ children, footer, className = "" }: Props) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const wrapper = wrapperRef.current;
+    const footerEl = footerRef.current;
+    if (!wrapper || !footerEl) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        wrapper,
+        { scale: 1, borderRadius: "0" },
+        {
+          scale: 0.95,
+          borderRadius: "0 0 40px 40px",
+          ease: "none",
+          scrollTrigger: {
+            trigger: footerEl,
+            start: "top bottom",
+            end: "bottom bottom",
+            scrub: true,
+          },
+        }
+      );
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div className="w-full bg-black overflow-x-hidden">
-      {/* White content */}
-      <div className={`relative w-full bg-white text-[#0a0a0a] overflow-hidden ${className}`}>
+      {/* White content — scales on footer scroll */}
+      <div
+        ref={wrapperRef}
+        className={`relative w-full bg-white text-[#0a0a0a] overflow-hidden ${className}`}
+        style={{ transformOrigin: "bottom center", willChange: "transform" }}
+      >
         {children}
       </div>
 
-      {/* Footer */}
-      <div>
+      {/* Footer sits outside the scaling wrapper */}
+      <div ref={footerRef}>
         {footer}
       </div>
     </div>

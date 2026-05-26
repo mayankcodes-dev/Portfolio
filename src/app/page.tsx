@@ -110,6 +110,8 @@ function Section({ children, className = "", id }: { children: React.ReactNode; 
 
 export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const mainContentRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLElement>(null);
   const heroRightRef = useRef<HTMLDivElement>(null);
   const heroPhotoRef = useRef<HTMLDivElement>(null);
   const stats = useHeroStats();
@@ -139,6 +141,24 @@ export default function Home() {
       gsap.from(heroRightRef.current, { opacity: 0, y: 32, duration: 0.8, ease: "power3.out" });
     }
 
+    if (mainContentRef.current && footerRef.current) {
+      gsap.fromTo(
+        mainContentRef.current,
+        { scale: 1, borderRadius: "0" },
+        {
+          scale: 0.95,
+          borderRadius: "0 0 40px 40px",
+          ease: "none",
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: "top bottom",
+            end: "bottom bottom",
+            scrub: true,
+          },
+        }
+      );
+    }
+
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
 
@@ -148,8 +168,12 @@ export default function Home() {
   return (
     <div ref={rootRef} className="w-full bg-black overflow-x-hidden">
       <Navbar />
-      {/* ── White content wrapper ── */}
-      <div className="relative w-full bg-white text-[#0a0a0a] overflow-hidden">
+      {/* ── White content wrapper — scales + gets rounded bottom corners on scroll ── */}
+      <div
+        ref={mainContentRef}
+        className="relative w-full bg-white text-[#0a0a0a] overflow-hidden"
+        style={{ transformOrigin: "bottom center", willChange: "transform" }}
+      >
 
       {/* ────────────────────────── HERO ────────────────────────── */}
       <main
@@ -567,7 +591,7 @@ export default function Home() {
 
       </div>
 
-      <Footer />
+      <Footer ref={footerRef} />
     </div>
   );
 }
