@@ -21,6 +21,7 @@ import { projects } from "@/data/projects";
 const TABS = [
   { label: "All",           value: "all"        },
   { label: "Full Stack",    value: "full-stack"  },
+  { label: "Web Apps",      value: "web-apps"    },
   { label: "Freelance",     value: "freelance"   },
   { label: "Personal",      value: "personal"    },
   { label: "Group",         value: "group"       },
@@ -34,6 +35,7 @@ const getFiltered = (tab: TabValue) => {
   if (tab === "all")        return projects;
   if (tab === "full-stack") return projects.filter(p => p.tags?.includes("full-stack"));
   if (tab === "landing")    return projects.filter(p => p.tags?.includes("landing"));
+  if (tab === "web-apps")   return [];
   return projects.filter(p => p.type === tab);
 };
 
@@ -41,6 +43,7 @@ const getCount = (tab: TabValue) => {
   if (tab === "all")        return projects.length;
   if (tab === "full-stack") return projects.filter(p => p.tags?.includes("full-stack")).length;
   if (tab === "landing")    return projects.filter(p => p.tags?.includes("landing")).length;
+  if (tab === "web-apps")   return 0;
   return projects.filter(p => p.type === tab).length;
 };
 
@@ -55,14 +58,7 @@ export default function ProjectsPage() {
 
   const filtered = getFiltered(tab);
 
-  const sorted = [...filtered].sort((a, b) => {
-    if (b.isPinned !== a.isPinned) return (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0);
-    if (tab === "all") {
-      const typeOrder = TYPE_ORDER[a.type] - TYPE_ORDER[b.type];
-      if (typeOrder !== 0) return typeOrder;
-    }
-    return a.title.localeCompare(b.title);
-  });
+  const sorted = filtered;
 
   return (
     <>
@@ -143,128 +139,148 @@ export default function ProjectsPage() {
             {tab === "all" ? `${sorted.length} total` : `${sorted.length} project${sorted.length !== 1 ? "s" : ""}`}
           </p>
 
-          <AnimatePresence mode="popLayout">
-            <motion.div layout className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {sorted.map((project, idx) => (
-                <motion.article
-                  key={project.id}
-                  layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.97 }}
-                  transition={{ duration: 0.3, delay: idx * 0.04 }}
-                  className="card-eng group relative flex flex-col overflow-hidden cursor-pointer"
-                  onClick={() => setSelectedProject(project)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => e.key === "Enter" && setSelectedProject(project)}
-                  aria-label={`View details for ${project.title}`}
-                >
-                  {/* Badges */}
-                  <div className="absolute right-3 top-3 z-10 flex flex-col items-end gap-1.5">
-
-                    <span className={[
-                      "badge text-[10px] capitalize",
-                      project.type === "freelance" ? "badge-yellow" : 
-                      project.type === "group" ? "badge-blue text-blue-700 bg-blue-50 border-blue-200" : 
-                      "badge-green",
-                    ].join(" ")}>
-                      {project.type}
-                    </span>
-                  </div>
-
-                  {/* Cover */}
-                  <div className="relative flex h-44 items-center justify-center bg-neutral-50 border-b border-neutral-100 overflow-hidden">
-                    {project.image ? (
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="h-full w-full object-cover object-top"
-                        loading="lazy"
-                        onError={(e) => {
-                          const img = e.currentTarget;
-                          if (project.link && !img.dataset.fallback) {
-                            img.dataset.fallback = "1";
-                            img.src = `https://api.microlink.io?url=${encodeURIComponent(project.link)}&screenshot=true&meta=false&embed=screenshot.url&waitFor=8000`;
-                          } else {
-                            img.style.display = "none";
-                          }
-                        }}
-                      />
-                    ) : project.link ? (
-                      <img
-                        src={`https://api.microlink.io?url=${encodeURIComponent(project.link)}&screenshot=true&meta=false&embed=screenshot.url&waitFor=8000`}
-                        alt={project.title}
-                        className="h-full w-full object-cover object-top"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <Code2 className="size-16 text-neutral-200" />
-                    )}
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex flex-1 flex-col gap-3 p-5">
-                    <div>
-                      <h2 className="font-bold text-[15px] text-[#0a0a0a]">
-                        {project.title}
-                      </h2>
-                      <p className="mt-1.5 text-sm leading-relaxed text-neutral-500 line-clamp-2">
-                        {project.description}
-                      </p>
+          {tab === "web-apps" ? (
+            <div className="flex flex-col items-center justify-center py-20 text-center border border-dashed border-neutral-200 rounded-2xl bg-neutral-50/50 max-w-2xl mx-auto px-6">
+              <div className="relative flex items-center justify-center size-16 rounded-2xl bg-white border border-neutral-100 shadow-sm mb-6">
+                <Code2 className="size-8 text-[#0a0a0a]" />
+                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                </span>
+              </div>
+              <h3 className="text-lg font-bold text-[#0a0a0a] mb-2">Work in Progress</h3>
+              <p className="text-neutral-500 text-sm max-w-sm leading-relaxed mb-6">
+                I am currently working on some exciting full-scale web applications. They will be added here as soon as they are ready!
+              </p>
+              <div className="flex gap-2">
+                <div className="h-1.5 w-1.5 rounded-full bg-[#0a0a0a] animate-bounce delay-75" />
+                <div className="h-1.5 w-1.5 rounded-full bg-[#0a0a0a] animate-bounce delay-150" />
+                <div className="h-1.5 w-1.5 rounded-full bg-[#0a0a0a] animate-bounce delay-300" />
+              </div>
+            </div>
+          ) : (
+            <AnimatePresence mode="popLayout">
+              <motion.div layout className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {sorted.map((project, idx) => (
+                  <motion.article
+                    key={project.id}
+                    layout
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.97 }}
+                    transition={{ duration: 0.3, delay: idx * 0.04 }}
+                    className="card-eng group relative flex flex-col overflow-hidden cursor-pointer"
+                    onClick={() => setSelectedProject(project)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === "Enter" && setSelectedProject(project)}
+                    aria-label={`View details for ${project.title}`}
+                  >
+                    {/* Badges */}
+                    <div className="absolute right-3 top-3 z-10 flex flex-col items-end gap-1.5">
+                      <span className={[
+                        "badge text-[10px] capitalize",
+                        project.type === "freelance" ? "badge-yellow" : 
+                        project.type === "group" ? "badge-blue text-blue-700 bg-blue-50 border-blue-200" : 
+                        "badge-green",
+                      ].join(" ")}>
+                        {project.type}
+                      </span>
                     </div>
 
-                    {/* Tech stack */}
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.technologies.slice(0, 5).map((tech) => (
-                        <span
-                          key={tech}
-                          className="text-[11px] font-mono text-neutral-500 bg-neutral-50 border border-neutral-100 rounded-md px-2 py-0.5"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.technologies.length > 5 && (
-                        <span className="text-[11px] text-neutral-400 bg-neutral-50 border border-neutral-100 rounded-md px-2 py-0.5">
-                          +{project.technologies.length - 5}
-                        </span>
+                    {/* Cover */}
+                    <div className="relative flex h-44 items-center justify-center bg-neutral-50 border-b border-neutral-100 overflow-hidden">
+                      {project.image ? (
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          className="h-full w-full object-cover object-top"
+                          loading="lazy"
+                          onError={(e) => {
+                            const img = e.currentTarget;
+                            if (project.link && !img.dataset.fallback) {
+                              img.dataset.fallback = "1";
+                              img.src = `https://api.microlink.io?url=${encodeURIComponent(project.link)}&screenshot=true&meta=false&embed=screenshot.url&waitFor=8000`;
+                            } else {
+                              img.style.display = "none";
+                            }
+                          }}
+                        />
+                      ) : project.link ? (
+                        <img
+                          src={`https://api.microlink.io?url=${encodeURIComponent(project.link)}&screenshot=true&meta=false&embed=screenshot.url&waitFor=8000`}
+                          alt={project.title}
+                          className="h-full w-full object-cover object-top"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <Code2 className="size-16 text-neutral-200" />
                       )}
                     </div>
 
-                    {/* Links */}
-                    <div className="mt-auto flex items-center gap-2 pt-2">
-                      {project.github && (
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-outline btn-sm text-[12px]"
-                          aria-label={`View ${project.title} on GitHub`}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <GithubIcon className="size-3.5" /> Code
-                        </a>
-                      )}
-                      {project.link && (
-                        <a
-                          href={project.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-primary btn-sm text-[12px]"
-                          aria-label={`View live demo of ${project.title}`}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <ExternalLink className="size-3.5" /> Live
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </motion.article>
-              ))}
-            </motion.div>
-          </AnimatePresence>
+                    {/* Content */}
+                    <div className="flex flex-1 flex-col gap-3 p-5">
+                      <div>
+                        <h2 className="font-bold text-[15px] text-[#0a0a0a]">
+                          {project.title}
+                        </h2>
+                        <p className="mt-1.5 text-sm leading-relaxed text-neutral-500 line-clamp-2">
+                          {project.description}
+                        </p>
+                      </div>
 
-          {sorted.length === 0 && (
+                      {/* Tech stack */}
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.technologies.slice(0, 5).map((tech) => (
+                          <span
+                            key={tech}
+                            className="text-[11px] font-mono text-neutral-500 bg-neutral-50 border border-neutral-100 rounded-md px-2 py-0.5"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                        {project.technologies.length > 5 && (
+                          <span className="text-[11px] text-neutral-400 bg-neutral-50 border border-neutral-100 rounded-md px-2 py-0.5">
+                            +{project.technologies.length - 5}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Links */}
+                      <div className="mt-auto flex items-center gap-2 pt-2">
+                        {project.github && (
+                          <a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-outline btn-sm text-[12px]"
+                            aria-label={`View ${project.title} on GitHub`}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <GithubIcon className="size-3.5" /> Code
+                          </a>
+                        )}
+                        {project.link && (
+                          <a
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-primary btn-sm text-[12px]"
+                            aria-label={`View live demo of ${project.title}`}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <ExternalLink className="size-3.5" /> Live
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </motion.article>
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          )}
+
+          {tab !== "web-apps" && sorted.length === 0 && (
             <div className="flex flex-col items-center justify-center py-24 text-center">
               <Code2 className="mb-4 size-12 text-neutral-200" />
               <p className="text-neutral-500">No projects in this category yet.</p>

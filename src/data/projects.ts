@@ -84,7 +84,7 @@ export const projects: Project[] = [
     longDescription: "Reducate University is a premium college landing page built with Next.js and Tailwind CSS. Features a hero section with animated typography, course catalogue, faculty showcase, testimonials, and a contact section — all optimised for minimalism, readability, and conversion.",
     image: "",
     technologies: ["Next.js", "Tailwind CSS", "React"],
-    link: "",
+    link: "https://college-landing-page-lemon.vercel.app/",
     github: "https://github.com/coderMayank69/College-LandingPage",
     featured: true,
     isPinned: true,

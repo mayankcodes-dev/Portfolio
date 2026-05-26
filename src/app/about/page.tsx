@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import SiteNav from "@/components/layout/site-nav";
 import { Footer } from "@/components/sections/footer";
+import FooterScrollWrapper from "@/components/shared/footer-scroll-wrapper";
 import { certificates } from "@/data/certificates";
 
 /* GitHub Calendar loaded only on client (no SSR) — avoids window errors */
@@ -113,7 +114,8 @@ export default function About() {
   return (
     <>
       <SiteNav />
-      <main className="min-h-screen bg-white text-[#0a0a0a]">
+      <FooterScrollWrapper footer={<Footer />}>
+        <main className="min-h-screen bg-white text-[#0a0a0a]">
 
         {/* ════ HERO ════ */}
         <section className="relative bg-[#fafafa]">
@@ -336,8 +338,8 @@ export default function About() {
           </div>
         </AnimatedSection>
 
-      </main>
-      <Footer />
+        </main>
+      </FooterScrollWrapper>
     </>
   );
 }

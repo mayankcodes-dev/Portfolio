@@ -70,8 +70,8 @@ export default function SkillsSection() {
                 whileTap={{ scale: 0.97 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget;
-                  el.style.borderColor = skill.color;
-                  el.style.boxShadow = `0 0 0 1px ${skill.color}40, 0 8px 24px -4px ${skill.color}30`;
+                  el.style.borderColor = "#0a0a0a";
+                  el.style.boxShadow = "0 8px 20px -4px rgba(10, 10, 10, 0.08)";
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget;
@@ -79,14 +79,6 @@ export default function SkillsSection() {
                   el.style.boxShadow = "";
                 }}
               >
-                {/* Tooltip — level label */}
-                <span
-                  className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-[10px] font-mono uppercase tracking-wider text-white opacity-0 group-hover/card:opacity-100 transition-opacity duration-150 z-20"
-                  style={{ background: skill.color || "#0a0a0a" }}
-                >
-                  {LEVEL_LABELS[skill.level]}
-                </span>
-
                 {/* Logo */}
                 <div
                   className="flex items-center justify-center w-11 h-11 rounded-lg transition-transform duration-200 group-hover/card:scale-110"

@@ -201,23 +201,15 @@ export default function Home() {
 
           {/* ── SIDEBAR — vertical labels & line (xl+ only) ── */}
           <div className="hidden xl:flex flex-col items-center justify-center border-r border-neutral-100 select-none font-mono relative" style={{ height: "100dvh", position: "sticky", top: 0 }}>
-            <div className="flex flex-col items-center gap-5">
-              {/* Cycling typewriter role — above the line */}
-              <span className="uppercase tracking-[0.2em] -rotate-90 whitespace-nowrap origin-center text-neutral-300 text-[8px] min-w-[80px] text-center">
-                {typeText}
+            <div className="flex flex-col items-center gap-24">
+              {/* Static label & cycling typewriter role side-by-side */}
+              <span className="uppercase tracking-[0.22em] -rotate-90 whitespace-nowrap origin-center text-neutral-400 text-[9px]">
+                Full-Stack Developer <span className="text-neutral-300 font-sans mx-1.5">|</span> <span className="text-neutral-300">{typeText}</span>
                 <span className="inline-block w-[1.5px] h-[0.9em] bg-neutral-300 ml-[2px] align-middle animate-blink" />
               </span>
 
-              {/* Divider dot */}
-              <span className="w-1 h-1 rounded-full bg-neutral-300" />
-
-              {/* Static label */}
-              <span className="uppercase tracking-[0.22em] -rotate-90 whitespace-nowrap origin-center text-neutral-400 text-[9px]">
-                Full-Stack Developer
-              </span>
-
               {/* Vertical line below */}
-              <div className="w-px h-20 bg-neutral-300" />
+              <div className="w-px h-24 bg-neutral-300" />
             </div>
           </div>
 
