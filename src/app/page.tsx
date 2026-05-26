@@ -71,10 +71,13 @@ const fadeUp = (delay = 0) => ({
 });
 
 /* ─── CountUp hook ─── */
-function useCountUp(target: number, duration = 1400) {
+function useCountUp(target: number, duration = 1400, trigger = true) {
   const [count, setCount] = useState(0);
   useEffect(() => {
-    if (!target) return;
+    if (!target || !trigger) {
+      if (!trigger) setCount(0);
+      return;
+    }
     let start: number | null = null;
     const step = (ts: number) => {
       if (!start) start = ts;
@@ -86,7 +89,7 @@ function useCountUp(target: number, duration = 1400) {
     };
     const raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, [target, duration]);
+  }, [target, duration, trigger]);
   return count;
 }
 
@@ -116,11 +119,12 @@ export default function Home() {
   const heroPhotoRef = useRef<HTMLDivElement>(null);
   const stats = useHeroStats();
 
+  const statsRef = useRef<HTMLDivElement>(null);
+  const statsInView = useInView(statsRef, { once: true, margin: "-50px" });
 
-
-  // Animated stat counters (count up from 0 when data loads)
-  const problemsCount      = useCountUp(stats.loading ? 0 : Number(stats.problems)      || 0);
-  const contributionsCount = useCountUp(stats.loading ? 0 : Number(stats.contributions) || 0);
+  // Animated stat counters (count up from 0 when data loads and element is in view)
+  const problemsCount      = useCountUp(stats.loading ? 0 : Number(stats.problems)      || 0, 1400, statsInView && !stats.loading);
+  const contributionsCount = useCountUp(stats.loading ? 0 : Number(stats.contributions) || 0, 1400, statsInView && !stats.loading);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -208,6 +212,7 @@ export default function Home() {
             <div className="flex-1 flex flex-col justify-center">
               {/* Live stats row */}
               <motion.div
+                ref={statsRef}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
