@@ -596,14 +596,14 @@ button, [role="button"] {
 .footer-brand-name {
   font-stretch: 110%;
   letter-spacing: -0.06em;
-  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.08);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04);
   opacity: 0.95;
-  transition: opacity 0.4s ease, letter-spacing 0.4s ease;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), letter-spacing 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .footer-brand-name:hover {
   opacity: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: 0.06em;
 }
 
 /* ════════════════════════════════════════════════════════════

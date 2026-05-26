@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 
-export const Footer = forwardRef<HTMLDivElement, {}>(function Footer(_, ref) {
+export const Footer = forwardRef<HTMLElement, {}>(function Footer(_, ref) {
   return (
     <footer ref={ref} className="w-full overflow-hidden bg-black">
 
@@ -10,7 +10,7 @@ export const Footer = forwardRef<HTMLDivElement, {}>(function Footer(_, ref) {
       <div className="mt-12 md:mt-16 overflow-hidden select-none w-full text-center px-4 md:px-6">
         <h2
           className="footer-brand-name font-black uppercase text-white leading-[0.8] w-full text-center select-none cursor-default"
-          style={{ fontSize: "clamp(4.75rem, 21.37vw, 26.6rem)", letterSpacing: "-0.06em" }}
+          style={{ fontSize: "clamp(4.75rem, 21.37vw, 26.6rem)" }}
           aria-hidden
         >
           MAYANK

@@ -224,7 +224,7 @@ export default function Home() {
                 className="flex justify-between gap-4 mb-12 lg:mb-16 max-w-[180px] sm:max-w-[210px]"
               >
                 <div className="flex flex-col group cursor-default">
-                  <span className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0a0a0a] leading-none tabular-nums transition-all group-hover:scale-105 origin-left">
+                  <span className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0a0a0a] leading-none tabular-nums">
                     {stats.loading ? "—" : problemsCount}
                   </span>
                   <span className="text-[12.5px] font-sans text-neutral-400 uppercase tracking-[0.18em] mt-2">
@@ -232,7 +232,7 @@ export default function Home() {
                   </span>
                 </div>
                 <div className="flex flex-col group cursor-default">
-                  <span className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0a0a0a] leading-none tabular-nums transition-all group-hover:scale-105 origin-left">
+                  <span className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0a0a0a] leading-none tabular-nums">
                     {stats.loading ? "—" : contributionsCount}
                   </span>
                   <span className="text-[12.5px] font-sans text-neutral-400 uppercase tracking-[0.18em] mt-2">
