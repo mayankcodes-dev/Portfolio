@@ -21,7 +21,8 @@ import { projects } from "@/data/projects";
 const TABS = [
   { label: "All",           value: "all"        },
   { label: "Full Stack",    value: "full-stack"  },
-  { label: "Web Apps",      value: "web-apps"    },
+  { label: "Dashboard",     value: "dashboard"   },
+  { label: "Mobile App",    value: "mobile-app"  },
   { label: "Freelance",     value: "freelance"   },
   { label: "Personal",      value: "personal"    },
   { label: "Group",         value: "group"       },
@@ -35,7 +36,8 @@ const getFiltered = (tab: TabValue) => {
   if (tab === "all")        return projects;
   if (tab === "full-stack") return projects.filter(p => p.tags?.includes("full-stack"));
   if (tab === "landing")    return projects.filter(p => p.tags?.includes("landing"));
-  if (tab === "web-apps")   return [];
+  if (tab === "dashboard")  return projects.filter(p => p.tags?.includes("dashboard"));
+  if (tab === "mobile-app") return [];
   return projects.filter(p => p.type === tab);
 };
 
@@ -43,7 +45,8 @@ const getCount = (tab: TabValue) => {
   if (tab === "all")        return projects.length;
   if (tab === "full-stack") return projects.filter(p => p.tags?.includes("full-stack")).length;
   if (tab === "landing")    return projects.filter(p => p.tags?.includes("landing")).length;
-  if (tab === "web-apps")   return 0;
+  if (tab === "dashboard")  return projects.filter(p => p.tags?.includes("dashboard")).length;
+  if (tab === "mobile-app") return 0;
   return projects.filter(p => p.type === tab).length;
 };
 
@@ -139,7 +142,7 @@ export default function ProjectsPage() {
             {tab === "all" ? `${sorted.length} total` : `${sorted.length} project${sorted.length !== 1 ? "s" : ""}`}
           </p>
 
-          {tab === "web-apps" ? (
+          {tab === "mobile-app" ? (
             <div className="flex flex-col items-center justify-center py-20 text-center border border-dashed border-neutral-200 rounded-2xl bg-neutral-50/50 max-w-2xl mx-auto px-6">
               <div className="relative flex items-center justify-center size-16 rounded-2xl bg-white border border-neutral-100 shadow-sm mb-6">
                 <Code2 className="size-8 text-[#0a0a0a]" />
@@ -150,7 +153,7 @@ export default function ProjectsPage() {
               </div>
               <h3 className="text-lg font-bold text-[#0a0a0a] mb-2">Work in Progress</h3>
               <p className="text-neutral-500 text-sm max-w-sm leading-relaxed mb-6">
-                I am currently working on some exciting full-scale web applications. They will be added here as soon as they are ready!
+                I am currently working on some exciting mobile applications. They will be added here as soon as they are ready!
               </p>
               <div className="flex gap-2">
                 <div className="h-1.5 w-1.5 rounded-full bg-[#0a0a0a] animate-bounce delay-75" />
@@ -280,7 +283,7 @@ export default function ProjectsPage() {
             </AnimatePresence>
           )}
 
-          {tab !== "web-apps" && sorted.length === 0 && (
+          {tab !== "mobile-app" && sorted.length === 0 && (
             <div className="flex flex-col items-center justify-center py-24 text-center">
               <Code2 className="mb-4 size-12 text-neutral-200" />
               <p className="text-neutral-500">No projects in this category yet.</p>

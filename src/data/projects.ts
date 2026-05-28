@@ -11,7 +11,7 @@ export interface Project {
   isPinned: boolean;
   type: "personal" | "freelance" | "group";
   period?: string;
-  tags?: Array<"full-stack" | "landing">;
+  tags?: Array<"full-stack" | "landing" | "dashboard">;
 }
 
 export const projects: Project[] = [
@@ -109,7 +109,7 @@ export const projects: Project[] = [
     isPinned: true,
     type: "personal",
     period: "Dec 2025 – Jan 2026",
-    tags: ["full-stack"],
+    tags: ["full-stack", "dashboard"],
   },
   {
     id: "yelp",
@@ -235,7 +235,7 @@ export const projects: Project[] = [
     isPinned: false,
     type: "group",
     period: "2025",
-    tags: ["full-stack"],
+    tags: ["full-stack", "dashboard"],
   },
   {
     id: "synapse-code-auditor",
