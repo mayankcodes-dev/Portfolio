@@ -25,6 +25,10 @@ export default function CustomCursor() {
     const onMove = (e: MouseEvent) => {
       mx = e.clientX;
       my = e.clientY;
+      
+      // Update dot position instantly on mouse move for zero latency
+      dot.style.transform = `translate3d(${mx}px, ${my}px, 0) scale(${clickScale})`;
+      
       if (!hasMoved) {
         hasMoved = true;
         rx = mx;
@@ -36,9 +40,9 @@ export default function CustomCursor() {
 
     const tick = () => {
       if (hasMoved) {
-        // Smooth interpolation for the ring
-        rx += (mx - rx) * 0.085;
-        ry += (my - ry) * 0.085;
+        // Snappier ring tracking (0.16 instead of 0.085)
+        rx += (mx - rx) * 0.16;
+        ry += (my - ry) * 0.16;
 
         // Smooth interpolation for mouse click scale
         clickScale += (targetClickScale - clickScale) * 0.25;
