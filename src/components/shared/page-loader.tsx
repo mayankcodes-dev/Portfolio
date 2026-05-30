@@ -114,7 +114,7 @@ export default function PageLoader() {
       />
 
       {/* Terminal window */}
-      <div className="relative w-full max-w-xl mx-4 sm:mx-6 shadow-2xl rounded-lg overflow-hidden border border-neutral-300">
+      <div className="relative w-full max-w-2xl mx-4 sm:mx-6 shadow-2xl rounded-lg overflow-hidden border border-neutral-300">
 
         {/* ── Title bar ── */}
         <div className="flex items-center justify-between bg-[#2d2d2d] px-4 py-2.5">
@@ -129,7 +129,7 @@ export default function PageLoader() {
         </div>
 
         {/* ── Terminal body ── */}
-        <div className="bg-[#0c0c0c] px-4 py-5 font-mono text-[14.5px] sm:text-[16px] min-h-[480px]">
+        <div className="bg-[#0c0c0c] px-4 py-5 font-mono text-[14.5px] sm:text-[16px] min-h-[360px]">
           <div className="space-y-2">
             {BOOT_LINES.slice(0, visibleLines).map((line, i) => {
               const isLast = i === visibleLines - 1;
