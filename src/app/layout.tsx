@@ -22,8 +22,8 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Mayank | Software Engineer",
-    template: "%s | Mayank",
+    default: "Mayank Singh",
+    template: "Mayank Singh | %s",
   },
   description:
     "Mayank is a MERN software engineer from Lucknow who builds polished web products with Next.js, TypeScript, and modern tooling. Available for internships & freelance.",
@@ -44,13 +44,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
     siteName: "Mayank — Developer Portfolio",
-    title: "Mayank | Full-Stack Developer",
+    title: "Mayank Singh",
     description:
       "Building polished web products with Next.js, TypeScript, and thoughtful engineering.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mayank | Full-Stack Developer",
+    title: "Mayank Singh",
     description:
       "Building polished web products with Next.js, TypeScript, and thoughtful engineering.",
   },
