@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { ArrowRight, Award, Mail } from "lucide-react";
+import { ArrowRight, Award, Mail, MapPin, ExternalLink } from "lucide-react";
 import { useHeroStats } from "@/hooks/use-hero-stats";
 import Navbar from "@/components/navbar";
 import { Footer } from "@/components/sections/footer";
@@ -527,6 +527,8 @@ export default function Home() {
       <Section id="contact" className="border-t border-neutral-100 bg-[#fafafa]">
         <div className="mx-auto max-w-6xl px-6 md:px-8 py-24 md:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
+
+            {/* ── Left: copy + action buttons ── */}
             <div>
               <p className="eyebrow mb-4">Let&apos;s connect</p>
               <h2 className="font-extrabold tracking-tighter text-[#0a0a0a]" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}>
@@ -536,51 +538,105 @@ export default function Home() {
                 I&apos;m actively looking for internships and freelance projects.
                 If you have an idea, let&apos;s make it happen.
               </p>
+
+              {/* Buttons: Email + WhatsApp */}
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link href="/contact" className="btn btn-primary btn-lg" id="cta-contact">
-                  <Mail className="size-4" /> Get in touch
-                </Link>
+                {/* Email button */}
                 <a
-                  href="https://github.com/mayankcodes-dev"
+                  href="mailto:admin@mayankcodes.dev"
+                  className="btn btn-primary btn-lg"
+                  id="cta-email"
+                >
+                  <Mail className="size-4" />
+                  Email me
+                </a>
+
+                {/* WhatsApp button */}
+                <a
+                  href="https://wa.me/message/4BKKNWXBQUQ7G1"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-outline btn-lg"
-                  id="cta-github"
+                  className="btn btn-outline btn-lg gap-2"
+                  id="cta-whatsapp"
                 >
                   <svg viewBox="0 0 24 24" fill="currentColor" className="size-4" aria-hidden>
-                    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.341-3.369-1.341-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.268 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.026 2.747-1.026.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.933.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
                   </svg>
-                  GitHub
+                  Chat on WhatsApp
                 </a>
+              </div>
+
+              {/* Quick info row */}
+              <div className="mt-8 flex flex-wrap gap-4 text-sm text-neutral-500">
+                <span className="flex items-center gap-1.5">
+                  <span className="size-1.5 rounded-full bg-emerald-400 inline-block" />
+                  Open to internships &amp; freelance
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="size-1.5 rounded-full bg-neutral-300 inline-block" />
+                  Replies within 24 hours
+                </span>
               </div>
             </div>
 
+            {/* ── Right: Google Map ── */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.15 }}
-              className="card-eng p-8 space-y-4"
+              className="relative overflow-hidden rounded-2xl border border-neutral-200 shadow-sm"
+              style={{ height: "380px" }}
             >
-              {[
-                { icon: "📬", label: "Email", value: "admin@mayankcodes.dev" },
-                { icon: "📍", label: "Location", value: "Lucknow, India" },
-                { icon: "⚡", label: "Status", value: "Open to internships & freelance", badge: "green" },
-                { icon: "🕐", label: "Response", value: "Within 24 hours" },
-              ].map(({ icon, label, value, badge }) => (
-                <div key={label} className="flex items-start gap-3">
-                  <span className="text-base mt-0.5 flex-shrink-0">{icon}</span>
-                  <div className="min-w-0">
-                    <p className="text-[11px] font-mono text-neutral-400 uppercase tracking-wider">{label}</p>
-                    {badge === "green" ? (
-                      <span className="badge badge-green mt-1">{value}</span>
-                    ) : (
-                      <p className="text-sm font-medium text-[#0a0a0a] mt-0.5 truncate">{value}</p>
-                    )}
+              {/* Blue glowing pulse on Lucknow location */}
+              <div
+                aria-hidden
+                className="absolute z-10 pointer-events-none"
+                style={{ top: "42%", left: "53%", transform: "translate(-50%, -50%)" }}
+              >
+                <span
+                  className="absolute inline-flex rounded-full bg-blue-400 opacity-60 animate-ping"
+                  style={{ width: 36, height: 36, top: "50%", left: "50%", transform: "translate(-50%,-50%)" }}
+                />
+                <span
+                  className="relative inline-flex rounded-full bg-blue-500 shadow-[0_0_16px_6px_rgba(59,130,246,0.55)]"
+                  style={{ width: 14, height: 14, display: "block" }}
+                />
+              </div>
+
+              <iframe
+                title="Mayank's location — Krishna Nagar, Lucknow"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14245.368439659092!2d80.88758535!3d26.797233399999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1777930972403!5m2!1sen!2sin"
+                width="100%"
+                height="100%"
+                style={{ border: 0, filter: "grayscale(0.1) contrast(1.05) saturate(0.9)", pointerEvents: "none" }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+
+              {/* Bottom info bar overlay */}
+              <div className="absolute bottom-0 inset-x-0 bg-white/90 backdrop-blur-sm border-t border-neutral-100 px-5 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-[#0a0a0a] text-white">
+                    <MapPin className="size-4" />
+                  </span>
+                  <div>
+                    <p className="text-xs font-semibold text-[#0a0a0a]">Krishna Nagar, Lucknow</p>
+                    <p className="text-[11px] text-neutral-400">Uttar Pradesh, India · IST (UTC+5:30)</p>
                   </div>
                 </div>
-              ))}
+                <a
+                  href="https://maps.app.goo.gl/WHHrY1Vy3UARDXgC8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] font-semibold text-[#0a0a0a] hover:text-neutral-600 flex items-center gap-1 transition-colors"
+                >
+                  Open in Maps <ExternalLink className="size-3" />
+                </a>
+              </div>
             </motion.div>
+
           </div>
         </div>
       </Section>
