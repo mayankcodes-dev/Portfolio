@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Mayank Singh",
   description:
     "Get in touch with Mayank — available for freelance projects, contract work, and collaborations.",
 };

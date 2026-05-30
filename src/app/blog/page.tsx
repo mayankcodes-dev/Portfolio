@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -16,9 +16,9 @@ import { formatPostDate, type HashnodePost } from "@/lib/hashnode";
 import { blogConfig } from "@/data/blog-config";
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Mayank Singh",
   description:
-    "Sharing my development journey and what I've learned along the way — by Mayank.",
+    "Sharing my development journey and what I've learned along the way � by Mayank.",
 };
 
 const HASHNODE_PROFILE = "https://mayankcodes-dev.hashnode.dev";
@@ -96,7 +96,7 @@ export default async function BlogPage() {
       <Navbar />
       <main className="min-h-screen bg-white text-[#0a0a0a]">
 
-        {/* ── Hero ── */}
+        {/* -- Hero -- */}
         <section className="relative border-b border-neutral-100 bg-[#fafafa]">
           <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" aria-hidden />
           <div className="relative z-10 mx-auto w-full max-w-6xl px-6 md:px-8 pb-12 pt-8 md:pt-14">
@@ -133,8 +133,8 @@ export default async function BlogPage() {
                 {/* Stats */}
                 <div className="mt-8 grid gap-3 sm:grid-cols-3">
                   {[
-                    { label: "Published posts", value: posts.length > 0 ? `${posts.length}+` : "—" },
-                    { label: "Avg. read time", value: posts.length > 0 ? `${Math.round(posts.reduce((a, p) => a + (p.readTimeInMinutes ?? 5), 0) / posts.length)} min` : "—" },
+                    { label: "Published posts", value: posts.length > 0 ? `${posts.length}+` : "�" },
+                    { label: "Avg. read time", value: posts.length > 0 ? `${Math.round(posts.reduce((a, p) => a + (p.readTimeInMinutes ?? 5), 0) / posts.length)} min` : "�" },
                     { label: "Platform", value: "Hashnode" },
                   ].map((item) => (
                     <div key={item.label} className="card-eng p-4">
@@ -147,7 +147,7 @@ export default async function BlogPage() {
                 </div>
               </div>
 
-              {/* Right — featured post card */}
+              {/* Right � featured post card */}
               {featured ? (
                 <Link
                   href={featured.url}
@@ -168,7 +168,7 @@ export default async function BlogPage() {
                         />
                       ) : (
                         <div className="flex h-56 w-full items-center justify-center rounded-lg bg-neutral-50">
-                          <span className="text-4xl">✍️</span>
+                          <span className="text-4xl">??</span>
                         </div>
                       )}
                     </div>
@@ -199,14 +199,14 @@ export default async function BlogPage() {
                 </Link>
               ) : (
                 <div className="card-eng flex h-72 items-center justify-center">
-                  <p className="text-neutral-400">No posts yet — check back soon!</p>
+                  <p className="text-neutral-400">No posts yet � check back soon!</p>
                 </div>
               )}
             </div>
           </div>
         </section>
 
-        {/* ── Latest Posts Grid ── */}
+        {/* -- Latest Posts Grid -- */}
         {gridPosts.length > 0 && (
           <section className="mx-auto w-full max-w-6xl px-6 md:px-8 py-12 md:py-16">
             <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -288,7 +288,7 @@ export default async function BlogPage() {
           </section>
         )}
 
-        {/* ── Empty state ── */}
+        {/* -- Empty state -- */}
         {posts.length === 0 && (
           <section className="mx-auto w-full max-w-6xl px-6 py-16 text-center">
             <p className="text-neutral-400 text-lg">
@@ -299,13 +299,13 @@ export default async function BlogPage() {
                 rel="noopener noreferrer"
                 className="underline underline-offset-4 hover:text-[#0a0a0a]"
               >
-                Visit Hashnode directly →
+                Visit Hashnode directly ?
               </Link>
             </p>
           </section>
         )}
 
-        {/* ── CTA Banner ── */}
+        {/* -- CTA Banner -- */}
         <section className="mx-auto w-full max-w-6xl px-6 md:px-8 pb-16 pt-6 md:pb-20">
           <div className="card-eng text-center px-6 py-12 md:py-16">
             <p className="eyebrow mb-4">More on Hashnode</p>
