@@ -3,7 +3,7 @@
   <img src="src/app/icon.svg" width="80" height="80" alt="Mayank Singh Logo" style="border-radius: 20%;" />
 </a>
 
-# 🚀 Portfolio
+# Portfolio
 
 **A premium, minimal developer portfolio built with Next.js 16, Framer Motion & Tailwind CSS v4.**
 
