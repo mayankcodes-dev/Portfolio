@@ -630,17 +630,11 @@ export default function Home() {
                 {/* Blue glowing pulse — centered on embed location */}
                 <div
                   aria-hidden
-                  className="absolute z-10 pointer-events-none"
+                  className="absolute z-10 pointer-events-none flex items-center justify-center size-10"
                   style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
                 >
-                  <span
-                    className="absolute inline-flex rounded-full bg-blue-400 opacity-60 animate-ping"
-                    style={{ width: 36, height: 36, top: "50%", left: "50%", transform: "translate(-50%,-50%)" }}
-                  />
-                  <span
-                    className="relative inline-flex rounded-full bg-blue-500 shadow-[0_0_16px_6px_rgba(59,130,246,0.55)]"
-                    style={{ width: 14, height: 14, display: "block" }}
-                  />
+                  <span className="absolute inline-flex rounded-full bg-blue-400 opacity-60 animate-ping size-9" />
+                  <span className="relative inline-flex rounded-full bg-blue-500 shadow-[0_0_16px_6px_rgba(59,130,246,0.55)] size-3.5" />
                 </div>
 
                 <iframe
