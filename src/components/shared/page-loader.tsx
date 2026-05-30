@@ -129,7 +129,7 @@ export default function PageLoader() {
         </div>
 
         {/* ── Terminal body ── */}
-        <div className="bg-[#0c0c0c] px-4 py-5 font-mono text-[14.5px] sm:text-[16px] min-h-[360px]">
+        <div className="bg-[#0c0c0c] px-4 py-5 font-mono text-[14.5px] sm:text-[16px] h-[400px] sm:h-[360px]">
           <div className="space-y-2">
             {BOOT_LINES.slice(0, visibleLines).map((line, i) => {
               const isLast = i === visibleLines - 1;
