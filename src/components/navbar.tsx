@@ -11,7 +11,7 @@ const NAV_LINKS = [
   { label: "Home",         href: "/"               },
   { label: "Projects",     href: "/projects"       },
   { label: "Certificates", href: "/certifications" },
-  { label: "Contact",      href: "/contact"        },
+  { label: "Contact",      href: "/#contact"       },
 ];
 
 export default function Navbar() {

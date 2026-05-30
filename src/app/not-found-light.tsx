@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -259,10 +259,10 @@ export default function NotFound() {
           </Link>
 
           <Link
-            href="/contact"
+            href="/#contact"
             className="font-mono text-sm px-6 py-3 rounded border border-[#00ff9d]/20 text-[#00ff9d]/60 hover:text-[#00ff9d] hover:border-[#00ff9d]/50 transition-all duration-300"
           >
-            ping ./contact
+            ping ./#contact
           </Link>
         </div>
 
