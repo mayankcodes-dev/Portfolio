@@ -32,7 +32,7 @@ LeetCode: https://leetcode.com/u/mayankcodes-dev/
 Blog:     https://mayankcodes-dev.hashnode.dev/
 Resume:   https://drive.google.com/file/d/1HH8bHTrCKS_YGufdW8zs5rgTZcf6xIp8/view?usp=sharing
 WhatsApp: https://wa.me/message/4BKKNWXBQUQ7G1
-Portfolio: https://mayank-developer.vercel.app
+Portfolio: https://mayankcodes.dev
 
 ═══════════════════════════════════════
 SKILLS (level: 1=Beginner → 4=Advanced)
@@ -84,7 +84,7 @@ Note Keeper
 Portfolio Website (this site!)
   Description: Personal portfolio with GSAP/Framer Motion animations, terminal boot loader, and premium dark-themed aesthetic.
   Tech: Next.js, TypeScript, Tailwind CSS, Framer Motion, GSAP
-  Live: https://mayank-developer.vercel.app
+  Live: https://mayankcodes.dev
   GitHub: https://github.com/mayankcodes-dev/Portfolio
   Period: 2026
 

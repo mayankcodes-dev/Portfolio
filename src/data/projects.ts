@@ -150,7 +150,7 @@ export const projects: Project[] = [
     longDescription: "A fully responsive, high-performance developer portfolio built with Next.js, featuring smooth GSAP/Framer Motion animations, a premium dark-themed technical aesthetic, and a custom terminal boot sequence.",
     image: "",
     technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "GSAP"],
-    link: "https://mayank-developer.vercel.app",
+    link: "https://mayankcodes.dev",
     github: "https://github.com/mayankcodes-dev/Portfolio",
     featured: false,
     isPinned: false,

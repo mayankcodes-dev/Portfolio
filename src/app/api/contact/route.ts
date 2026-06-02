@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 interface ContactPayload {
   name: string;
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     html: `
       <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:24px;background:#f9fafb;border-radius:12px;">
         <h2 style="color:#1a1a1a;margin-bottom:8px;">New Portfolio Contact</h2>
-        <p style="color:#6b7280;margin-bottom:24px;font-size:14px;">Submitted via mayank-developer.vercel.app</p>
+        <p style="color:#6b7280;margin-bottom:24px;font-size:14px;">Submitted via mayankcodes.dev</p>
         <table style="width:100%;border-collapse:collapse;">
           <tr>
             <td style="padding:8px 0;font-weight:600;color:#374151;width:80px;">Name</td>

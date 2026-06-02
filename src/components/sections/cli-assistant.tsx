@@ -88,7 +88,7 @@ const CONTACT_TEXT = `
   GitHub    : https://github.com/mayankcodes-dev
   LinkedIn  : https://www.linkedin.com/in/mayankcodes-dev
   WhatsApp  : https://wa.me/message/4BKKNWXBQUQ7G1
-  Portfolio : https://mayank-developer.vercel.app
+  Portfolio : https://mayankcodes.dev
   Resume    : https://drive.google.com/file/d/1HH8bHTrCKS_YGufdW8zs5rgTZcf6xIp8/view`;
 
 const WELCOME_LINES = [
