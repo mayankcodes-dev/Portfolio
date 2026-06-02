@@ -21,6 +21,12 @@ const GitHubCalendar = dynamic(
   { ssr: false, loading: () => <div className="h-32 w-full animate-pulse rounded-lg bg-neutral-100" /> }
 );
 
+const LeetCodeCalendar = dynamic(
+  () => import("@/components/shared/leetcode-calendar-wrapper"),
+  { ssr: false, loading: () => <div className="h-32 w-full animate-pulse rounded-lg bg-neutral-100" /> }
+);
+
+
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -438,6 +444,16 @@ export default function Home() {
                     dark: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string, string, string, string, string],
                   }}
                 />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* LeetCode calendar — fills full card width */}
+          <motion.div variants={fadeUp(0.15)} className="mb-6">
+            <div className="rounded-xl border border-neutral-200 bg-white shadow-sm px-6 pt-5 pb-5">
+              <p className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest mb-4">LeetCode Submissions</p>
+              <div className="leetcode-calendar-wrapper overflow-x-auto">
+                <LeetCodeCalendar username="mayankcodes-dev" />
               </div>
             </div>
           </motion.div>

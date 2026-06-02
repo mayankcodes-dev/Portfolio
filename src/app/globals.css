@@ -577,12 +577,14 @@ button, [role="button"] {
 /* ════════════════════════════════════════════════════════════
    GITHUB CONTRIBUTION CALENDAR — full-width stretch + month gaps
    ════════════════════════════════════════════════════════════ */
-.github-calendar-wrapper .react-activity-calendar {
+.github-calendar-wrapper .react-activity-calendar,
+.leetcode-calendar-wrapper .react-activity-calendar {
   width: 100% !important;
   max-width: 100% !important;
 }
 
-.github-calendar-wrapper .react-activity-calendar svg {
+.github-calendar-wrapper .react-activity-calendar svg,
+.leetcode-calendar-wrapper .react-activity-calendar svg {
   width: 100% !important;
   height: auto !important;
 }
