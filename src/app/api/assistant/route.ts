@@ -13,7 +13,7 @@ function isRateLimited(ip: string): boolean {
     return false;
   }
 
-  if (entry.count >= 5) return true;
+  if (entry.count >= 10) return true; // 10 requests per minute per IP
 
   entry.count++;
   return false;
@@ -72,7 +72,9 @@ export async function POST(req: NextRequest) {
   }
 
   /* 4. Call Groq API with fallback rotation */
-  for (const apiKey of apiKeys) {
+  for (let i = 0; i < apiKeys.length; i++) {
+    const apiKey = apiKeys[i];
+    console.log(`[assistant] Trying key #${i + 1} of ${apiKeys.length}...`);
     try {
       const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
@@ -102,12 +104,13 @@ export async function POST(req: NextRequest) {
         const data = await groqRes.json();
         const response: string =
           data?.choices?.[0]?.message?.content?.trim() ?? "No response received.";
+        console.log(`[assistant] Success with key #${i + 1}`);
         return NextResponse.json({ response });
       }
 
       // If we get a 429 or 5xx, try the next key
       if (groqRes.status === 429 || (groqRes.status >= 500 && groqRes.status <= 599)) {
-        console.warn(`[assistant] Key failed with ${groqRes.status}, rotating...`);
+        console.warn(`[assistant] Key #${i + 1} failed with ${groqRes.status}, rotating to next key...`);
         continue;
       }
 
@@ -117,7 +120,7 @@ export async function POST(req: NextRequest) {
         { status: groqRes.status }
       );
     } catch (err) {
-      console.error("[assistant] Fetch error:", err);
+      console.error(`[assistant] Network error on key #${i + 1}:`, err);
       continue;
     }
   }
