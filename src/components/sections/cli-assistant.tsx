@@ -176,6 +176,7 @@ export default function CliAssistant() {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {
+        e.preventDefault(); // prevent page scroll on Enter
         if (!loading) handleCommand(input);
         return;
       }
@@ -215,7 +216,7 @@ export default function CliAssistant() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="w-full max-w-3xl mx-auto rounded-xl overflow-hidden border border-neutral-300 shadow-2xl"
+      className="w-full rounded-xl overflow-hidden border border-neutral-800 shadow-2xl"
       style={{ fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)" }}
       onClick={focusInput}
     >
@@ -235,8 +236,8 @@ export default function CliAssistant() {
       {/* ── Terminal Body ── */}
       <div
         ref={bodyRef}
-        className="bg-[#0c0c0c] px-4 pt-4 pb-3 overflow-y-auto cursor-text"
-        style={{ height: "380px" }}
+        className="bg-[#0c0c0c] px-6 pt-5 pb-4 overflow-y-auto cursor-text"
+        style={{ height: "500px" }}
       >
         {/* Output lines */}
         <div className="space-y-1">
@@ -285,7 +286,7 @@ export default function CliAssistant() {
       </div>
 
       {/* ── Input Row ── */}
-      <div className="bg-[#0c0c0c] border-t border-neutral-800 px-4 py-3 flex items-center gap-2">
+      <div className="bg-[#0c0c0c] border-t border-neutral-800 px-6 py-3 flex items-center gap-2">
         {/* Prompt prefix */}
         <span className="flex-shrink-0 text-[13px] whitespace-nowrap select-none">
           <span className="text-[#39d353]">visitor</span>

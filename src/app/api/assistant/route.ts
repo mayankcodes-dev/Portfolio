@@ -57,60 +57,73 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  /* 3. Check API key */
-  const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) {
+  /* 3. Prepare API keys */
+  const apiKeys = [
+    process.env.GROQ_API_KEY,
+    process.env.GROQ_API_KEY_2,
+    process.env.GROQ_API_KEY_3,
+  ].filter((key): key is string => !!key);
+
+  if (apiKeys.length === 0) {
     return NextResponse.json(
       { error: "Assistant is temporarily unavailable. Please contact Mayank directly." },
       { status: 503 }
     );
   }
 
-  /* 4. Call Groq API */
-  try {
-    const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
-        messages: [
-          {
-            role: "system",
-            content: PORTFOLIO_CONTEXT,
-          },
-          {
-            role: "user",
-            content: query,
-          },
-        ],
-        max_tokens: 220,
-        temperature: 0.6,
-        stream: false,
-      }),
-    });
+  /* 4. Call Groq API with fallback rotation */
+  for (const apiKey of apiKeys) {
+    try {
+      const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: [
+            {
+              role: "system",
+              content: PORTFOLIO_CONTEXT,
+            },
+            {
+              role: "user",
+              content: query,
+            },
+          ],
+          max_tokens: 220,
+          temperature: 0.6,
+          stream: false,
+        }),
+      });
 
-    if (!groqRes.ok) {
-      const errText = await groqRes.text();
-      console.error("[assistant] Groq API error:", groqRes.status, errText);
+      if (groqRes.ok) {
+        const data = await groqRes.json();
+        const response: string =
+          data?.choices?.[0]?.message?.content?.trim() ?? "No response received.";
+        return NextResponse.json({ response });
+      }
+
+      // If we get a 429 or 5xx, try the next key
+      if (groqRes.status === 429 || (groqRes.status >= 500 && groqRes.status <= 599)) {
+        console.warn(`[assistant] Key failed with ${groqRes.status}, rotating...`);
+        continue;
+      }
+
+      // Otherwise, return error immediately
       return NextResponse.json(
         { error: "Assistant encountered an error. Please try again." },
-        { status: 502 }
+        { status: groqRes.status }
       );
+    } catch (err) {
+      console.error("[assistant] Fetch error:", err);
+      continue;
     }
-
-    const data = await groqRes.json();
-    const response: string =
-      data?.choices?.[0]?.message?.content?.trim() ?? "No response received.";
-
-    return NextResponse.json({ response });
-  } catch (err) {
-    console.error("[assistant] Fetch error:", err);
-    return NextResponse.json(
-      { error: "Failed to reach the assistant. Check your connection." },
-      { status: 503 }
-    );
   }
+
+  return NextResponse.json(
+    { error: "Failed to reach the assistant. Check your connection." },
+    { status: 503 }
+  );
 }
