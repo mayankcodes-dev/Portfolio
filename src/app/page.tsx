@@ -12,6 +12,7 @@ import Navbar from "@/components/navbar";
 import { Footer } from "@/components/sections/footer";
 import SkillsSection from "@/components/sections/skills-section";
 import ProjectsSection from "@/components/sections/projects-section";
+import CliAssistant from "@/components/sections/cli-assistant";
 import { certificates } from "@/data/certificates";
 import dynamic from "next/dynamic";
 
@@ -481,6 +482,23 @@ export default function Home() {
       {/* ══════════════════════════ PROJECTS ══════════════════════════ */}
       <ProjectsSection />
 
+      {/* ══════════════════════════ AI ASSISTANT ══════════════════════════ */}
+      <Section className="border-t border-neutral-100 bg-[#fafafa]" id="assistant">
+        <div className="mx-auto max-w-6xl px-6 md:px-8 py-20 md:py-28">
+          <motion.div variants={fadeUp(0)} className="mb-10">
+            <p className="eyebrow mb-2">AI Assistant</p>
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">Ask my assistant</h2>
+            <p className="mt-3 text-sm text-neutral-500 max-w-lg">
+              Type <span className="font-mono bg-neutral-100 px-1.5 py-0.5 rounded text-[#0a0a0a] text-xs">help</span> to see available commands, or{" "}
+              <span className="font-mono bg-neutral-100 px-1.5 py-0.5 rounded text-[#0a0a0a] text-xs">ask &lt;question&gt;</span>{" "}
+              to chat with my AI about my stack, projects, and experience.
+            </p>
+          </motion.div>
+          <motion.div variants={fadeUp(0.1)}>
+            <CliAssistant />
+          </motion.div>
+        </div>
+      </Section>
 
       {/* ══════════════════════════ CERTIFICATIONS ══════════════════════════ */}
       <Section className="relative border-t border-neutral-100 bg-[#fafafa]" id="certs">
