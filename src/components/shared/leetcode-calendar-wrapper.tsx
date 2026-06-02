@@ -3,182 +3,133 @@
 import { useState, useEffect } from "react";
 import { ActivityCalendar } from "react-activity-calendar";
 
-// Cache key for localStorage
-const CACHE_KEY = "leetcode-calendar-cache-v1";
+// ── Cache keys ──────────────────────────────────────────────────────────────
+const CACHE_KEY      = "leetcode-calendar-cache-v1";
 const CACHE_TIME_KEY = "leetcode-calendar-cache-time-v1";
-const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+const ONE_DAY_MS     = 24 * 60 * 60 * 1000;
 
 interface LeetCodeCalendarProps {
   username: string;
 }
 
 interface CalendarData {
-  date: string;
+  date:  string;
   count: number;
   level: 0 | 1 | 2 | 3 | 4;
 }
 
+/** Build a 366-day array filled with zeroes (today − 365 days … today).
+ *  ActivityCalendar REQUIRES the data prop to always be non-empty and
+ *  to cover a contiguous date range — passing [] throws a runtime error. */
+function buildEmptyYear(): CalendarData[] {
+  const list: CalendarData[] = [];
+  for (let i = 365; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    list.push({ date: d.toISOString().split("T")[0], count: 0, level: 0 });
+  }
+  return list;
+}
+
+/** Merge real submission counts into the skeleton array. */
+function applySubmissions(
+  skeleton: CalendarData[],
+  countsByDate: Record<string, number>
+): CalendarData[] {
+  return skeleton.map((entry) => {
+    const count = countsByDate[entry.date] ?? 0;
+    let level: 0 | 1 | 2 | 3 | 4 = 0;
+    if (count > 0 && count <= 2) level = 1;
+    else if (count > 2 && count <= 4) level = 2;
+    else if (count > 4 && count <= 8) level = 3;
+    else if (count > 8) level = 4;
+    return { date: entry.date, count, level };
+  });
+}
+
 export default function LeetCodeCalendarWrapper({ username }: LeetCodeCalendarProps) {
-  const [data, setData] = useState<CalendarData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [activeDays, setActiveDays] = useState(92);
-  const [streak, setStreak] = useState(86);
+  // Always pre-fill with a valid skeleton — prevents the empty-array crash
+  const [data, setData] = useState<CalendarData[]>(buildEmptyYear);
 
   useEffect(() => {
     let cancelled = false;
 
-    // Helper to generate mock/fallback data so the calendar is never empty
-    function generateFallbackData() {
-      const today = new Date();
-      const fallbackList: CalendarData[] = [];
-      const countsByDate: Record<string, number> = {};
-
-      for (let i = 365; i >= 0; i--) {
-        const d = new Date();
-        d.setDate(today.getDate() - i);
-        const dateStr = d.toISOString().split("T")[0];
-
-        // Seed a few realistic active days to match the active days & streak
-        const isStreaking = i <= 90; // mock the streak
-        const isActive = isStreaking ? (Math.random() > 0.15) : (Math.random() > 0.85);
-
-        if (isActive) {
-          const count = Math.floor(Math.random() * 5) + 1; // 1-5 submissions
-          countsByDate[dateStr] = count;
-        }
-      }
-
-      for (let i = 365; i >= 0; i--) {
-        const d = new Date();
-        d.setDate(today.getDate() - i);
-        const dateStr = d.toISOString().split("T")[0];
-        const count = countsByDate[dateStr] || 0;
-
-        let level: 0 | 1 | 2 | 3 | 4 = 0;
-        if (count === 1) level = 1;
-        else if (count === 2) level = 2;
-        else if (count >= 3 && count <= 5) level = 3;
-        else if (count > 5) level = 4;
-
-        fallbackList.push({ date: dateStr, count, level });
-      }
-      return fallbackList;
-    }
-
     async function loadData() {
-      // 1. Check Cache first to prevent blocking the UI
+      // ── 1. Try cache first ─────────────────────────────────────────────
       try {
-        const cached = localStorage.getItem(CACHE_KEY);
+        const cached    = localStorage.getItem(CACHE_KEY);
         const cacheTime = localStorage.getItem(CACHE_TIME_KEY);
-        if (cached && cacheTime) {
-          const parsedTime = parseInt(cacheTime, 10);
-          if (Date.now() - parsedTime < ONE_DAY_MS) {
-            const parsed = JSON.parse(cached);
-            setData(parsed.data);
-            setStreak(parsed.streak);
-            setActiveDays(parsed.activeDays);
-            setLoading(false);
+        if (cached && cacheTime && Date.now() - Number(cacheTime) < ONE_DAY_MS) {
+          const parsed = JSON.parse(cached) as CalendarData[];
+          if (!cancelled && Array.isArray(parsed) && parsed.length > 0) {
+            setData(parsed);
             return;
           }
         }
-      } catch (e) {
-        console.warn("LeetCode cache read failed:", e);
+      } catch {
+        // cache read failure — fall through to API
       }
 
-      // 2. Fetch from LeetCode Alfa API
+      // ── 2. Fetch live data from alfa-leetcode-api ──────────────────────
       try {
-        // Set a race condition timeout of 4 seconds so if Render is sleeping, we show cached or fallback instantly
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000);
+        const timeoutId  = setTimeout(() => controller.abort(), 5000);
 
-        const res = await fetch(`https://alfa-leetcode-api.onrender.com/${username}/calendar`, {
-          signal: controller.signal,
-          cache: "no-store",
-        });
+        const res = await fetch(
+          `https://alfa-leetcode-api.onrender.com/${username}/calendar`,
+          { signal: controller.signal, cache: "no-store" }
+        );
         clearTimeout(timeoutId);
 
-        if (!res.ok) throw new Error("API failed");
-        const rawData = await res.json();
-        
+        if (!res.ok) throw new Error(`API ${res.status}`);
+        const raw = await res.json();
+
         if (cancelled) return;
 
-        const calendarObj = JSON.parse(rawData.submissionCalendar || "{}");
+        // submissionCalendar is a JSON-stringified object of { timestamp: count }
+        const calObj: Record<string, number> = JSON.parse(
+          raw.submissionCalendar ?? "{}"
+        );
+
+        // Convert Unix timestamps → "YYYY-MM-DD"
         const countsByDate: Record<string, number> = {};
-
-        // Parse timestamps
-        for (const [timestampStr, count] of Object.entries(calendarObj)) {
-          const timestamp = parseInt(timestampStr, 10);
-          const dateStr = new Date(timestamp * 1000).toISOString().split("T")[0];
-          countsByDate[dateStr] = (countsByDate[dateStr] || 0) + (count as number);
+        for (const [ts, cnt] of Object.entries(calObj)) {
+          const dateStr = new Date(Number(ts) * 1000).toISOString().split("T")[0];
+          countsByDate[dateStr] = (countsByDate[dateStr] ?? 0) + cnt;
         }
 
-        // Generate full 365-day array
-        const list: CalendarData[] = [];
-        const today = new Date();
-        for (let i = 365; i >= 0; i--) {
-          const d = new Date();
-          d.setDate(today.getDate() - i);
-          const dateStr = d.toISOString().split("T")[0];
-          const count = countsByDate[dateStr] || 0;
+        const merged = applySubmissions(buildEmptyYear(), countsByDate);
+        setData(merged);
 
-          let level: 0 | 1 | 2 | 3 | 4 = 0;
-          if (count > 0 && count <= 2) level = 1;
-          else if (count > 2 && count <= 4) level = 2;
-          else if (count > 4 && count <= 8) level = 3;
-          else if (count > 8) level = 4;
-
-          list.push({ date: dateStr, count, level });
-        }
-
-        setData(list);
-        setStreak(rawData.streak || 0);
-        setActiveDays(rawData.totalActiveDays || 0);
-        setLoading(false);
-
-        // Save to cache
+        // Cache for tomorrow
         try {
-          localStorage.setItem(CACHE_KEY, JSON.stringify({
-            data: list,
-            streak: rawData.streak || 0,
-            activeDays: rawData.totalActiveDays || 0,
-          }));
-          localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
-        } catch (e) {
-          console.warn("LeetCode cache write failed:", e);
+          localStorage.setItem(CACHE_KEY,      JSON.stringify(merged));
+          localStorage.setItem(CACHE_TIME_KEY, String(Date.now()));
+        } catch {
+          // localStorage quota — not fatal
         }
-      } catch (err) {
+      } catch {
         if (cancelled) return;
-        console.warn("Failed to fetch LeetCode calendar, using fallback:", err);
-        
-        // Use cached data even if expired as fallback, otherwise generate fallback
-        try {
-          const cached = localStorage.getItem(CACHE_KEY);
-          if (cached) {
-            const parsed = JSON.parse(cached);
-            setData(parsed.data);
-            setStreak(parsed.streak);
-            setActiveDays(parsed.activeDays);
-            setLoading(false);
-            return;
-          }
-        } catch {}
 
-        setData(generateFallbackData());
-        setLoading(false);
+        // ── 3. Try stale cache as last resort ───────────────────────────
+        try {
+          const stale = localStorage.getItem(CACHE_KEY);
+          if (stale) {
+            const parsed = JSON.parse(stale) as CalendarData[];
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              setData(parsed);
+              return;
+            }
+          }
+        } catch {
+          // nothing more to do; skeleton data stays visible
+        }
       }
     }
 
     loadData();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [username]);
-
-  // Color scheme matching LeetCode theme (signature LeetCode orange palette)
-  const theme = {
-    light: ["#ebebeb", "#ffe8cc", "#ffc080", "#ffa116", "#cc7a00"] as [string, string, string, string, string],
-    dark: ["#161b22", "#3d2c16", "#704f20", "#ffa116", "#ffb84d"] as [string, string, string, string, string],
-  };
 
   return (
     <ActivityCalendar
@@ -187,7 +138,10 @@ export default function LeetCodeCalendarWrapper({ username }: LeetCodeCalendarPr
       fontSize={12}
       blockSize={14}
       blockMargin={5}
-      theme={theme}
+      theme={{
+        light: ["#ebebeb", "#ffe8cc", "#ffc080", "#ffa116", "#cc7a00"],
+        dark:  ["#161b22", "#3d2c16", "#704f20", "#ffa116", "#ffb84d"],
+      }}
     />
   );
 }
