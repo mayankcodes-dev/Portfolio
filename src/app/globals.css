@@ -589,6 +589,21 @@ button, [role="button"] {
   height: auto !important;
 }
 
+/* ── Level-1 outline: distinguishes "very few commits" from "none" ── */
+/* GitHub calendar — green outline matching the light-green level-1 fill */
+.github-calendar-wrapper .react-activity-calendar rect[data-level="1"] {
+  stroke: #26a641;
+  stroke-width: 1.5px;
+  paint-order: stroke fill;
+}
+
+/* LeetCode calendar — orange outline matching the light-orange level-1 fill */
+.leetcode-calendar-wrapper .react-activity-calendar rect[data-level="1"] {
+  stroke: #ffa116;
+  stroke-width: 1.5px;
+  paint-order: stroke fill;
+}
+
 
 
 /* ════════════════════════════════════════════════════════════
