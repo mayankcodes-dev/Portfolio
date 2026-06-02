@@ -26,11 +26,6 @@ const LeetCodeCalendar = dynamic(
   { ssr: false, loading: () => <div className="h-32 w-full animate-pulse rounded-lg bg-neutral-100" /> }
 );
 
-const LeetCodeStatsCard = dynamic(
-  () => import("@/components/shared/leetcode-stats-card"),
-  { ssr: false, loading: () => <div className="h-28 w-full animate-pulse rounded-xl bg-neutral-800" /> }
-);
-
 
 
 gsap.registerPlugin(ScrollToPlugin);
@@ -453,15 +448,10 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* LeetCode Stats Card — gauge + difficulty + badges */}
-          <motion.div variants={fadeUp(0.12)} className="mb-5">
-            <LeetCodeStatsCard />
-          </motion.div>
-
           {/* LeetCode calendar — fills full card width */}
-          <motion.div variants={fadeUp(0.18)} className="mb-6">
-            <div className="rounded-xl border border-neutral-700 shadow-sm px-6 pt-5 pb-5" style={{ background: "#1a1a1a" }}>
-              <p className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-4">LeetCode Submissions</p>
+          <motion.div variants={fadeUp(0.15)} className="mb-6">
+            <div className="rounded-xl border border-neutral-200 bg-white shadow-sm px-6 pt-5 pb-5">
+              <p className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest mb-4">LeetCode Submissions</p>
               <div className="leetcode-calendar-wrapper overflow-x-auto">
                 <LeetCodeCalendar username="mayankcodes-dev" />
               </div>
