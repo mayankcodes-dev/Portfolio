@@ -15,7 +15,7 @@ const LOGOS = {
   linkedin: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg",
   mongodb: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
   google: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg",
-  deeplearning: "/images/deeplearning-ai-logo.svg",
+  deeplearning: "/images/deeplearning-ai-logo.webp",
   udemy: "https://cdn.worldvectorlogo.com/logos/udemy-wordmark-1.svg",
 };
 
