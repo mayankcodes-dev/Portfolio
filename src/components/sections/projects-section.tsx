@@ -7,7 +7,7 @@ import { ArrowRight, ExternalLink, Code2 } from "lucide-react";
 import { projects } from "@/data/projects";
 
 /* ── Pinned projects in explicit order ──────────────────────────────────── */
-const PINNED_ORDER = ["yelp", "quickstay", "reducate-university"];
+const PINNED_ORDER = ["quickstay", "yelp", "reducate-university", "mayank-developer", "note-keeper"];
 const pinnedProjects = projects
   .filter((p) => p.isPinned)
   .sort((a, b) => {
