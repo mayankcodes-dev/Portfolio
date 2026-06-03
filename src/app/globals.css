@@ -592,17 +592,17 @@ button, [role="button"] {
 /* ── Level-1 outline: distinguishes "very few commits" from "none" ── */
 /* GitHub — border matches darkest block (#1a6326) */
 .github-calendar-wrapper .react-activity-calendar rect[data-level="1"] {
-  stroke: #1a6326;
-  stroke-width: 2.5px;
-  stroke-opacity: 1;
+  stroke: #1a6326 !important;
+  stroke-width: 2.5 !important;
+  stroke-opacity: 1 !important;
   paint-order: stroke fill;
 }
 
 /* LeetCode — border matches darkest block (#cc7a00) */
 .leetcode-calendar-wrapper .react-activity-calendar rect[data-level="1"] {
-  stroke: #cc7a00;
-  stroke-width: 2.5px;
-  stroke-opacity: 1;
+  stroke: #cc7a00 !important;
+  stroke-width: 2.5 !important;
+  stroke-opacity: 1 !important;
   paint-order: stroke fill;
 }
 
