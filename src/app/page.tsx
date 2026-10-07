@@ -249,13 +249,19 @@ export default function Home() {
                 transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
               >
                 <h1
-                  className="font-black tracking-[-0.04em] leading-[0.88] text-[#0a0a0a] select-none text-[7rem] sm:text-[8.5rem] md:text-[10rem] lg:text-[12rem] xl:text-[13.5rem] flex items-center gap-3"
+                  className="font-black tracking-[-0.04em] leading-[0.88] text-[#0a0a0a] select-none text-[7rem] sm:text-[8.5rem] md:text-[10rem] lg:text-[12rem] xl:text-[13.5rem] flex items-center gap-3 overflow-hidden"
                 >
                   Hello.
                   <span
-                    className="inline-block wave-once"
+                    className="inline-block wave-once flex-shrink-0"
                     aria-hidden="true"
-                    style={{ transformOrigin: "70% 80%" }}
+                    style={{
+                      transformOrigin: "70% 80%",
+                      fontSize: "0.42em",   /* ~40% of h1 — keeps emoji same visual weight as text but doesn't overflow */
+                      lineHeight: 1,
+                      verticalAlign: "middle",
+                      marginTop: "-0.1em",  /* nudge to optical centre */
+                    }}
                   >
                     👋
                   </span>
@@ -366,12 +372,12 @@ export default function Home() {
                 />
               </div>
 
-              {/* Left edge gradient — blends into white */}
-              <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-              {/* Bottom fade — intensified with solid white base and via color */}
-              <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-white via-white/70 to-transparent z-10 pointer-events-none" />
+              {/* Left edge gradient — blends into warm white (matches page bg #F5F3F0) */}
+              <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-[#F5F3F0] to-transparent z-10 pointer-events-none" />
+              {/* Bottom fade */}
+              <div className="absolute inset-x-0 bottom-0 h-44 z-10 pointer-events-none" style={{ background: "linear-gradient(to top, #F5F3F0 0%, rgba(245,243,240,0.7) 60%, transparent 100%)" }} />
               {/* Top fade — subtle */}
-              <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white/40 to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-x-0 top-0 h-12 z-10 pointer-events-none" style={{ background: "linear-gradient(to bottom, rgba(245,243,240,0.4) 0%, transparent 100%)" }} />
 
               {/* Year label — top right */}
               <div className="absolute top-6 right-6 z-20 font-mono text-[10px] text-neutral-400 uppercase tracking-widest">
