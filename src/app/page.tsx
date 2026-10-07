@@ -18,12 +18,12 @@ import dynamic from "next/dynamic";
 
 const GitHubCalendar = dynamic(
   () => import("@/components/shared/github-calendar-wrapper"),
-  { ssr: false, loading: () => <div className="h-32 w-full animate-pulse rounded-lg bg-neutral-100" /> }
+  { ssr: false, loading: () => <div className="rounded-xl border border-neutral-200 bg-[#F5F3F0] shadow-sm h-[172px] animate-pulse mb-6" /> }
 );
 
 const LeetCodeCalendar = dynamic(
   () => import("@/components/shared/leetcode-calendar-wrapper"),
-  { ssr: false, loading: () => <div className="h-32 w-full animate-pulse rounded-lg bg-neutral-100" /> }
+  { ssr: false, loading: () => <div className="rounded-xl border border-neutral-200 bg-[#F5F3F0] shadow-sm h-[172px] animate-pulse mb-6" /> }
 );
 
 
@@ -249,18 +249,18 @@ export default function Home() {
                 transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
               >
                 <h1
-                  className="font-black tracking-[-0.04em] leading-[0.88] text-[#0a0a0a] select-none text-[7rem] sm:text-[8.5rem] md:text-[10rem] lg:text-[12rem] xl:text-[13.5rem] flex items-center gap-3 overflow-hidden"
+                  className="font-black tracking-[-0.04em] leading-[0.88] text-[#0a0a0a] select-none text-[7rem] sm:text-[8.5rem] md:text-[10rem] lg:text-[12rem] xl:text-[13.5rem]"
                 >
-                  Hello.
+                  Hello.{" "}
                   <span
-                    className="inline-block wave-once flex-shrink-0"
+                    className="inline-block wave-once"
                     aria-hidden="true"
                     style={{
                       transformOrigin: "70% 80%",
-                      fontSize: "0.42em",   /* ~40% of h1 — keeps emoji same visual weight as text but doesn't overflow */
+                      fontSize: "0.38em",
                       lineHeight: 1,
                       verticalAlign: "middle",
-                      marginTop: "-0.1em",  /* nudge to optical centre */
+                      marginBottom: "0.08em",
                     }}
                   >
                     👋
@@ -413,33 +413,14 @@ export default function Home() {
             </a>
           </motion.div>
 
-          {/* GitHub calendar — fills full card width */}
+          {/* GitHub heatmap */}
           <motion.div variants={fadeUp(0.1)} className="mb-6">
-            <div className="rounded-xl border border-neutral-200 bg-[#F5F3F0] shadow-sm px-6 pt-5 pb-5">
-              <p className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest mb-4">GitHub Contributions</p>
-              <div className="github-calendar-wrapper overflow-x-auto">
-                <GitHubCalendar
-                  username="mayankcodes-dev"
-                  colorScheme="light"
-                  fontSize={12}
-                  blockSize={14}
-                  blockMargin={5}
-                  theme={{
-                    light: ["#ebebeb", "#c6e6c8", "#74c47a", "#339a3e", "#1a6326"] as [string, string, string, string, string],
-                    dark: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] as [string, string, string, string, string],
-                  }}
-                />
-              </div>
-            </div>
+            <GitHubCalendar />
           </motion.div>
 
-
-          {/* LeetCode calendar */}
+          {/* LeetCode heatmap — same card, same renderer, different theme */}
           <motion.div variants={fadeUp(0.15)} className="mb-6">
-            <div className="rounded-xl border border-neutral-200 bg-[#F5F3F0] shadow-sm px-6 pt-5 pb-5">
-              <p className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest mb-4">LeetCode Submissions</p>
-              <LeetCodeCalendar username="mayankcodes-dev" />
-            </div>
+            <LeetCodeCalendar />
           </motion.div>
 
           {/* LeetCode stats card */}
