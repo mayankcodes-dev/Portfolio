@@ -249,18 +249,17 @@ export default function Home() {
                 transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
               >
                 <h1
-                  className="font-black tracking-[-0.04em] leading-[0.88] text-[#0a0a0a] select-none text-[7rem] sm:text-[8.5rem] md:text-[10rem] lg:text-[12rem] xl:text-[13.5rem]"
+                  className="font-black tracking-[-0.04em] leading-[0.88] text-[#0a0a0a] select-none text-[8.5rem] sm:text-[10rem] md:text-[11rem] lg:text-[12rem] xl:text-[13.5rem]"
                 >
                   Hello.{" "}
+                  {/* Show wave only when photo column is hidden (< lg) */}
                   <span
-                    className="inline-block wave-once"
+                    className="inline-block wave-once lg:hidden"
                     aria-hidden="true"
                     style={{
                       transformOrigin: "70% 80%",
-                      fontSize: "0.38em",
-                      lineHeight: 1,
                       verticalAlign: "middle",
-                      marginBottom: "0.08em",
+                      marginBottom: "0.06em",
                     }}
                   >
                     👋
