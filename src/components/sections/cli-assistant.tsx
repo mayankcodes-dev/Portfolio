@@ -98,9 +98,9 @@ const WELCOME_LINES = [
 ];
 
 /* ─── Helpers ─── */
-let lineIdCounter = 0;
-const mkLine = (type: LineType, content: string): TerminalLine => ({
-  id: lineIdCounter++,
+/** Creates a TerminalLine. Pass the counter ref from the component for unique IDs. */
+const mkLine = (type: LineType, content: string, id: number): TerminalLine => ({
+  id,
   type,
   content,
 });
@@ -215,8 +215,12 @@ function Prompt() {
 
 /* ─── Component ─── */
 export default function CliAssistant() {
+  // Stable per-instance counter — avoids module-level mutable state issues
+  const lineIdRef = useRef(0);
+  const nextId = useCallback(() => lineIdRef.current++, []);
+
   const [lines, setLines] = useState<TerminalLine[]>(
-    WELCOME_LINES.map((l) => mkLine("info", l))
+    () => WELCOME_LINES.map((l) => mkLine("info", l, lineIdRef.current++))
   );
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -252,7 +256,7 @@ export default function CliAssistant() {
       const cmd = raw.trim();
       if (!cmd) return;
 
-      pushLines(mkLine("input", cmd));
+      pushLines(mkLine("input", cmd, nextId()));
       setHistory((prev) => [cmd, ...prev.slice(0, 49)]);
       setHistoryIdx(-1);
       setInput("");
@@ -260,19 +264,20 @@ export default function CliAssistant() {
       const lower = cmd.toLowerCase();
 
       if (lower === "clear") {
-        setLines(WELCOME_LINES.map((l) => mkLine("info", l)));
+        // Reset with fresh IDs from current counter
+        setLines(WELCOME_LINES.map((l) => mkLine("info", l, lineIdRef.current++)));
         return;
       }
-      if (lower === "help")     { pushLines(mkLine("output",  HELP_TEXT));     return; }
-      if (lower === "about")    { pushLines(mkLine("output",  ABOUT_TEXT));    return; }
-      if (lower === "skills")   { pushLines(mkLine("output",  SKILLS_TEXT));   return; }
-      if (lower === "projects") { pushLines(mkLine("output",  PROJECTS_TEXT)); return; }
-      if (lower === "contact")  { pushLines(mkLine("output",  CONTACT_TEXT));  return; }
+      if (lower === "help")     { pushLines(mkLine("output",  HELP_TEXT,     nextId())); return; }
+      if (lower === "about")    { pushLines(mkLine("output",  ABOUT_TEXT,    nextId())); return; }
+      if (lower === "skills")   { pushLines(mkLine("output",  SKILLS_TEXT,   nextId())); return; }
+      if (lower === "projects") { pushLines(mkLine("output",  PROJECTS_TEXT, nextId())); return; }
+      if (lower === "contact")  { pushLines(mkLine("output",  CONTACT_TEXT,  nextId())); return; }
 
       if (lower.startsWith("ask ") || lower === "ask") {
         const query = cmd.slice(4).trim();
         if (!query) {
-          pushLines(mkLine("error", "Usage: ask <question>  e.g.  ask What projects has Mayank built?"));
+          pushLines(mkLine("error", "Usage: ask <question>  e.g.  ask What projects has Mayank built?", nextId()));
           return;
         }
         setLoading(true);
@@ -284,21 +289,22 @@ export default function CliAssistant() {
           });
           const data = await res.json();
           if (!res.ok) {
-            pushLines(mkLine("error", data.error ?? "Request failed."));
+            pushLines(mkLine("error", data.error ?? "Request failed.", nextId()));
           } else {
-            pushLines(mkLine("ai", data.response));
+            pushLines(mkLine("ai", data.response, nextId()));
           }
         } catch {
-          pushLines(mkLine("error", "Network error. Please check your connection."));
+          pushLines(mkLine("error", "Network error. Please check your connection.", nextId()));
         } finally {
           setLoading(false);
         }
         return;
       }
 
-      pushLines(mkLine("error", `bash: ${cmd}: command not found`));
+      pushLines(mkLine("error", `bash: ${cmd}: command not found`, nextId()));
     },
-    [pushLines]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [pushLines, nextId]
   );
 
   /* ─── Keyboard handler — e.preventDefault() stops page scroll ─── */

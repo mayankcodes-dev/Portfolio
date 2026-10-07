@@ -1,47 +1,38 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-/**
- * Fetches total GitHub contributions for the past year via the GraphQL API.
- * Requires GITHUB_TOKEN env var (read:user scope is enough).
- * Falls back to a static default if the token is missing.
- * GET /api/github-contributions
- */
+const STATIC_FALLBACK = 2174;
+const USERNAME = "mayankcodes-dev";
+
 export async function GET() {
   const token = process.env.GITHUB_TOKEN;
-  const username = "mayankcodes-dev";
 
   if (!token) {
-    // No token — return a static fallback value
-    return NextResponse.json({ contributions: 1200, source: "static" });
+    return NextResponse.json({ contributions: STATIC_FALLBACK, source: "static" });
   }
 
   try {
-    const query = `
-      query {
-        user(login: "${username}") {
-          contributionsCollection {
-            contributionCalendar {
-              totalContributions
-            }
-          }
-        }
-      }
-    `;
     const res = await fetch("https://api.github.com/graphql", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ query }),
+      body: JSON.stringify({
+        query: `query { user(login: "${USERNAME}") { contributionsCollection { contributionCalendar { totalContributions } } } }`,
+      }),
       next: { revalidate: 3600 },
     });
+
+    if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+
     const json = await res.json();
-    const total =
-      json?.data?.user?.contributionsCollection?.contributionCalendar
-        ?.totalContributions ?? null;
+    const total: number | null =
+      json?.data?.user?.contributionsCollection?.contributionCalendar?.totalContributions ?? null;
+
+    if (total === null) throw new Error("null total");
+
     return NextResponse.json({ contributions: total, source: "github" });
   } catch {
-    return NextResponse.json({ contributions: null, source: "error" }, { status: 500 });
+    return NextResponse.json({ contributions: STATIC_FALLBACK, source: "static" });
   }
 }

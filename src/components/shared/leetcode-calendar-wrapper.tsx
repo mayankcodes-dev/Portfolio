@@ -1,147 +1,104 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ActivityCalendar } from "react-activity-calendar";
+import { useEffect, useState } from "react";
+import { ActivityCalendar, type Activity } from "react-activity-calendar";
 
-// ── Cache keys ──────────────────────────────────────────────────────────────
-const CACHE_KEY      = "leetcode-calendar-cache-v1";
-const CACHE_TIME_KEY = "leetcode-calendar-cache-time-v1";
-const ONE_DAY_MS     = 24 * 60 * 60 * 1000;
-
-interface LeetCodeCalendarProps {
-  username: string;
-}
-
-interface CalendarData {
-  date:  string;
+interface LeetCodeDay {
+  date: string;
   count: number;
-  level: 0 | 1 | 2 | 3 | 4;
+  level: number;
 }
 
-/** Build a 366-day array filled with zeroes (today − 365 days … today).
- *  ActivityCalendar REQUIRES the data prop to always be non-empty and
- *  to cover a contiguous date range — passing [] throws a runtime error. */
-function buildEmptyYear(): CalendarData[] {
-  const list: CalendarData[] = [];
-  for (let i = 365; i >= 0; i--) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    list.push({ date: d.toISOString().split("T")[0], count: 0, level: 0 });
-  }
-  return list;
-}
-
-/** Merge real submission counts into the skeleton array. */
-function applySubmissions(
-  skeleton: CalendarData[],
-  countsByDate: Record<string, number>
-): CalendarData[] {
-  return skeleton.map((entry) => {
-    const count = countsByDate[entry.date] ?? 0;
-    let level: 0 | 1 | 2 | 3 | 4 = 0;
-    if (count > 0 && count <= 2) level = 1;
-    else if (count > 2 && count <= 4) level = 2;
-    else if (count > 4 && count <= 8) level = 3;
-    else if (count > 8) level = 4;
-    return { date: entry.date, count, level };
-  });
-}
-
-export default function LeetCodeCalendarWrapper({ username }: LeetCodeCalendarProps) {
-  // Always pre-fill with a valid skeleton — prevents the empty-array crash
-  const [data, setData] = useState<CalendarData[]>(buildEmptyYear);
+export default function LeetCodeCalendar({ username }: { username: string }) {
+  const [data, setData] = useState<Activity[] | null>(null);
+  const [total, setTotal] = useState<number | null>(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    let cancelled = false;
+    const controller = new AbortController();
+    fetch(`https://alfa-leetcode-api.onrender.com/${username}/calendar`, {
+      signal: controller.signal,
+    })
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((json) => {
+        // API returns { submissionCalendar: "{\"timestamp\": count, ...}" }
+        const raw: Record<string, number> =
+          typeof json.submissionCalendar === "string"
+            ? JSON.parse(json.submissionCalendar)
+            : json.submissionCalendar ?? {};
 
-    async function loadData() {
-      // ── 1. Try cache first ─────────────────────────────────────────────
-      try {
-        const cached    = localStorage.getItem(CACHE_KEY);
-        const cacheTime = localStorage.getItem(CACHE_TIME_KEY);
-        if (cached && cacheTime && Date.now() - Number(cacheTime) < ONE_DAY_MS) {
-          const parsed = JSON.parse(cached) as CalendarData[];
-          if (!cancelled && Array.isArray(parsed) && parsed.length > 0) {
-            setData(parsed);
-            return;
+        let yearTotal = 0;
+        const now = new Date();
+        const oneYearAgo = new Date(now);
+        oneYearAgo.setFullYear(now.getFullYear() - 1);
+
+        const activities: Activity[] = Object.entries(raw)
+          .map(([ts, count]) => {
+            const d = new Date(Number(ts) * 1000);
+            const dateStr = d.toISOString().split("T")[0];
+            const level: 0 | 1 | 2 | 3 | 4 =
+              count === 0 ? 0 : count <= 2 ? 1 : count <= 5 ? 2 : count <= 8 ? 3 : 4;
+            return { date: dateStr, count, level } satisfies Activity;
+          })
+          .filter((a) => {
+            const d = new Date(a.date);
+            return d >= oneYearAgo && d <= now;
+          })
+          .sort((a, b) => a.date.localeCompare(b.date));
+
+        // Fill any missing start/end days so react-activity-calendar won't throw
+        if (activities.length > 0) {
+          const first = new Date(activities[0].date);
+          const last = new Date(activities[activities.length - 1].date);
+          // Ensure we start from exactly one year ago
+          if (first > oneYearAgo) {
+            activities.unshift({ date: oneYearAgo.toISOString().split("T")[0], count: 0, level: 0 });
           }
-        }
-      } catch {
-        // cache read failure — fall through to API
-      }
-
-      // ── 2. Fetch live data from alfa-leetcode-api ──────────────────────
-      try {
-        const controller = new AbortController();
-        const timeoutId  = setTimeout(() => controller.abort(), 5000);
-
-        const res = await fetch(
-          `https://alfa-leetcode-api.onrender.com/${username}/calendar`,
-          { signal: controller.signal, cache: "no-store" }
-        );
-        clearTimeout(timeoutId);
-
-        if (!res.ok) throw new Error(`API ${res.status}`);
-        const raw = await res.json();
-
-        if (cancelled) return;
-
-        // submissionCalendar is a JSON-stringified object of { timestamp: count }
-        const calObj: Record<string, number> = JSON.parse(
-          raw.submissionCalendar ?? "{}"
-        );
-
-        // Convert Unix timestamps → "YYYY-MM-DD"
-        const countsByDate: Record<string, number> = {};
-        for (const [ts, cnt] of Object.entries(calObj)) {
-          const dateStr = new Date(Number(ts) * 1000).toISOString().split("T")[0];
-          countsByDate[dateStr] = (countsByDate[dateStr] ?? 0) + cnt;
-        }
-
-        const merged = applySubmissions(buildEmptyYear(), countsByDate);
-        setData(merged);
-
-        // Cache for tomorrow
-        try {
-          localStorage.setItem(CACHE_KEY,      JSON.stringify(merged));
-          localStorage.setItem(CACHE_TIME_KEY, String(Date.now()));
-        } catch {
-          // localStorage quota — not fatal
-        }
-      } catch {
-        if (cancelled) return;
-
-        // ── 3. Try stale cache as last resort ───────────────────────────
-        try {
-          const stale = localStorage.getItem(CACHE_KEY);
-          if (stale) {
-            const parsed = JSON.parse(stale) as CalendarData[];
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              setData(parsed);
-              return;
-            }
+          if (last < now) {
+            activities.push({ date: now.toISOString().split("T")[0], count: 0, level: 0 });
           }
-        } catch {
-          // nothing more to do; skeleton data stays visible
+          yearTotal = activities.reduce((s, a) => s + a.count, 0);
         }
-      }
-    }
 
-    loadData();
-    return () => { cancelled = true; };
+        setTotal(yearTotal);
+        setData(activities.length > 0 ? activities : null);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setError(true);
+      });
+
+    return () => controller.abort();
   }, [username]);
 
+  if (error || (data !== null && data.length === 0)) {
+    return (
+      <p className="text-xs text-neutral-400 font-mono py-2">
+        LeetCode data unavailable right now.
+      </p>
+    );
+  }
+
+  if (!data) {
+    return <div className="h-32 w-full animate-pulse rounded-lg bg-neutral-100" />;
+  }
+
   return (
-    <ActivityCalendar
-      data={data}
-      colorScheme="light"
-      fontSize={12}
-      blockSize={14}
-      blockMargin={5}
-      theme={{
-        light: ["#ebebeb", "#ffe8cc", "#ffc080", "#ffa116", "#cc7a00"],
-        dark:  ["#161b22", "#3d2c16", "#704f20", "#ffa116", "#ffb84d"],
-      }}
-    />
+    <div className="overflow-x-auto">
+      <ActivityCalendar
+        data={data}
+        colorScheme="light"
+        theme={{
+          light: ["#fafafa", "#fde8c8", "#f9b870", "#e07b20", "#b35a00"],
+          dark: ["#161b22", "#5a2d00", "#994500", "#d46a00", "#ff9900"],
+        }}
+        fontSize={12}
+        blockSize={14}
+        blockMargin={5}
+        labels={{
+          totalCount: `${total ?? 0} activities in {{year}}`,
+        }}
+        showWeekdayLabels={false}
+      />
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 
@@ -8,13 +8,15 @@ interface HeroStats {
   loading: boolean;
 }
 
-function fmt(n: number | null, fallback: string): string {
-  if (n === null) return fallback;
-  if (n >= 1000) return `${(n / 1000).toFixed(1).replace(".0", "")}K`;
-  return `${n}`;
+const FALLBACK_PROBLEMS      = 711;
+const FALLBACK_CONTRIBUTIONS = 2174;
+
+function fmt(n: number | null, fallback: number): string {
+  const val = n ?? fallback;
+  if (val >= 1000) return `${(val / 1000).toFixed(1).replace(".0", "")}K`;
+  return `${val}`;
 }
 
-/** Race a promise against a timeout — returns null if timed out */
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T | null> {
   return Promise.race([
     promise,
@@ -23,69 +25,42 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T | null> {
 }
 
 export function useHeroStats(): HeroStats {
-  const [problems, setProblems] = useState<number | null>(null);
+  const [problems, setProblems]           = useState<number | null>(null);
   const [contributions, setContributions] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading]             = useState(true);
 
   useEffect(() => {
     let cancelled = false;
 
     async function load() {
-      try {
-        // Fetch from public CORS-friendly APIs directly — no server round-trip
-        // LeetCode: alfa-leetcode-api (more reliable than heroku endpoint)
-        const lcFetch = fetch(
-          "https://alfa-leetcode-api.onrender.com/mayankcodes-dev/solved",
-          { cache: "no-store" }
-        )
-          .then((r) => r.json())
-          .then((d) => d?.solvedProblem ?? null)
-          .catch(() => null);
+      const [leetcodeResult, githubResult] = await Promise.allSettled([
+        withTimeout(
+          fetch("/api/stats").then((r) => (r.ok ? r.json() : null)),
+          7000
+        ),
+        withTimeout(
+          fetch("/api/github-contributions").then((r) => (r.ok ? r.json() : null)),
+          6000
+        ),
+      ]);
 
-        // GitHub contributions via free public API (no token needed)
-        const ghFetch = fetch(
-          "https://github-contributions-api.jogruber.de/v4/mayankcodes-dev",
-          { cache: "no-store" }
-        )
-          .then((r) => r.json())
-          .then((d) => {
-            // Returns { total: { "2024": N, ... }, contributions: [...] }
-            if (d?.total) {
-              return Object.values(d.total as Record<string, number>).reduce(
-                (a, b) => a + b,
-                0
-              );
-            }
-            return null;
-          })
-          .catch(() => null);
+      if (cancelled) return;
 
-        // 6-second timeout — show fallback if APIs are slow
-        const [lc, gh] = await Promise.all([
-          withTimeout(lcFetch, 6000),
-          withTimeout(ghFetch, 6000),
-        ]);
+      const leetcodeData = leetcodeResult.status === "fulfilled" ? leetcodeResult.value : null;
+      const githubData   = githubResult.status  === "fulfilled" ? githubResult.value  : null;
 
-        if (cancelled) return;
-
-        if (typeof lc === "number") setProblems(lc);
-        if (typeof gh === "number") setContributions(gh);
-      } catch {
-        // silent — fallback values shown via fmt()
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
+      setProblems(leetcodeData?.leetcode ?? null);
+      setContributions(githubData?.contributions ?? null);
+      setLoading(false);
     }
 
     load();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
   return {
-    problems: fmt(problems, "450"),
-    contributions: fmt(contributions, "1.2K"),
+    problems:      fmt(problems,      FALLBACK_PROBLEMS),
+    contributions: fmt(contributions, FALLBACK_CONTRIBUTIONS),
     loading,
   };
 }

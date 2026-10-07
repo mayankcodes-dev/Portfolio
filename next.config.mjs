@@ -56,6 +56,24 @@ const nextConfig = {
       },
     ],
   },
+  /* ── Security headers on every route ── */
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          // Prevent clickjacking — portfolio has no legitimate embedding use
+          { key: "X-Frame-Options",        value: "DENY" },
+          // Prevent MIME-type sniffing
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          // Send only origin on cross-origin requests
+          { key: "Referrer-Policy",        value: "strict-origin-when-cross-origin" },
+          // Disable sensors not used by this site
+          { key: "Permissions-Policy",     value: "camera=(), microphone=(), geolocation=()" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

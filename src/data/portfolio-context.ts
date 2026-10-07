@@ -36,6 +36,7 @@ Email:    admin@mayankcodes.dev
 GitHub:   https://github.com/mayankcodes-dev
 LinkedIn: https://www.linkedin.com/in/mayankcodes-dev/
 LeetCode: https://leetcode.com/u/mayankcodes-dev/
+Codolio: https://codolio.com/profile/mayankcodes-dev
 Blog:     https://mayankcodes-dev.hashnode.dev/
 Resume:   https://drive.google.com/file/d/1HH8bHTrCKS_YGufdW8zs5rgTZcf6xIp8/view?usp=sharing
 WhatsApp: https://wa.me/message/4BKKNWXBQUQ7G1
@@ -58,13 +59,13 @@ PROJECTS
 
 ── PERSONAL PROJECTS ──
 
-QuickStay (Featured)
-  Description: Full-stack hotel booking platform connecting travelers and hotel owners.
-               Features room search, date-based availability, Stripe payments, owner dashboards, and booking management.
-  Tech: React, Vite, Node.js, Express, MongoDB, Clerk (auth), Stripe, Cloudinary
-  Live: https://quick-stay-chi-two.vercel.app
-  GitHub: https://github.com/mayankcodes-dev/QuickStay
-  Period: Dec 2025 – Jan 2026
+YOYO (Featured)
+  Description: Full-stack social platform for students to share notes, resources, and study materials with their college community.
+               MERN stack with authentication, file uploads, tag-based discovery feed, and a clean mobile-first UI.
+  Tech: React, Node.js, Express, MongoDB, Tailwind CSS, Cloudinary
+  Live: https://yoyo.mayankcodes.dev/
+  GitHub: https://github.com/mayankcodes-dev/YOYO
+  Period: 2026
 
 YelpCamp (Featured)
   Description: Production-style full-stack campground review app with authentication, image uploads, interactive maps, and secure middleware.

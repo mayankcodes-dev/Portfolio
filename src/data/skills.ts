@@ -26,7 +26,6 @@ export const skillCategories: SkillCategory[] = [
       { name: "JavaScript",    level: 4, logo: `${DI}/javascript/javascript-original.svg`,  color: "#F7DF1E" },
       { name: "Tailwind CSS",  level: 4, logo: `${DI}/tailwindcss/tailwindcss-original.svg`,color: "#06B6D4" },
       { name: "Problem Solving",level: 4,logo: "https://cdn.simpleicons.org/leetcode",      color: "#FFA116" },
-      { name: "GitHub",        level: 4, logo: `${DI}/github/github-original.svg`,          color: "#6e40c9" },
     ],
   },
   {

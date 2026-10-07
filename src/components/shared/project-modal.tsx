@@ -12,7 +12,9 @@ interface ProjectModalProps {
 }
 
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const overlayRef   = useRef<HTMLDivElement>(null);
+  const panelRef     = useRef<HTMLDivElement>(null);
+  const titleId      = "modal-title";
 
   // Close on Escape
   useEffect(() => {
@@ -29,6 +31,49 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
       document.body.style.overflow = "";
     }
     return () => { document.body.style.overflow = ""; };
+  }, [project]);
+
+  // ── Focus trap ─────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!project || !panelRef.current) return;
+
+    // Move focus into the modal when it opens
+    const panel = panelRef.current;
+    const focusableSelectors =
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+
+    // Small delay to let the animation start before stealing focus
+    const focusTick = setTimeout(() => {
+      const firstFocusable = panel.querySelector<HTMLElement>(focusableSelectors);
+      firstFocusable?.focus();
+    }, 50);
+
+    // Trap Tab/Shift+Tab within the modal
+    const trapFocus = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(focusableSelectors));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last  = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", trapFocus);
+    return () => {
+      clearTimeout(focusTick);
+      document.removeEventListener("keydown", trapFocus);
+    };
   }, [project]);
 
   const badgeClass =
@@ -56,9 +101,10 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
           {/* Modal panel */}
           <motion.div
+            ref={panelRef}
             role="dialog"
             aria-modal="true"
-            aria-label={project.title}
+            aria-labelledby={titleId}
             initial={{ opacity: 0, y: 48, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 32, scale: 0.97 }}
@@ -111,7 +157,10 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                       <span className="font-mono text-[10px] text-neutral-400">{project.period}</span>
                     )}
                   </div>
-                  <h2 className="mt-2 text-xl md:text-2xl font-bold tracking-tight text-[#0a0a0a]">
+                  <h2
+                    id={titleId}
+                    className="mt-2 text-xl md:text-2xl font-bold tracking-tight text-[#0a0a0a]"
+                  >
                     {project.title}
                   </h2>
                 </div>
@@ -120,7 +169,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 <button
                   onClick={onClose}
                   className="flex-shrink-0 grid size-8 place-items-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-500 hover:text-[#0a0a0a] hover:border-neutral-400 transition-colors"
-                  aria-label="Close"
+                  aria-label={`Close ${project.title} modal`}
                 >
                   <X className="size-4" />
                 </button>

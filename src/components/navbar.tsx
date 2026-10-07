@@ -10,7 +10,7 @@ import { LogoMark } from "@/components/logo";
 const NAV_LINKS = [
   { label: "Home",         href: "/"               },
   { label: "Projects",     href: "/projects"       },
-  { label: "Certificates", href: "/certifications" },
+  { label: "Certificates", href: "/#certs"         },
   { label: "Contact",      href: "/#contact"       },
 ];
 
@@ -35,8 +35,10 @@ export default function Navbar() {
 
   useEffect(() => setMenuOpen(false), [pathname]);
 
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href: string) => {
+    if (href.startsWith("/#")) return pathname === "/";
+    return href === "/" ? pathname === "/" : pathname.startsWith(href);
+  };
 
   return (
     <>

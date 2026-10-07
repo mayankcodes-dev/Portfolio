@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Mayank Singh — Full-Stack Engineer. I design systems, write clean code, and ship products that work at scale.",
+    "About Mayank Singh — a self-taught full-stack developer from Lucknow, India. Building web apps with Next.js, TypeScript, and MongoDB while studying Computer Science.",
 };
 
 export default function AboutLayout({ children }: { children: React.ReactNode }) {

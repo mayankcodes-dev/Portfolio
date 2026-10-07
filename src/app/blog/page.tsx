@@ -12,11 +12,11 @@ import {
 import Navbar from "@/components/navbar";
 import { Footer } from "@/components/sections/footer";
 
-import { formatPostDate, type HashnodePost } from "@/lib/hashnode";
+import { getHashnodePosts, formatPostDate, type HashnodePost } from "@/lib/hashnode";
 import { blogConfig } from "@/data/blog-config";
 
 export const metadata: Metadata = {
-  title: "Mayank Singh",
+  title: "Blog",
   description:
     "Sharing my development journey and what I've learned along the way — by Mayank.",
 };
@@ -26,52 +26,9 @@ const HASHNODE_PROFILE = "https://mayankcodes-dev.hashnode.dev";
 export default async function BlogPage() {
   let posts: HashnodePost[] = [];
   try {
-    // Add 10s timeout to prevent indefinite hanging during slow/unreachable APIs
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
-
-    const res = await fetch("https://gql.hashnode.com", {
-      method: "POST",
-      signal: controller.signal,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        query: `
-          query GetPosts($host: String!, $first: Int!) {
-            publication(host: $host) {
-              posts(first: $first) {
-                edges {
-                  node {
-                    title
-                    brief
-                    slug
-                    publishedAt
-                    url
-                    readTimeInMinutes
-                    coverImage { url }
-                    tags { name }
-                  }
-                }
-              }
-            }
-          }
-        `,
-        variables: {
-          host: "mayankcodes-dev.hashnode.dev",
-          first: 10,
-        },
-      }),
-      next: { revalidate: 3600 },
-    });
-
-    clearTimeout(timeout);
-
-    if (res.ok) {
-      const json = await res.json();
-      const edges = json?.data?.publication?.posts?.edges ?? [];
-      posts = edges.map((e: { node: HashnodePost }) => e.node);
-    }
+    posts = await getHashnodePosts(10);
   } catch {
-    // Gracefully fall back to empty posts list if API is unreachable
+    // Gracefully fall back to empty posts list if API is unreachable or times out
     posts = [];
   }
 

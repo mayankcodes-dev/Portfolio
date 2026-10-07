@@ -56,6 +56,17 @@ export default function PageLoader() {
   const [done, setDone]                  = useState<boolean>(false);
 
   useEffect(() => {
+    // ── Skip loader for returning visitors within the same browser session ──
+    // This ensures the cinematic effect plays once per session, not on every
+    // page reload/navigation. First-time visitors always see it.
+    if (typeof window !== "undefined" && sessionStorage.getItem("loaderShown")) {
+      // Fire event immediately so page content and stat counters start right away
+      (window as Window & { __loaderFinished?: boolean }).__loaderFinished = true;
+      window.dispatchEvent(new Event("loaderFinished"));
+      setDone(true);
+      return;
+    }
+
     // ── Typewriter for "npm run dev" ──
     const cmdText = "npm run dev";
     let typeIndex = 0;
@@ -77,8 +88,9 @@ export default function PageLoader() {
     const exitTimer = setTimeout(() => {
       setExiting(true);
       if (typeof window !== "undefined") {
-        (window as any).__loaderFinished = true;
+        (window as Window & { __loaderFinished?: boolean }).__loaderFinished = true;
         window.dispatchEvent(new Event("loaderFinished"));
+        sessionStorage.setItem("loaderShown", "1");
       }
     }, TOTAL_DURATION);
 
@@ -139,7 +151,7 @@ export default function PageLoader() {
                   {/* Prompt line — single row matching the screenshot */}
                   {line.type === "cmd" && (
                     <div className="flex flex-wrap items-center gap-1.5 leading-none mb-1 mt-1">
-                      <span className="text-[#39d353]">Mayank@LAPTOP-VI7N8JMU</span>
+                      <span className="text-[#39d353]">Mayank@dev-machine</span>
                       <span className="text-[#bc3fbc]">MINGW64</span>
                       <span className="text-[#e3b341]">/d/Portfolio</span>
                       <span className="text-[#58a6ff]">(main)</span>

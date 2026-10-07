@@ -95,20 +95,20 @@ export const projects: Project[] = [
 
   /* ── PERSONAL ── */
   {
-    id: "quickstay",
-    title: "QuickStay",
+    id: "yoyo",
+    title: "YOYO",
     description:
-      "Full-stack hotel booking platform connecting travelers and hotel owners with room search, Stripe payments, and owner dashboards.",
-    longDescription: "QuickStay is a hotel booking platform where travellers can search for available rooms, pick their check-in and check-out dates, and pay securely online. Hotel owners get their own dashboard to list rooms, upload photos, and track bookings and earnings — all in one place.",
-    image: "/images/quickstay.webp",
-    technologies: ["React", "Vite", "Node.js", "Express", "MongoDB", "Clerk", "Stripe", "Cloudinary"],
-    link: "https://quick-stay-chi-two.vercel.app",
-    github: "https://github.com/mayankcodes-dev/QuickStay",
+      "Full-stack social platform for students to share notes, resources, and study materials with their college community.",
+    longDescription: "YOYO is a student-first community platform where college students can upload and discover study resources, share notes from classes, and collaborate with peers. Built with the MERN stack, it features authentication, file uploads, a tag-based discovery feed, and a clean mobile-first UI.",
+    image: "",
+    technologies: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS", "Cloudinary"],
+    link: "https://yoyo.mayankcodes.dev/",
+    github: "https://github.com/mayankcodes-dev/YOYO",
     featured: true,
     isPinned: true,
     type: "personal",
-    period: "Dec 2025 – Jan 2026",
-    tags: ["full-stack", "dashboard"],
+    period: "2026",
+    tags: ["full-stack"],
   },
   {
     id: "yelp",

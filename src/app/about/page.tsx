@@ -13,7 +13,7 @@ import { Footer } from "@/components/sections/footer";
 import FooterScrollWrapper from "@/components/shared/footer-scroll-wrapper";
 import { certificates } from "@/data/certificates";
 
-/* GitHub Calendar loaded only on client (no SSR) — avoids window errors */
+/* GitHub Calendar loaded only on client (no SSR) â€” avoids window errors */
 const GitHubCalendar = dynamic(
   () => import("./github-calendar-wrapper"),
   {
@@ -25,11 +25,11 @@ const GitHubCalendar = dynamic(
 /* --- Static data ------------------------------------------------- */
 const timeline = [
   {
-    year: "2024–Present",
+    year: "2024â€“Present",
     title: "Full-Stack Developer",
     icon: Code2,
     description:
-      "Building production-grade MERN applications for clients — from landing pages to full SaaS platforms. Specialising in Next.js, TypeScript, and API integration.",
+      "Building production-grade MERN applications for clients â€” from landing pages to full SaaS platforms. Specialising in Next.js, TypeScript, and API integration.",
   },
   {
     year: "2023",
@@ -51,7 +51,7 @@ const values = [
   {
     icon: Code2,
     title: "Craft over speed",
-    desc: "I care about the details — typography, spacing, animation timing. Good enough isn't good enough.",
+    desc: "I care about the details â€” typography, spacing, animation timing. Good enough isn't good enough.",
   },
   {
     icon: Zap,
@@ -148,7 +148,7 @@ export default function About() {
               variants={fadeUp(0.1)}
               className="mt-5 max-w-2xl text-pretty text-base md:text-lg leading-relaxed text-neutral-500"
             >
-              Hi, I&apos;m <strong className="text-[#0a0a0a] font-semibold">Mayank</strong> — a MERN stack
+              Hi, I&apos;m <strong className="text-[#0a0a0a] font-semibold">Mayank</strong> â€” a MERN stack
               developer passionate about building polished, production-ready web
               applications. Currently pursuing my CS degree and actively seeking
               software engineering internships.
@@ -299,7 +299,7 @@ export default function About() {
                       {cert.title}
                     </p>
                     <p className="mt-1 text-xs text-neutral-500 font-mono">
-                      {cert.issuer} · {cert.date}
+                      {cert.issuer} Â· {cert.date}
                     </p>
                   </div>
                 </motion.div>

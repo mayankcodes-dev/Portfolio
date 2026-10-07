@@ -28,6 +28,7 @@ const LeetCodeCalendar = dynamic(
 
 
 
+
 gsap.registerPlugin(ScrollToPlugin);
 
 /* ─── Socials ─── */
@@ -45,10 +46,10 @@ const SOCIALS = [
     hoverClass: "hover:text-[#0A66C2] hover:border-[#0A66C2]/40",
   },
   {
-    href: "https://leetcode.com/u/mayankcodes-dev/",
-    label: "LeetCode",
-    path: "M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z",
-    hoverClass: "hover:text-[#FFA116] hover:border-[#FFA116]/40",
+    href: "https://codolio.com/profile/mayankcodes-dev",
+    label: "Codolio",
+    path: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z",
+    hoverClass: "hover:text-[#f57c00] hover:border-[#f57c00]/40",
   },
   {
     href: "https://mayankcodes-dev.hashnode.dev/",
@@ -138,7 +139,7 @@ export default function Home() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if ((window as any).__loaderFinished) {
+      if ((window as Window & { __loaderFinished?: boolean }).__loaderFinished) {
         setLoaderDone(true);
         return;
       }
@@ -241,40 +242,23 @@ export default function Home() {
                 </div>
               </motion.div>
 
-              {/* Mobile Hero Avatar (visible only on mobile/tablet) */}
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="lg:hidden mb-8 flex items-center gap-4"
-              >
-                <div className="relative size-14 rounded-2xl border border-neutral-200 overflow-hidden bg-neutral-50 shadow-sm flex-shrink-0">
-                  <Image
-                    src="/images/mayank-hero-cropped.webp"
-                    alt="Mayank Singh"
-                    fill
-                    priority
-                    className="object-cover object-[center_28%] filter grayscale contrast-[1.05]"
-                  />
-                </div>
-                <div className="flex flex-col select-none">
-                  <span className="font-extrabold text-[#0a0a0a] text-[15px] leading-none tracking-tight">Mayank Singh</span>
-                  <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest mt-1.5 leading-none">
-                    Full-Stack Developer
-                  </span>
-                </div>
-              </motion.div>
-
-              {/* Giant Hello */}
+              {/* Giant Hello + wave */}
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
               >
                 <h1
-                  className="font-black tracking-[-0.04em] leading-[0.88] text-[#0a0a0a] select-none text-[5rem] min-[375px]:text-[6rem] sm:text-[8.5rem] md:text-[10rem] lg:text-[12rem] xl:text-[13.5rem]"
+                  className="font-black tracking-[-0.04em] leading-[0.88] text-[#0a0a0a] select-none text-[7rem] sm:text-[8.5rem] md:text-[10rem] lg:text-[12rem] xl:text-[13.5rem] flex items-center gap-3"
                 >
                   Hello.
+                  <span
+                    className="inline-block wave-once"
+                    aria-hidden="true"
+                    style={{ transformOrigin: "70% 80%" }}
+                  >
+                    👋
+                  </span>
                 </h1>
               </motion.div>
 
@@ -285,7 +269,7 @@ export default function Home() {
                 transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
                 className="mt-6 text-neutral-500 text-xl md:text-xl leading-relaxed font-sans font-light"
               >
-                — I&apos;m Mayank, an aspiring Software Engineer.
+                I&apos;m Mayank, an aspiring Software Engineer.
               </motion.p>
 
               {/* Social icons */}
@@ -333,11 +317,6 @@ export default function Home() {
               >
                 Scroll down ↓
               </motion.span>
-
-              <div className="flex items-center gap-2 rounded-full border border-neutral-200 bg-[#F5F3F0]/95 px-3 py-1.5 shadow-sm">
-                <span className="status-dot" style={{ width: 6, height: 6 }} />
-                <span className="text-[10px] font-semibold text-[#0a0a0a] whitespace-nowrap">Open to work</span>
-              </div>
             </motion.div>
           </div>
 
@@ -448,13 +427,12 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* LeetCode calendar — fills full card width */}
+
+          {/* LeetCode calendar */}
           <motion.div variants={fadeUp(0.15)} className="mb-6">
             <div className="rounded-xl border border-neutral-200 bg-[#F5F3F0] shadow-sm px-6 pt-5 pb-5">
               <p className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest mb-4">LeetCode Submissions</p>
-              <div className="leetcode-calendar-wrapper overflow-x-auto">
-                <LeetCodeCalendar username="mayankcodes-dev" />
-              </div>
+              <LeetCodeCalendar username="mayankcodes-dev" />
             </div>
           </motion.div>
 
@@ -520,41 +498,60 @@ export default function Home() {
               <p className="eyebrow mb-2">Certifications</p>
               <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">Proof of learning</h2>
             </div>
-            <Link
-              href="/certifications"
+            <a
+              href="https://www.linkedin.com/in/mayankcodes-dev/details/certifications/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden md:inline-flex items-center gap-1.5 btn btn-outline btn-sm"
             >
-              All {certificates.length} <ArrowRight className="size-3.5" />
-            </Link>
+              View on LinkedIn <ArrowRight className="size-3.5" />
+            </a>
           </motion.div>
 
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {certificates.slice(0, 3).map((cert, i) => (
-              <motion.div
+            {certificates.map((cert, i) => (
+              <motion.a
                 key={cert.id}
-                variants={fadeUp(i * 0.08)}
+                href={cert.credentialUrl ?? "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                variants={fadeUp(i * 0.06)}
                 whileHover={{ y: -3 }}
-                className="card-eng group flex items-start gap-4 p-5"
+                className="card-eng group flex items-start gap-4 p-5 transition-shadow hover:shadow-md"
               >
-                <div className="grid size-9 flex-shrink-0 place-items-center rounded-lg bg-neutral-50 border border-neutral-200">
-                  <Award className="size-4 text-neutral-600" />
+                <div className="grid size-10 flex-shrink-0 place-items-center rounded-lg bg-white border border-neutral-200 overflow-hidden">
+                  {cert.issuerLogo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={cert.issuerLogo}
+                      alt={cert.issuer}
+                      className="size-6 object-contain"
+                    />
+                  ) : (
+                    <Award className="size-4 text-neutral-600" />
+                  )}
                 </div>
                 <div className="min-w-0">
-                  <p className="font-semibold text-[#0a0a0a] text-sm leading-snug group-hover:underline underline-offset-2 truncate">
+                  <p className="font-semibold text-[#0a0a0a] text-sm leading-snug group-hover:underline underline-offset-2 line-clamp-2">
                     {cert.title}
                   </p>
                   <p className="mt-1 text-xs text-neutral-500 font-mono">
                     {cert.issuer} · {cert.date}
                   </p>
                 </div>
-              </motion.div>
+              </motion.a>
             ))}
           </div>
 
           <div className="mt-6 text-center md:hidden">
-            <Link href="/certifications" className="btn btn-outline btn-sm">
-              All certs <ArrowRight className="size-3.5" />
-            </Link>
+            <a
+              href="https://www.linkedin.com/in/mayankcodes-dev/details/certifications/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline btn-sm"
+            >
+              View on LinkedIn <ArrowRight className="size-3.5" />
+            </a>
           </div>
         </div>
       </Section>
