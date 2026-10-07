@@ -3,6 +3,10 @@
 import { useState, useEffect } from "react";
 
 interface HeroStats {
+  /** Raw integer for CountUp animation */
+  problemsRaw: number;
+  contributionsRaw: number;
+  /** Formatted display string (e.g. "711", "2.2K") */
   problems: string;
   contributions: string;
   loading: boolean;
@@ -11,10 +15,9 @@ interface HeroStats {
 const FALLBACK_PROBLEMS      = 711;
 const FALLBACK_CONTRIBUTIONS = 2174;
 
-function fmt(n: number | null, fallback: number): string {
-  const val = n ?? fallback;
-  if (val >= 1000) return `${(val / 1000).toFixed(1).replace(".0", "")}K`;
-  return `${val}`;
+function fmt(n: number): string {
+  if (n >= 1000) return `${(n / 1000).toFixed(1).replace(".0", "")}K`;
+  return `${n}`;
 }
 
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T | null> {
@@ -25,9 +28,9 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T | null> {
 }
 
 export function useHeroStats(): HeroStats {
-  const [problems, setProblems]           = useState<number | null>(null);
+  const [problems,      setProblems]      = useState<number | null>(null);
   const [contributions, setContributions] = useState<number | null>(null);
-  const [loading, setLoading]             = useState(true);
+  const [loading,       setLoading]       = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -49,8 +52,11 @@ export function useHeroStats(): HeroStats {
       const leetcodeData = leetcodeResult.status === "fulfilled" ? leetcodeResult.value : null;
       const githubData   = githubResult.status  === "fulfilled" ? githubResult.value  : null;
 
-      setProblems(leetcodeData?.leetcode ?? null);
-      setContributions(githubData?.contributions ?? null);
+      const rawProblems      = leetcodeData?.leetcode      ?? null;
+      const rawContributions = githubData?.contributions   ?? null;
+
+      setProblems(typeof rawProblems      === "number" ? rawProblems      : null);
+      setContributions(typeof rawContributions === "number" ? rawContributions : null);
       setLoading(false);
     }
 
@@ -58,9 +64,14 @@ export function useHeroStats(): HeroStats {
     return () => { cancelled = true; };
   }, []);
 
+  const p = problems      ?? FALLBACK_PROBLEMS;
+  const c = contributions ?? FALLBACK_CONTRIBUTIONS;
+
   return {
-    problems:      fmt(problems,      FALLBACK_PROBLEMS),
-    contributions: fmt(contributions, FALLBACK_CONTRIBUTIONS),
+    problemsRaw:      p,
+    contributionsRaw: c,
+    problems:         fmt(p),
+    contributions:    fmt(c),
     loading,
   };
 }

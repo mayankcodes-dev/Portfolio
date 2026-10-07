@@ -150,8 +150,8 @@ export default function Home() {
   }, []);
 
   // Animated stat counters (count up from 0 when data loads, element is in view, and loader finishes)
-  const problemsCount      = useCountUp(stats.loading ? 0 : Number(stats.problems)      || 0, 1400, statsInView && !stats.loading && loaderDone);
-  const contributionsCount = useCountUp(stats.loading ? 0 : Number(stats.contributions) || 0, 1400, statsInView && !stats.loading && loaderDone);
+  const problemsCount      = useCountUp(stats.loading ? 0 : stats.problemsRaw,      1400, statsInView && !stats.loading && loaderDone);
+  const contributionsCount = useCountUp(stats.loading ? 0 : stats.contributionsRaw, 1400, statsInView && !stats.loading && loaderDone);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -504,7 +504,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="hidden md:inline-flex items-center gap-1.5 btn btn-outline btn-sm"
             >
-              View on LinkedIn <ArrowRight className="size-3.5" />
+              View all certificates <ArrowRight className="size-3.5" />
             </a>
           </motion.div>
 
@@ -550,7 +550,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="btn btn-outline btn-sm"
             >
-              View on LinkedIn <ArrowRight className="size-3.5" />
+              View all certificates <ArrowRight className="size-3.5" />
             </a>
           </div>
         </div>

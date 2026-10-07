@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/shared/theme-provider";
 import PageLoader from "@/components/shared/page-loader";
 import CustomCursor from "@/components/shared/cursor";
 import ScrollProgress from "@/components/shared/scroll-progress";
+import SmoothScroll from "@/components/shared/smooth-scroll";
 import "./globals.css";
 
 /* Self-hosted via next/font — no external CSS imports needed */
@@ -126,6 +127,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        <SmoothScroll />
         <PageLoader />
         <CustomCursor />
         <ScrollProgress />

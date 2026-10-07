@@ -11,6 +11,12 @@ export async function GET() {
   }
 
   try {
+    // Query the last 365 days — same range that react-github-calendar shows.
+    // Without an explicit date range, GitHub defaults to Jan 1 → Dec 31 of the
+    // current year, which returns 0 if activity was mostly in the prior year.
+    const now  = new Date();
+    const from = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+
     const res = await fetch("https://api.github.com/graphql", {
       method: "POST",
       headers: {
@@ -18,7 +24,16 @@ export async function GET() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        query: `query { user(login: "${USERNAME}") { contributionsCollection { contributionCalendar { totalContributions } } } }`,
+        query: `query {
+          user(login: "${USERNAME}") {
+            contributionsCollection(
+              from: "${from.toISOString()}"
+              to:   "${now.toISOString()}"
+            ) {
+              contributionCalendar { totalContributions }
+            }
+          }
+        }`,
       }),
       next: { revalidate: 3600 },
     });
@@ -27,9 +42,11 @@ export async function GET() {
 
     const json = await res.json();
     const total: number | null =
-      json?.data?.user?.contributionsCollection?.contributionCalendar?.totalContributions ?? null;
+      json?.data?.user?.contributionsCollection?.contributionCalendar
+        ?.totalContributions ?? null;
 
-    if (total === null) throw new Error("null total");
+    // Guard against unexpected 0 — use static fallback instead
+    if (total === null || total === 0) throw new Error("invalid total");
 
     return NextResponse.json({ contributions: total, source: "github" });
   } catch {

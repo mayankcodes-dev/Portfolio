@@ -14,8 +14,8 @@ export default function NotFound() {
 
         <div className="relative z-10 flex flex-col items-center text-center gap-6">
           {/* Big emoji */}
-          <span className="text-[8rem] leading-none select-none" role="img" aria-label="Lost in space">
-            🌌
+          <span className="text-[8rem] leading-none select-none" role="img" aria-label="Oops">
+            🥲
           </span>
 
           {/* 404 */}

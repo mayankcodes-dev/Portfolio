@@ -20,17 +20,7 @@ const LOGOS = {
 };
 
 export const certificates: Certificate[] = [
-  {
-    id: "nodejs-essential",
-    title: "Node.js Essential Training",
-    issuer: "LinkedIn Learning",
-    issuerLogo: LOGOS.linkedin,
-    date: "Apr 2026",
-    category: "Backend",
-    skills: ["Node.js"],
-    credentialUrl: "https://www.linkedin.com/learning/certificates/e20c600fea001c246e1eccf1907e6b8950bc44573b2814525c7f3286fb9f14eb",
-    isPinned: true,
-  },
+
   {
     id: "github-copilot",
     title: "AI Pair Programming with GitHub Copilot",
