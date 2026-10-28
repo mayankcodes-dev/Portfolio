@@ -47,7 +47,7 @@ const SOCIALS = [
   },
   {
     href: "https://codolio.com/profile/mayankcodes-dev",
-    label: "Codolio",
+    label: "DSA",
     path: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z",
     hoverClass: "hover:text-[#f57c00] hover:border-[#f57c00]/40",
   },
@@ -274,7 +274,7 @@ export default function Home() {
                 transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
                 className="mt-6 text-neutral-500 text-xl md:text-xl leading-relaxed font-sans font-light"
               >
-                I&apos;m Mayank, an aspiring Software Engineer.
+                I&apos;m Mayank. A tinkerer obsessed with the craft.
               </motion.p>
 
               {/* Social icons */}

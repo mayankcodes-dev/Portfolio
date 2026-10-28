@@ -96,12 +96,17 @@ export const projects: Project[] = [
   /* ── PERSONAL ── */
   {
     id: "yoyo",
-    title: "YOYO",
+    title: "YoYo Rooms",
     description:
-      "Full-stack social platform for students to share notes, resources, and study materials with their college community.",
-    longDescription: "YOYO is a student-first community platform where college students can upload and discover study resources, share notes from classes, and collaborate with peers. Built with the MERN stack, it features authentication, file uploads, a tag-based discovery feed, and a clean mobile-first UI.",
+      "Production-grade full-stack hotel booking platform with AI concierge, real-time availability, dynamic pricing, Stripe payments, and a serverless AWS Lambda backend.",
+    longDescription:
+      "YoYo Rooms is a production-grade full-stack hotel booking platform built with React, Node.js, Express, MongoDB, AWS Lambda, Stripe, Cloudinary, and Google Gemini AI. It supports hotel discovery, smart search, real-time availability, dynamic pricing, bookings, payments, reviews, coupons, and email confirmations. Hotel owners can register properties, manage rooms, upload images, control availability, and track bookings and revenue.\n\nThe platform features Maya, an AI concierge powered by Gemini, enabling multi-turn conversations and natural-language hotel search. It uses JWT + Google OAuth authentication, server-side Stripe webhook verification, AWS SSM for secrets, Cloudinary image optimization, and a serverless backend deployed on AWS Lambda with a responsive PWA frontend hosted on Vercel.",
     image: "",
-    technologies: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS", "Cloudinary"],
+    technologies: [
+      "React", "Node.js", "Express", "MongoDB",
+      "AWS Lambda", "Stripe", "Cloudinary", "Google Gemini AI",
+      "JWT", "Google OAuth", "Tailwind CSS",
+    ],
     link: "https://yoyo.mayankcodes.dev/",
     github: "https://github.com/mayankcodes-dev/YOYO",
     featured: true,
