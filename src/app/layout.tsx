@@ -54,7 +54,14 @@ export const metadata: Metadata = {
     title: "Mayank Singh — Full-Stack Developer",
     description:
       "Full-Stack Developer from Lucknow. I build web products with Next.js, TypeScript, and the MERN stack.",
-    // opengraph-image.tsx in the /app directory is auto-discovered by Next.js
+    images: [
+      {
+        url: "/images/Portfolio.webp",
+        width: 1280,
+        height: 720,
+        alt: "Mayank Singh — Full-Stack Developer Portfolio",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -62,6 +69,7 @@ export const metadata: Metadata = {
     description:
       "Full-Stack Developer from Lucknow. Next.js, TypeScript, MERN stack.",
     creator: "@mayankcodes_dev",
+    images: ["/images/Portfolio.webp"],
   },
   robots: {
     index: true,

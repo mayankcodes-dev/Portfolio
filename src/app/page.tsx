@@ -701,7 +701,7 @@ export default function Home() {
             <span className="w-[3px] bg-white rounded-sm" style={{height:'50%',animation:'musicBar2 0.8s ease-in-out 0.45s infinite'}} />
           </span>
         ) : (
-          <span className="flex items-end gap-[2px] h-5 opacity-50">
+          <span className="flex items-end gap-[2px] h-5">
             <span className="w-[3px] bg-white rounded-sm" style={{height:'60%'}} />
             <span className="w-[3px] bg-white rounded-sm" style={{height:'100%'}} />
             <span className="w-[3px] bg-white rounded-sm" style={{height:'75%'}} />
