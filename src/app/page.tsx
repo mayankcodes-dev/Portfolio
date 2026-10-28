@@ -335,23 +335,7 @@ export default function Home() {
               </motion.div>
             </div>
 
-            {/* Scroll hint at the bottom & availability badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.6, duration: 0.8 }}
-              className="mt-16 flex items-center gap-5 text-neutral-400"
-            >
-              <motion.span
-                animate={{ y: [0, 6, 0] }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                className="text-[11px] font-mono uppercase tracking-widest cursor-pointer hover:text-black transition-colors flex-shrink-0"
-                onClick={() => scrollTo("skills")}
-              >
-                Scroll down â†“
-              </motion.span>
-            </motion.div>
-          </div>
+                      </div>
 
           {/* â”€â”€ PHOTO COLUMN â€” sticky, fills viewport height â”€â”€ */}
           <div

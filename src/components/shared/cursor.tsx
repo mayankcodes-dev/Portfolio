@@ -1,24 +1,29 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 
 /**
  * High-performance two-part cursor.
- * – 6px inner dot: instant snap (no lag)
- * – 32px outer ring: spring-lagged for a satisfying trail
- * – No mix-blend-mode → zero GPU repaint / compositing cost
+ * – 30px inner dot  (5× original 6px): instant snap
+ * – 80px outer ring (2.5× original 32px + extra): spring-lagged trail
+ * – No mix-blend-mode → zero GPU repaint cost
  * – RAF loop only — zero React state re-renders on mousemove
- * – Hover detection via event delegation (no getComputedStyle per frame)
+ * – Hover detection via event delegation
  * – Disabled automatically on touch / coarse-pointer devices
  */
 export default function Cursor() {
   const dotRef  = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const rafRef  = useRef<number | undefined>(undefined);
-  const mouse   = useRef({ x: -100, y: -100 });
-  const ring    = useRef({ x: -100, y: -100 });
+  const mouse   = useRef({ x: -200, y: -200 });
+  const ring    = useRef({ x: -200, y: -200 });
   const hovered = useRef(false);
   const [enabled, setEnabled] = useState(false);
+
+  // Dot: 30px  → half = 15  (centering offset)
+  // Ring: 80px → half = 40  (centering offset)
+  const DOT_SIZE  = 30;
+  const RING_SIZE = 80;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -26,36 +31,31 @@ export default function Cursor() {
 
     setEnabled(true);
 
-    // Track raw mouse position
     const onMove = (e: MouseEvent) => {
       mouse.current = { x: e.clientX, y: e.clientY };
     };
 
-    // Hover detection via delegation — NO getComputedStyle
     const INTERACTIVE =
       'a, button, input, textarea, select, [role="button"], [data-cursor="pointer"], label';
     const onOver = (e: MouseEvent) => {
       hovered.current = !!(e.target as HTMLElement)?.closest(INTERACTIVE);
     };
 
-    // RAF animation loop
     const animate = () => {
       const { x: mx, y: my } = mouse.current;
 
-      // Dot: instant snap to cursor position
       if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${mx - 12}px, ${my - 12}px)`;
+        dotRef.current.style.transform = `translate(${mx - DOT_SIZE / 2}px, ${my - DOT_SIZE / 2}px)`;
       }
 
-      // Ring: lerp toward cursor (0.12 factor = nice trailing spring feel)
-      const rx = ring.current.x + (mx - ring.current.x) * 0.12;
-      const ry = ring.current.y + (my - ring.current.y) * 0.12;
+      const rx = ring.current.x + (mx - ring.current.x) * 0.10;
+      const ry = ring.current.y + (my - ring.current.y) * 0.10;
       ring.current = { x: rx, y: ry };
 
       if (ringRef.current) {
-        const scale = hovered.current ? 1.55 : 1;
+        const scale = hovered.current ? 1.4 : 1;
         ringRef.current.style.transform =
-          `translate(${rx - 16}px, ${ry - 16}px) scale(${scale})`;
+          `translate(${rx - RING_SIZE / 2}px, ${ry - RING_SIZE / 2}px) scale(${scale})`;
       }
 
       rafRef.current = requestAnimationFrame(animate);
@@ -72,13 +72,14 @@ export default function Cursor() {
       document.body.style.cursor = "";
       if (rafRef.current !== undefined) cancelAnimationFrame(rafRef.current);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!enabled) return null;
 
   return (
     <>
-      {/* 6px filled dot — instant */}
+      {/* Dot — 30px filled circle, instant snap */}
       <div
         ref={dotRef}
         aria-hidden="true"
@@ -86,8 +87,8 @@ export default function Cursor() {
           position: "fixed",
           top: 0,
           left: 0,
-          width: 24,
-          height: 24,
+          width: DOT_SIZE,
+          height: DOT_SIZE,
           borderRadius: "50%",
           backgroundColor: "#0a0a0a",
           pointerEvents: "none",
@@ -95,7 +96,7 @@ export default function Cursor() {
           willChange: "transform",
         }}
       />
-      {/* 32px outer ring — spring-lagged */}
+      {/* Ring — 80px spring-lagged circle */}
       <div
         ref={ringRef}
         aria-hidden="true"
@@ -103,15 +104,15 @@ export default function Cursor() {
           position: "fixed",
           top: 0,
           left: 0,
-          width: 32,
-          height: 32,
+          width: RING_SIZE,
+          height: RING_SIZE,
           borderRadius: "50%",
-          border: "1.5px solid rgba(10,10,10,0.40)",
-          backgroundColor: "rgba(10,10,10,0.03)",
+          border: "2px solid rgba(10,10,10,0.35)",
+          backgroundColor: "rgba(10,10,10,0.02)",
           pointerEvents: "none",
           zIndex: 9998,
           willChange: "transform",
-          transition: "transform 0.06s linear",
+          transition: "transform 0.05s linear, width 0.2s, height 0.2s",
         }}
       />
     </>
