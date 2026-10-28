@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -44,7 +44,7 @@ export default function Cursor() {
 
       // Dot: instant snap to cursor position
       if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${mx - 3}px, ${my - 3}px)`;
+        dotRef.current.style.transform = `translate(${mx - 12}px, ${my - 12}px)`;
       }
 
       // Ring: lerp toward cursor (0.12 factor = nice trailing spring feel)
@@ -86,8 +86,8 @@ export default function Cursor() {
           position: "fixed",
           top: 0,
           left: 0,
-          width: 6,
-          height: 6,
+          width: 24,
+          height: 24,
           borderRadius: "50%",
           backgroundColor: "#0a0a0a",
           pointerEvents: "none",

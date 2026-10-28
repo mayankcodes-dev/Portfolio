@@ -1,4 +1,4 @@
-export interface Project {
+﻿export interface Project {
   id: string;
   title: string;
   description: string;
@@ -97,9 +97,9 @@ export const projects: Project[] = [
   {
     id: "cliniq",
     title: "ClinIQ",
-    description: "B2B SaaS platform that captures patient history via AI voice in 22 languages, digitizes medical documents, and delivers a structured clinical summary to the doctor before the patient walks in.",
-    longDescription: "ClinIQ is a B2B SaaS platform that captures complete patient history through AI voice conversation in 22 languages, digitizes medical documents, and delivers a structured clinical summary to the doctor before the patient walks in. Deploys as a web app, mobile app, or clinic kiosk. Built on Groq LPUs for 85% faster inference, hybrid RAG over ICMR/ICD-10 for clinical accuracy, and Whisper-v3 for <500ms multilingual transcription.",
-    image: "",
+    description: "B2B SaaS that captures patient history via AI voice in 22 languages, digitizes medical records, and delivers a structured clinical summary to the doctor before the patient walks in.",
+    longDescription: "ClinIQ is a B2B SaaS platform that captures patient history through AI voice in 22 languages, digitizes medical records, and delivers a structured clinical summary to the doctor before the patient walks in. Deploys as a web app, mobile app, or clinic kiosk.",
+    image: "/images/Cliniq.jpeg",
     technologies: ["Next.js", "TypeScript", "Groq LPU", "Supabase", "pgvector", "Three.js", "Tailwind CSS", "Whisper-v3"],
     link: "https://cliniq.mayankcodes.dev/",
     github: "https://github.com/mayankcodes-dev/clinIQ",

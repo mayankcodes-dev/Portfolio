@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { ArrowRight, ExternalLink, Code2 } from "lucide-react";
+import { ExternalLink, Code2 } from "lucide-react";
 import { projects } from "@/data/projects";
 
 /* ── Pinned projects in explicit order ──────────────────────────────────── */
@@ -117,24 +116,13 @@ function ProjectImage({
   );
 }
 
-/* ── Type badge ───────────────────────────────────────────────────────────── */
-function TypeBadge({ type }: { type: string }) {
-  const cls =
-    type === "freelance" ? "badge-yellow" :
-    type === "group"     ? "text-blue-700 bg-blue-50 border border-blue-200" :
-    "badge-green";
-  return (
-    <span className={`badge text-[10px] capitalize ${cls}`}>{type}</span>
-  );
-}
-
 /* ── Main section ─────────────────────────────────────────────────────────── */
 export default function ProjectsSection() {
   return (
     <section id="projects" className="relative border-t border-neutral-100 bg-[#EFECE7]">
       <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" aria-hidden />
 
-      <div className="relative mx-auto max-w-5xl px-6 md:px-8 py-20 md:py-28 z-10">
+      <div className="relative mx-auto max-w-5xl px-6 md:px-8 pt-20 md:pt-28 z-10">
 
         {/* Header */}
         <motion.div
@@ -153,21 +141,36 @@ export default function ProjectsSection() {
 
         </motion.div>
 
-        {/* Project rows */}
-        <div className="relative flex flex-col">
-          {pinnedProjects.map((project, i) => (
-            <div
-              key={project.id}
-              style={{ position: "sticky", top: `${80 + i * 28}px`, zIndex: i + 1 }}
-              className="pb-6"
-            >
+      </div>
+
+      {/* Sticky stacking project rows — no inner padding so cards flush-stack */}
+      <div className="relative">
+        {pinnedProjects.map((project, i) => (
+          <div
+            key={project.id}
+            style={{
+              position: "sticky",
+              top: `${64 + i * 2}px`,
+              zIndex: i + 1,
+            }}
+          >
             <motion.article
-              initial={{ opacity: 0, y: 60, scale: 0.97 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-[#F5F3F0] rounded-2xl border border-neutral-200 shadow-[0_8px_32px_rgba(0,0,0,0.06)] p-7 md:p-10 flex flex-col md:flex-row gap-8 md:gap-12"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="relative mx-auto max-w-5xl px-6 md:px-8 pb-16 md:pb-20 pt-10 md:pt-12 flex flex-col md:flex-row gap-8 md:gap-12"
+              style={{
+                background: `hsl(${38 - i * 1.5}, ${15 - i * 0.5}%, ${94 - i * 1.2}%)`,
+                borderTop: "1px solid rgba(0,0,0,0.07)",
+                boxShadow: i > 0 ? "0 -4px 32px rgba(0,0,0,0.06)" : "none",
+              }}
             >
+              {/* Card index badge */}
+              <span className="absolute top-4 right-6 md:right-8 text-[10px] font-mono text-neutral-400 tracking-widest select-none">
+                {String(i + 1).padStart(2, "0")} / {String(pinnedProjects.length).padStart(2, "0")}
+              </span>
+
               {/* ── Image panel ── */}
               <div className="w-full md:w-[45%] flex-shrink-0 aspect-[16/10]">
                 <ProjectImage
@@ -195,7 +198,7 @@ export default function ProjectsSection() {
                   {project.technologies.map((t) => (
                     <span
                       key={t}
-                      className="text-[11px] font-mono text-neutral-500 bg-[#F5F3F0] border border-neutral-200 rounded-md px-2 py-0.5"
+                      className="text-[11px] font-mono text-neutral-500 bg-black/[0.04] border border-neutral-200 rounded-md px-2 py-0.5"
                     >
                       {t}
                     </span>
@@ -229,20 +232,21 @@ export default function ProjectsSection() {
                 </div>
               </div>
             </motion.article>
-            </div>
-          ))}
-        </div>
-
-        {/* Fallback */}
-        {pinnedProjects.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <Code2 className="mb-4 size-12 text-neutral-200" />
-            <p className="text-neutral-500">No pinned projects yet.</p>
           </div>
-        )}
-
-
+        ))}
       </div>
+
+      {/* Bottom spacer so footer isn't flush */}
+      <div className="h-16 md:h-24" />
+
+      {/* Fallback */}
+      {pinnedProjects.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <Code2 className="mb-4 size-12 text-neutral-200" />
+          <p className="text-neutral-500">No pinned projects yet.</p>
+        </div>
+      )}
+
     </section>
   );
 }
