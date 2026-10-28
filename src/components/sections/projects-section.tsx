@@ -7,7 +7,7 @@ import { ArrowRight, ExternalLink, Code2 } from "lucide-react";
 import { projects } from "@/data/projects";
 
 /* ── Pinned projects in explicit order ──────────────────────────────────── */
-const PINNED_ORDER = ["quickstay", "yelp", "reducate-university", "mayank-developer", "note-keeper"];
+const PINNED_ORDER = ["yoyo", "cliniq", "note-keeper", "mayank-developer", "yelp", "reducate-university"];
 const pinnedProjects = projects
   .filter((p) => p.isPinned)
   .sort((a, b) => {
@@ -150,12 +150,7 @@ export default function ProjectsSection() {
               What I&apos;ve built
             </h2>
           </div>
-          <Link
-            href="/projects"
-            className="hidden md:inline-flex items-center gap-1.5 btn btn-outline btn-sm"
-          >
-            All projects <ArrowRight className="size-3.5" />
-          </Link>
+
         </motion.div>
 
         {/* Project rows */}
@@ -163,10 +158,10 @@ export default function ProjectsSection() {
           {pinnedProjects.map((project, i) => (
             <motion.article
               key={project.id}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40, y: 20 }}
+              whileInView={{ opacity: 1, x: 0, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: i * 0.05 }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: i * 0.05 }}
               className="flex flex-col md:flex-row gap-8 md:gap-12 py-12 first:pt-0 last:pb-0"
             >
               {/* ── Image panel ── */}
@@ -241,12 +236,7 @@ export default function ProjectsSection() {
           </div>
         )}
 
-        {/* Mobile "view all" */}
-        <div className="mt-10 text-center md:hidden">
-          <Link href="/projects" className="btn btn-outline btn-sm">
-            View all <ArrowRight className="size-3.5" />
-          </Link>
-        </div>
+
       </div>
     </section>
   );

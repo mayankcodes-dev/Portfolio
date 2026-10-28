@@ -731,3 +731,12 @@ html.scrollbar-dark::-webkit-scrollbar-thumb:hover {
 .wave-once {
   animation: wave-hand 1.2s ease-in-out 3s 1 both;
 }
+
+@keyframes musicBar1 {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1); }
+}
+@keyframes musicBar2 {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.4); }
+}

@@ -220,9 +220,8 @@ export default function CliAssistant({ isFullScreen = false, onExitFullScreen }:
   const lineIdRef = useRef(0);
   const nextId = useCallback(() => lineIdRef.current++, []);
 
-  const [lines, setLines] = useState<TerminalLine[]>(
-    () => WELCOME_LINES.map((l) => mkLine("info", l, lineIdRef.current++))
-  );
+  const [lines, setLines] = useState<TerminalLine[]>([]);
+  const [typingDone, setTypingDone] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState<string[]>([]);
@@ -251,6 +250,33 @@ export default function CliAssistant({ isFullScreen = false, onExitFullScreen }:
     window.addEventListener("keydown", onEsc);
     return () => window.removeEventListener("keydown", onEsc);
   }, [isFullScreen, onExitFullScreen]);
+
+  /* ─── Typing animation for welcome lines ─── */
+  useEffect(() => {
+    let cancelled = false;
+    const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
+    const typeWelcome = async () => {
+      for (let li = 0; li < WELCOME_LINES.length; li++) {
+        const line = WELCOME_LINES[li];
+        const id = lineIdRef.current++;
+        if (cancelled) return;
+        setLines(prev => [...prev, mkLine("info", "", id)]);
+        for (let ci = 0; ci <= line.length; ci++) {
+          if (cancelled) return;
+          await delay(li === 1 ? 5 : 16);
+          setLines(prev => prev.map(l => l.id === id ? { ...l, content: line.slice(0, ci) } : l));
+        }
+        await delay(60);
+      }
+      if (!cancelled) {
+        setTypingDone(true);
+        setTimeout(() => inputRef.current?.focus(), 50);
+      }
+    };
+    typeWelcome();
+    return () => { cancelled = true; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /* ─── Scroll terminal body to bottom ─── */
   const scrollToBottom = useCallback(() => {
@@ -371,7 +397,7 @@ export default function CliAssistant({ isFullScreen = false, onExitFullScreen }:
   };
 
   /* ─── Body height ─── */
-  const bodyHeight = isFullScreen ? "calc(100vh - 46px - 52px)" : "600px";
+  const bodyHeight = isFullScreen ? "calc(100vh - 46px)" : "600px";
 
   return (
     <AnimatePresence>
@@ -512,12 +538,12 @@ export default function CliAssistant({ isFullScreen = false, onExitFullScreen }:
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            disabled={loading}
+            disabled={loading || !typingDone}
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="off"
             spellCheck={false}
-            placeholder={loading ? "" : "type a command..."}
+            placeholder={!typingDone ? "initializing..." : loading ? "" : "type a command..."}
             className="flex-1 bg-transparent outline-none min-w-0"
             style={{
               color: "#ffffff",

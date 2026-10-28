@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { ArrowRight, Award, Mail, MapPin, ExternalLink, Copy, Check, Terminal } from "lucide-react";
+import { ArrowRight, Award, Mail, MapPin, ExternalLink, Copy, Check, Terminal, VolumeX } from "lucide-react";
 import { useHeroStats } from "@/hooks/use-hero-stats";
 import Navbar from "@/components/navbar";
 import { Footer } from "@/components/sections/footer";
@@ -131,6 +131,8 @@ export default function Home() {
   const [loaderDone, setLoaderDone] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   const [isTerminalFullScreen, setIsTerminalFullScreen] = useState(false);
+  const [musicPlaying, setMusicPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const copyEmail = () => {
     navigator.clipboard.writeText("admin@mayankcodes.dev");
@@ -158,6 +160,22 @@ export default function Home() {
     window.addEventListener('toggle-terminal-fullscreen', handler);
     return () => window.removeEventListener('toggle-terminal-fullscreen', handler);
   }, []);
+
+  useEffect(() => {
+    if (!loaderDone) return;
+    const audio = new Audio('/music.mp3');
+    audio.loop = true;
+    audio.volume = 0.35;
+    audioRef.current = audio;
+    audio.play().then(() => setMusicPlaying(true)).catch(() => setMusicPlaying(false));
+    return () => { audio.pause(); audio.src = ''; };
+  }, [loaderDone]);
+
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+    if (musicPlaying) { audioRef.current.pause(); setMusicPlaying(false); }
+    else { audioRef.current.play().catch(() => {}); setMusicPlaying(true); }
+  };
 
   // Animated stat counters (count up from 0 when data loads, element is in view, and loader finishes)
   const problemsCount      = useCountUp(stats.loading ? 0 : stats.problemsRaw,      1400, statsInView && !stats.loading && loaderDone);
@@ -412,14 +430,11 @@ export default function Home() {
                 <a href="https://github.com/mayankcodes-dev" target="_blank" rel="noopener noreferrer"
                   className="text-[#0a0a0a] font-medium hover:underline underline-offset-2">GitHub</a>
                 {" "}Â·{" "}
-                <a href="https://codeyes.in/u/mayankcodes-dev" target="_blank" rel="noopener noreferrer"
-                  className="text-[#0a0a0a] font-medium hover:underline underline-offset-2">CodEyes</a>
+                <a href="https://codolio.com/profile/mayankcodes-dev" target="_blank" rel="noopener noreferrer"
+                  className="text-[#0a0a0a] font-medium hover:underline underline-offset-2">Codolio</a>
               </p>
             </div>
-            <a href="https://github.com/mayankcodes-dev" target="_blank" rel="noopener noreferrer"
-              className="hidden md:inline-flex items-center gap-1.5 btn btn-outline btn-sm">
-              GitHub <ArrowRight className="size-3.5" />
-            </a>
+            
           </motion.div>
 
           {/* GitHub heatmap */}
@@ -446,7 +461,7 @@ export default function Home() {
                 <p className="text-2xl font-extrabold text-[#0a0a0a]">{stats.problems}</p>
                 <p className="text-xs text-neutral-500">problems across 6 platforms</p>
               </div>
-              <a href="https://codeyes.in/u/mayankcodes-dev" target="_blank" rel="noopener noreferrer"
+              <a href="https://codolio.com/profile/mayankcodes-dev" target="_blank" rel="noopener noreferrer"
                 className="ml-auto btn btn-outline btn-sm text-xs">Profile â†’</a>
             </motion.div>
 
@@ -472,18 +487,7 @@ export default function Home() {
       {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• PROJECTS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <ProjectsSection />
 
-      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• AI ASSISTANT â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
-      <Section className="border-t border-neutral-100 bg-[#EFECE7]" id="assistant">
-        <div className="mx-auto max-w-7xl px-6 md:px-10 py-20 md:py-28">
-          <motion.div variants={fadeUp(0)} className="mb-8">
-            <p className="eyebrow mb-2">AI Assistant</p>
-            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">Ask my assistant</h2>
-          </motion.div>
-          <motion.div variants={fadeUp(0.1)}>
-            <CliAssistant isFullScreen={isTerminalFullScreen} onExitFullScreen={() => setIsTerminalFullScreen(false)} />
-          </motion.div>
-        </div>
-      </Section>
+      
 
       {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• CERTIFICATIONS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <Section className="relative border-t border-neutral-100 bg-[#EFECE7]" id="certs">
@@ -688,6 +692,25 @@ export default function Home() {
       </Section>
 
       </div>
+
+      {/* Music toggle button - above terminal launcher */}
+      <button
+        className="hidden md:flex fixed bottom-[4.75rem] right-6 z-40 items-center justify-center h-12 w-12 rounded-full bg-[#0a0a0a] text-white shadow-lg hover:bg-neutral-800 hover:scale-105 transition-all duration-200 border border-neutral-700/60"
+        title={musicPlaying ? 'Pause music' : 'Play music'}
+        aria-label={musicPlaying ? 'Pause background music' : 'Play background music'}
+        onClick={toggleMusic}
+      >
+        {musicPlaying ? (
+          <span className="flex items-end gap-[2px] h-5">
+            <span className="w-[3px] bg-white rounded-sm" style={{height:'60%',animation:'musicBar1 0.8s ease-in-out infinite'}} />
+            <span className="w-[3px] bg-white rounded-sm" style={{height:'100%',animation:'musicBar2 0.8s ease-in-out 0.15s infinite'}} />
+            <span className="w-[3px] bg-white rounded-sm" style={{height:'75%',animation:'musicBar1 0.8s ease-in-out 0.3s infinite'}} />
+            <span className="w-[3px] bg-white rounded-sm" style={{height:'50%',animation:'musicBar2 0.8s ease-in-out 0.45s infinite'}} />
+          </span>
+        ) : (
+          <VolumeX className="size-5" />
+        )}
+      </button>
 
       {/* Desktop-only Terminal launcher - bottom-right */}
       <button

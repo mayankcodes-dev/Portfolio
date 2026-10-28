@@ -9,7 +9,7 @@ import { LogoMark } from "@/components/logo";
 
 const NAV_LINKS = [
   { label: "Home",         href: "/"               },
-  { label: "Projects",     href: "/projects"       },
+  { label: "Projects",     href: "/#projects"      },
   { label: "Certificates", href: "/#certs"         },
   { label: "Contact",      href: "/#contact"       },
 ];

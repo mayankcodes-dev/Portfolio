@@ -95,12 +95,27 @@ export const projects: Project[] = [
 
   /* ── PERSONAL ── */
   {
+    id: "cliniq",
+    title: "ClinIQ",
+    description: "AI Clinical Triage & B2B SaaS platform — 85% latency reduction via Groq LPU, sub-500ms speech transcription across 22 Indian languages.",
+    longDescription: "ClinIQ replaces multi-call LLM waterfalls with a deterministic clinical state machine and single-pass JSON inference on Groq LPUs (LLaMA-3.3-70B), cutting p95 latency by 85% (4,200ms to 480ms). Features sub-500ms speech transcription across 22 Indian languages via Whisper-v3-turbo, <75ms hybrid clinical RAG (pgvector + BM25 over ICMR/ICD-10), a 60fps WebGL 3D UI, and 1-click A4 PDF prescription generation at Rs. 1.35/intake with >93% margin. Reduced doctor intake time by 75% across 210+ pilot intakes.",
+    image: "",
+    technologies: ["Next.js", "TypeScript", "Groq LPU", "Supabase", "pgvector", "Three.js", "Tailwind CSS", "Whisper-v3"],
+    link: "https://cliniq.mayankcodes.dev/",
+    github: "https://github.com/mayankcodes-dev/clinIQ",
+    featured: true,
+    isPinned: true,
+    type: "personal",
+    period: "2026",
+    tags: ["full-stack"],
+  },
+  {
     id: "yoyo",
     title: "YoYo Rooms",
     description:
       "Production-grade full-stack hotel booking platform with AI concierge, real-time availability, dynamic pricing, Stripe payments, and a serverless AWS Lambda backend.",
     longDescription:
-      "YoYo Rooms is a production-grade full-stack hotel booking platform built with React, Node.js, Express, MongoDB, AWS Lambda, Stripe, Cloudinary, and Google Gemini AI. It supports hotel discovery, smart search, real-time availability, dynamic pricing, bookings, payments, reviews, coupons, and email confirmations. Hotel owners can register properties, manage rooms, upload images, control availability, and track bookings and revenue.\n\nThe platform features Maya, an AI concierge powered by Gemini, enabling multi-turn conversations and natural-language hotel search. It uses JWT + Google OAuth authentication, server-side Stripe webhook verification, AWS SSM for secrets, Cloudinary image optimization, and a serverless backend deployed on AWS Lambda with a responsive PWA frontend hosted on Vercel.",
+      "Serverless hotel booking platform across 10,000+ hotels in 200+ Indian cities. Features atomic date-range overlap detection preventing double-bookings, webhook-verified idempotent Stripe checkouts, and Maya — a stateful Gemini Flash AI concierge that converts natural-language queries into MongoDB filter pipelines. Deployed on AWS Lambda with 17 secrets in AWS SSM, Upstash Redis live viewer tracking, and a PWA frontend with <2s LCP on 4G.",
     image: "",
     technologies: [
       "React", "Node.js", "Express", "MongoDB",
