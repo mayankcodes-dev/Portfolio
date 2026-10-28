@@ -434,7 +434,7 @@ export default function Home() {
           {/* LeetCode stats card */}
           <motion.div variants={fadeUp(0.2)} className="grid sm:grid-cols-2 gap-4">
             {/* Solved count */}
-            <motion.div variants={fadeUp(0.2)} whileHover={{ y: -3, transition: { duration: 0.2 } }} className="rounded-xl border border-neutral-200 bg-[#F5F3F0] p-5 shadow-sm flex items-center gap-5 transition-shadow hover:shadow-md">
+            <motion.div variants={fadeUp(0.2)} whileHover={{ y: -3, transition: { duration: 0.2 } }} className="rounded-xl border border-neutral-200 bg-[#F5F3F0] p-5 shadow-sm flex items-center transition-shadow hover:shadow-md">
 
               <div>
                 <p className="text-xs text-neutral-400 font-mono uppercase tracking-widest mb-0.5">DSA Solved</p>
@@ -446,7 +446,7 @@ export default function Home() {
             </motion.div>
 
             {/* GitHub contributions count */}
-            <motion.div variants={fadeUp(0.25)} whileHover={{ y: -3, transition: { duration: 0.2 } }} className="rounded-xl border border-neutral-200 bg-[#F5F3F0] p-5 shadow-sm flex items-center gap-5 transition-shadow hover:shadow-md">
+            <motion.div variants={fadeUp(0.25)} whileHover={{ y: -3, transition: { duration: 0.2 } }} className="rounded-xl border border-neutral-200 bg-[#F5F3F0] p-5 shadow-sm flex items-center transition-shadow hover:shadow-md">
 
               <div>
                 <p className="text-xs text-neutral-400 font-mono uppercase tracking-widest mb-0.5">GitHub</p>
