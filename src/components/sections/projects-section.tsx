@@ -154,15 +154,19 @@ export default function ProjectsSection() {
         </motion.div>
 
         {/* Project rows */}
-        <div className="flex flex-col divide-y divide-neutral-100">
+        <div className="relative flex flex-col">
           {pinnedProjects.map((project, i) => (
-            <motion.article
+            <div
               key={project.id}
-              initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40, y: 20 }}
-              whileInView={{ opacity: 1, x: 0, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: i * 0.05 }}
-              className="flex flex-col md:flex-row gap-8 md:gap-12 py-12 first:pt-0 last:pb-0"
+              style={{ position: "sticky", top: `${80 + i * 28}px`, zIndex: i + 1 }}
+              className="pb-6"
+            >
+            <motion.article
+              initial={{ opacity: 0, y: 60, scale: 0.97 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-[#F5F3F0] rounded-2xl border border-neutral-200 shadow-[0_8px_32px_rgba(0,0,0,0.06)] p-7 md:p-10 flex flex-col md:flex-row gap-8 md:gap-12"
             >
               {/* ── Image panel ── */}
               <div className="w-full md:w-[45%] flex-shrink-0 aspect-[16/10]">
@@ -225,6 +229,7 @@ export default function ProjectsSection() {
                 </div>
               </div>
             </motion.article>
+            </div>
           ))}
         </div>
 

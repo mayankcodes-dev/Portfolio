@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useLayoutEffect, useRef, useEffect, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
@@ -708,7 +708,12 @@ export default function Home() {
             <span className="w-[3px] bg-white rounded-sm" style={{height:'50%',animation:'musicBar2 0.8s ease-in-out 0.45s infinite'}} />
           </span>
         ) : (
-          <VolumeX className="size-5" />
+          <span className="flex items-end gap-[2px] h-5 opacity-50">
+            <span className="w-[3px] bg-white rounded-sm" style={{height:'60%'}} />
+            <span className="w-[3px] bg-white rounded-sm" style={{height:'100%'}} />
+            <span className="w-[3px] bg-white rounded-sm" style={{height:'75%'}} />
+            <span className="w-[3px] bg-white rounded-sm" style={{height:'50%'}} />
+          </span>
         )}
       </button>
 
@@ -721,6 +726,13 @@ export default function Home() {
       >
         <Terminal className="size-5" />
       </button>
+
+      {/* Fullscreen Terminal Overlay */}
+      <AnimatePresence>
+        {isTerminalFullScreen && (
+          <CliAssistant isFullScreen={isTerminalFullScreen} onExitFullScreen={() => setIsTerminalFullScreen(false)} />
+        )}
+      </AnimatePresence>
 
       <Footer ref={footerRef} />
 
