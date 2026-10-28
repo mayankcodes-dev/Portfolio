@@ -65,7 +65,7 @@ export default function ScrollProgress() {
             exit={{ opacity: 0, scale: 0.8, y: 8 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="fixed bottom-6 left-6 z-[9998] grid size-10 place-items-center rounded-full bg-[#0a0a0a] text-white shadow-lg hover:bg-neutral-700 active:scale-95 transition-colors"
+            className="fixed bottom-6 left-6 z-30 grid size-10 place-items-center rounded-full bg-[#0a0a0a] text-white shadow-lg hover:bg-neutral-700 active:scale-95 transition-colors"
             aria-label="Scroll to top"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="size-4">

@@ -300,7 +300,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-6 text-neutral-500 text-xl md:text-xl leading-relaxed font-sans font-light"
+                className="mt-6 text-neutral-500 text-base md:text-lg leading-relaxed font-sans font-light whitespace-nowrap"
               >
                 I&apos;m Mayank, a software tinkerer obsessed with the craft.
               </motion.p>
@@ -425,12 +425,11 @@ export default function Home() {
             <div>
               <p className="eyebrow mb-2">Activity</p>
               <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">Dev Activity</h2>
-              <p className="mt-1 text-base text-neutral-600 font-medium">I&apos;m Mayank, a tinkerer obsessed with software&apos;s craft.</p>
               <p className="mt-2 text-sm text-neutral-500">
-                Coding every day â€”{" "}
+                Coding every day &mdash;{" "}
                 <a href="https://github.com/mayankcodes-dev" target="_blank" rel="noopener noreferrer"
                   className="text-[#0a0a0a] font-medium hover:underline underline-offset-2">GitHub</a>
-                {" "}Â·{" "}
+                {" "}&middot;{" "}
                 <a href="https://codolio.com/profile/mayankcodes-dev" target="_blank" rel="noopener noreferrer"
                   className="text-[#0a0a0a] font-medium hover:underline underline-offset-2">Codolio</a>
               </p>
