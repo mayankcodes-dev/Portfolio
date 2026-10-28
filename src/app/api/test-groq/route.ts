@@ -3,7 +3,14 @@ import { NextResponse } from "next/server";
 /* GET /api/test-groq — diagnose Groq key/model on Vercel */
 export async function GET() {
   const key = process.env.GROQ_API_KEY ?? "";
-  const models = ["llama-3.3-70b-versatile", "llama3-70b-8192", "llama3-8b-8192", "gemma2-9b-it"];
+  const models = [
+    "llama-3.3-70b-versatile",
+    "llama-3.1-8b-instant",
+    "llama3-70b-8192",
+    "llama3-8b-8192",
+    "gemma2-9b-it",
+    "mixtral-8x7b-32768",
+  ];
   const results: Record<string, string | number> = {
     keyPresent: key ? `yes (ends ...${key.slice(-6)})` : "NO KEY",
     keyLength: key.length,
@@ -21,7 +28,7 @@ export async function GET() {
         }),
       });
       const body = await r.text().catch(() => "");
-      results[model] = r.ok ? "OK" : `${r.status}: ${body.slice(0, 80)}`;
+      results[model] = r.ok ? "OK" : `${r.status}: ${body.slice(0, 120)}`;
     } catch (e) {
       results[model] = `network error: ${String(e).slice(0, 60)}`;
     }
