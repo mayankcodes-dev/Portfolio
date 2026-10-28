@@ -159,17 +159,8 @@ export default function ProjectsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="relative mx-auto max-w-5xl px-6 md:px-8 pb-16 md:pb-20 pt-10 md:pt-12 flex flex-col md:flex-row gap-8 md:gap-12"
-              style={{
-                background: `hsl(${38 - i * 1.5}, ${15 - i * 0.5}%, ${94 - i * 1.2}%)`,
-                borderTop: "1px solid rgba(0,0,0,0.07)",
-                boxShadow: i > 0 ? "0 -4px 32px rgba(0,0,0,0.06)" : "none",
-              }}
+              className="mx-auto max-w-5xl px-6 md:px-8 pb-16 md:pb-20 pt-10 md:pt-12 flex flex-col md:flex-row gap-8 md:gap-12"
             >
-              {/* Card index badge */}
-              <span className="absolute top-4 right-6 md:right-8 text-[10px] font-mono text-neutral-400 tracking-widest select-none">
-                {String(i + 1).padStart(2, "0")} / {String(pinnedProjects.length).padStart(2, "0")}
-              </span>
 
               {/* ── Image panel ── */}
               <div className="w-full md:w-[45%] flex-shrink-0 aspect-[16/10]">
