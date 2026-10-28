@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback, KeyboardEvent } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 /* ─── Types ─── */
 type LineType = "input" | "output" | "error" | "success" | "info" | "ai";
@@ -16,7 +16,7 @@ interface TerminalLine {
 // user  → #1eff00 (bright green)
 // @host → #ffffff (white)
 // MINGW64 → #5fd7ff (bright cyan-blue)
-// path  → #ffff00 (yellow, bold) — but we'll use white for cleanliness
+// path  → #ffff00 (yellow, bold)
 // (branch) → #00d7af (teal)
 // $     → #ffffff (white)
 // output → #d4d4d4 (light grey)
@@ -34,12 +34,13 @@ const HELP_TEXT = `
   projects        featured projects
   contact         get in touch
   clear           clear the terminal
+  exit            close full-screen terminal
   ask <msg>       ask the AI assistant anything
 
   EXAMPLES
   ─────────────────────────────────────────────────
   ask What tech stack does Mayank use?
-  ask Tell me about the QuickStay project
+  ask Tell me about the YOYO project
   ask Is Mayank available for freelance?`;
 
 const ABOUT_TEXT = `
@@ -73,12 +74,11 @@ const SKILLS_TEXT = `
 const PROJECTS_TEXT = `
   PROJECT              STACK                          LIVE
   ──────────────────────────────────────────────────────────────────
-  QuickStay            React · Node.js · Stripe       https://quick-stay-chi-two.vercel.app
+  YoYo Rooms           React · Node.js · AWS Lambda   https://yoyo.mayankcodes.dev
   YelpCamp             Node · Express · MongoDB        https://yelpcamp-1-wcof.onrender.com
   Reducate University  Next.js · Tailwind              https://college-landing-page-lemon.vercel.app
   URL Shortener        Node · Docker                   https://url-shortner-9amn.vercel.app
   PayPilot-CodeBlitz   Next.js · Razorpay · MongoDB    https://v0-invoice-copilot-zeta.vercel.app
-  Synapse Code Auditor Next.js · Tailwind              https://synapse-code-auditor.vercel.app
   ROYSES               MERN Stack                      https://royses.vercel.app
 
   → Run "ask about <project>" for full details`;
@@ -98,7 +98,6 @@ const WELCOME_LINES = [
 ];
 
 /* ─── Helpers ─── */
-/** Creates a TerminalLine. Pass the counter ref from the component for unique IDs. */
 const mkLine = (type: LineType, content: string, id: number): TerminalLine => ({
   id,
   type,
@@ -133,7 +132,6 @@ function TerminalLink({ href }: { href: string }) {
 
   return (
     <span style={{ position: "relative", display: "inline-block" }}>
-      {/* Tooltip */}
       {hovered && (
         <span
           style={{
@@ -156,7 +154,6 @@ function TerminalLink({ href }: { href: string }) {
           {ctrlHeld ? "↗ open link" : "Ctrl+click to open link"}
         </span>
       )}
-      {/* Link text */}
       <span
         onClick={handleClick}
         onMouseEnter={() => setHovered(true)}
@@ -176,7 +173,6 @@ function TerminalLink({ href }: { href: string }) {
   );
 }
 
-/** Parse plain text, wrapping http(s) URLs in <TerminalLink> */
 function renderContent(text: string): React.ReactNode {
   const parts: React.ReactNode[] = [];
   let lastIndex = 0;
@@ -213,9 +209,14 @@ function Prompt() {
   );
 }
 
+/* ─── Props ─── */
+interface CliAssistantProps {
+  isFullScreen?: boolean;
+  onExitFullScreen?: () => void;
+}
+
 /* ─── Component ─── */
-export default function CliAssistant() {
-  // Stable per-instance counter — avoids module-level mutable state issues
+export default function CliAssistant({ isFullScreen = false, onExitFullScreen }: CliAssistantProps) {
   const lineIdRef = useRef(0);
   const nextId = useCallback(() => lineIdRef.current++, []);
 
@@ -230,7 +231,28 @@ export default function CliAssistant() {
   const inputRef = useRef<HTMLInputElement>(null);
   const bodyRef  = useRef<HTMLDivElement>(null);
 
-  /* ─── Scroll ONLY the terminal body, never the page ─── */
+  /* ─── Lock body scroll in fullscreen ─── */
+  useEffect(() => {
+    if (isFullScreen) {
+      document.body.style.overflow = "hidden";
+      setTimeout(() => inputRef.current?.focus(), 50);
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [isFullScreen]);
+
+  /* ─── ESC key exits fullscreen ─── */
+  useEffect(() => {
+    if (!isFullScreen) return;
+    const onEsc = (e: globalThis.KeyboardEvent) => {
+      if (e.key === "Escape") onExitFullScreen?.();
+    };
+    window.addEventListener("keydown", onEsc);
+    return () => window.removeEventListener("keydown", onEsc);
+  }, [isFullScreen, onExitFullScreen]);
+
+  /* ─── Scroll terminal body to bottom ─── */
   const scrollToBottom = useCallback(() => {
     if (bodyRef.current) {
       bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
@@ -241,7 +263,6 @@ export default function CliAssistant() {
     scrollToBottom();
   }, [lines, loading, scrollToBottom]);
 
-  /* Focus input on click anywhere in terminal */
   const focusInput = useCallback(() => {
     inputRef.current?.focus();
   }, []);
@@ -263,16 +284,22 @@ export default function CliAssistant() {
 
       const lower = cmd.toLowerCase();
 
+      // exit / exist / quit / close — exit fullscreen
+      if (lower === "exit" || lower === "exist" || lower === "quit" || lower === "close") {
+        pushLines(mkLine("info", "Closing terminal session… Returning to portfolio.", nextId()));
+        setTimeout(() => onExitFullScreen?.(), 400);
+        return;
+      }
+
       if (lower === "clear") {
-        // Reset with fresh IDs from current counter
         setLines(WELCOME_LINES.map((l) => mkLine("info", l, lineIdRef.current++)));
         return;
       }
-      if (lower === "help")     { pushLines(mkLine("output",  HELP_TEXT,     nextId())); return; }
-      if (lower === "about")    { pushLines(mkLine("output",  ABOUT_TEXT,    nextId())); return; }
-      if (lower === "skills")   { pushLines(mkLine("output",  SKILLS_TEXT,   nextId())); return; }
-      if (lower === "projects") { pushLines(mkLine("output",  PROJECTS_TEXT, nextId())); return; }
-      if (lower === "contact")  { pushLines(mkLine("output",  CONTACT_TEXT,  nextId())); return; }
+      if (lower === "help")     { pushLines(mkLine("output", HELP_TEXT,     nextId())); return; }
+      if (lower === "about")    { pushLines(mkLine("output", ABOUT_TEXT,    nextId())); return; }
+      if (lower === "skills")   { pushLines(mkLine("output", SKILLS_TEXT,   nextId())); return; }
+      if (lower === "projects") { pushLines(mkLine("output", PROJECTS_TEXT, nextId())); return; }
+      if (lower === "contact")  { pushLines(mkLine("output", CONTACT_TEXT,  nextId())); return; }
 
       if (lower.startsWith("ask ") || lower === "ask") {
         const query = cmd.slice(4).trim();
@@ -304,10 +331,10 @@ export default function CliAssistant() {
       pushLines(mkLine("error", `bash: ${cmd}: command not found`, nextId()));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [pushLines, nextId]
+    [pushLines, nextId, onExitFullScreen]
   );
 
-  /* ─── Keyboard handler — e.preventDefault() stops page scroll ─── */
+  /* ─── Keyboard handler ─── */
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {
@@ -333,7 +360,7 @@ export default function CliAssistant() {
     [input, loading, history, historyIdx, handleCommand]
   );
 
-  /* ─── Output line colors (matching real terminal palette) ─── */
+  /* ─── Output line colors ─── */
   const lineStyle: Record<LineType, React.CSSProperties> = {
     input:   { color: "#ffffff" },
     output:  { color: "#ffffff" },
@@ -343,162 +370,186 @@ export default function CliAssistant() {
     ai:      { color: "#ffffff" },
   };
 
+  /* ─── Body height ─── */
+  const bodyHeight = isFullScreen ? "calc(100vh - 46px - 52px)" : "600px";
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="w-full rounded-xl overflow-hidden antialiased"
-      style={{
-        fontFamily: "var(--font-mono, 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace)",
-        border: "1px solid #2a2a2a",
-        boxShadow: "0 0 0 1px #1a1a1a, 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(0, 215, 175, 0.04)",
-        WebkitFontSmoothing: "antialiased",
-        MozOsxFontSmoothing: "grayscale",
-      }}
-      onClick={focusInput}
-    >
-      {/* ── Title Bar ── */}
-      <div
-        className="flex items-center justify-between px-4 py-3 select-none"
-        style={{ background: "#1e1e1e", borderBottom: "1px solid #333" }}
+    <AnimatePresence>
+      <motion.div
+        initial={isFullScreen ? { opacity: 0 } : { opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        whileInView={isFullScreen ? undefined : { opacity: 1, y: 0 }}
+        viewport={isFullScreen ? undefined : { once: true, margin: "-60px" }}
+        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        className={
+          isFullScreen
+            ? "fixed inset-0 z-[100] flex flex-col rounded-none antialiased"
+            : "w-full rounded-xl overflow-hidden antialiased"
+        }
+        style={{
+          fontFamily: "var(--font-mono, 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace)",
+          border: isFullScreen ? "none" : "1px solid #2a2a2a",
+          boxShadow: isFullScreen
+            ? "none"
+            : "0 0 0 1px #1a1a1a, 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(0, 215, 175, 0.04)",
+          WebkitFontSmoothing: "antialiased",
+          MozOsxFontSmoothing: "grayscale",
+        }}
+        onClick={focusInput}
       >
-        <div className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full" style={{ background: "#ff5f57" }} />
-          <span className="w-3 h-3 rounded-full" style={{ background: "#ffbd2e" }} />
-          <span className="w-3 h-3 rounded-full" style={{ background: "#28c840" }} />
-        </div>
-        {/* Center title */}
-        <div className="flex flex-col items-center">
-          <span className="text-[11px] font-mono tracking-wide" style={{ color: "#9e9e9e" }}>
-            <span style={{ color: "#1eff00" }}>visitor</span>
-            <span style={{ color: "#ffffff" }}>@portfolio</span>
-            <span style={{ color: "#5fd7ff" }}> Home </span>
-            <span style={{ color: "#ffff00" }}>~/assistant</span>
-            <span style={{ color: "#00d7af" }}> (main)</span>
+        {/* ── Title Bar ── */}
+        <div
+          className="flex items-center justify-between px-4 py-3 select-none flex-shrink-0"
+          style={{ background: "#1e1e1e", borderBottom: "1px solid #333" }}
+        >
+          <div className="flex items-center gap-1.5">
+            {/* Red dot — closes fullscreen when in fullscreen mode */}
+            {isFullScreen ? (
+              <button
+                onClick={onExitFullScreen}
+                className="w-3 h-3 rounded-full hover:opacity-70 transition-opacity"
+                style={{ background: "#ff5f57" }}
+                title="Close full-screen terminal"
+                aria-label="Close terminal"
+              />
+            ) : (
+              <span className="w-3 h-3 rounded-full" style={{ background: "#ff5f57" }} />
+            )}
+            <span className="w-3 h-3 rounded-full" style={{ background: "#ffbd2e" }} />
+            <span className="w-3 h-3 rounded-full" style={{ background: "#28c840" }} />
+          </div>
+
+          {/* Center title */}
+          <div className="flex flex-col items-center">
+            <span className="text-[11px] font-mono tracking-wide" style={{ color: "#9e9e9e" }}>
+              <span style={{ color: "#1eff00" }}>visitor</span>
+              <span style={{ color: "#ffffff" }}>@portfolio</span>
+              <span style={{ color: "#5fd7ff" }}> Home </span>
+              <span style={{ color: "#ffff00" }}>~/assistant</span>
+              <span style={{ color: "#00d7af" }}> (main)</span>
+            </span>
+          </div>
+
+          <span className="text-[11px] font-mono" style={{ color: "#4a4a4a" }}>
+            {isFullScreen ? "ESC or type 'exit' to close" : "bash — 120×40"}
           </span>
         </div>
-        <span className="text-[11px] font-mono" style={{ color: "#4a4a4a" }}>bash — 120×40</span>
-      </div>
 
-      {/* ── Terminal Body ── */}
-      <div
-        ref={bodyRef}
-        className="overflow-y-auto cursor-text"
-        style={{
-          height: "600px",
-          background: "#0c0c0c",
-          padding: "20px 28px 16px",
-          /* Subtle scanline feel */
-          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.03) 1px, rgba(0,0,0,0.03) 2px)",
-        }}
-      >
-        <div className="space-y-0.5">
-          {lines.map((line) => (
-            <div key={line.id}>
-
-              {/* ── Input line (with prompt) ── */}
-              {line.type === "input" && (
-                <div className="flex items-start gap-2 mt-3">
-                  <Prompt />
-                  <span
-                    className="text-[14px] leading-relaxed break-all"
-                    style={{ color: "#ffffff" }}
-                  >
-                    {line.content}
-                  </span>
-                </div>
-              )}
-
-              {/* ── Output / ai / info / error lines ── */}
-              {line.type !== "input" && (
-                <pre
-                  className="text-[14px] leading-relaxed whitespace-pre-wrap break-words"
-                  style={{
-                    ...lineStyle[line.type],
-                    marginTop: line.type === "info" ? 0 : "4px",
-                  }}
-                >
-                  {/* AI prefix badge */}
-                  {line.type === "ai" && (
-                    <span style={{ color: "#00d7af" }}>assistant › </span>
-                  )}
-                  {/* Error prefix */}
-                  {line.type === "error" && (
-                    <span style={{ color: "#ff5555" }}></span>
-                  )}
-                  {renderContent(line.content)}
-                </pre>
-              )}
-
-            </div>
-          ))}
-
-          {/* Loading indicator */}
-          {loading && (
-            <div className="flex items-center gap-2 mt-3">
-              <span style={{ color: "#00d7af", fontSize: 14 }}>assistant</span>
-              <span style={{ color: "#616161", fontSize: 14 }}>›</span>
-              <LoadingDots />
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* ── Input Row ── */}
-      <div
-        className="flex items-center gap-2 px-6 py-3"
-        style={{
-          background: "#0c0c0c",
-          borderTop: "1px solid #2a2a2a",
-        }}
-      >
-        <Prompt />
-
-        <input
-          ref={inputRef}
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          disabled={loading}
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="off"
-          spellCheck={false}
-          placeholder={loading ? "" : "type a command..."}
-          className="flex-1 bg-transparent outline-none min-w-0"
+        {/* ── Terminal Body ── */}
+        <div
+          ref={bodyRef}
+          className="overflow-y-auto cursor-text flex-1"
           style={{
-            color: "#ffffff",
-            fontSize: 14,
-            caretColor: "#1eff00",
+            height: bodyHeight,
+            background: "#0c0c0c",
+            padding: "20px 28px 16px",
+            backgroundImage:
+              "repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.03) 1px, rgba(0,0,0,0.03) 2px)",
           }}
-        />
+        >
+          <div className="space-y-0.5">
+            {lines.map((line) => (
+              <div key={line.id}>
+                {/* Input line (with prompt) */}
+                {line.type === "input" && (
+                  <div className="flex items-start gap-2 mt-3">
+                    <Prompt />
+                    <span
+                      className="text-[14px] leading-relaxed break-all"
+                      style={{ color: "#ffffff" }}
+                    >
+                      {line.content}
+                    </span>
+                  </div>
+                )}
 
-        {/* Blinking block cursor */}
-        {!loading && input === "" && (
-          <span
-            className="inline-block flex-shrink-0"
+                {/* Output / ai / info / error lines */}
+                {line.type !== "input" && (
+                  <pre
+                    className="text-[14px] leading-relaxed whitespace-pre-wrap break-words"
+                    style={{
+                      ...lineStyle[line.type],
+                      marginTop: line.type === "info" ? 0 : "4px",
+                    }}
+                  >
+                    {line.type === "ai" && (
+                      <span style={{ color: "#00d7af" }}>assistant › </span>
+                    )}
+                    {line.type === "error" && (
+                      <span style={{ color: "#ff5555" }}></span>
+                    )}
+                    {renderContent(line.content)}
+                  </pre>
+                )}
+              </div>
+            ))}
+
+            {/* Loading indicator */}
+            {loading && (
+              <div className="flex items-center gap-2 mt-3">
+                <span style={{ color: "#00d7af", fontSize: 14 }}>assistant</span>
+                <span style={{ color: "#616161", fontSize: 14 }}>›</span>
+                <LoadingDots />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* ── Input Row ── */}
+        <div
+          className="flex items-center gap-2 px-6 py-3 flex-shrink-0"
+          style={{
+            background: "#0c0c0c",
+            borderTop: "1px solid #2a2a2a",
+          }}
+        >
+          <Prompt />
+
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            disabled={loading}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
+            placeholder={loading ? "" : "type a command..."}
+            className="flex-1 bg-transparent outline-none min-w-0"
             style={{
-              width: 8,
-              height: 15,
-              background: "#1eff00",
-              animation: "termCaret 0.9s step-end infinite",
-              opacity: 0.85,
+              color: "#ffffff",
+              fontSize: 14,
+              caretColor: "#1eff00",
             }}
           />
-        )}
-      </div>
 
-      {/* Keyframes */}
-      <style>{`
-        @keyframes termCaret {
-          0%, 100% { opacity: 0.85; }
-          50%       { opacity: 0; }
-        }
-      `}</style>
-    </motion.div>
+          {/* Blinking block cursor */}
+          {!loading && input === "" && (
+            <span
+              className="inline-block flex-shrink-0"
+              style={{
+                width: 8,
+                height: 15,
+                background: "#1eff00",
+                animation: "termCaret 0.9s step-end infinite",
+                opacity: 0.85,
+              }}
+            />
+          )}
+        </div>
+
+        {/* Keyframes */}
+        <style>{`
+          @keyframes termCaret {
+            0%, 100% { opacity: 0.85; }
+            50%       { opacity: 0; }
+          }
+        `}</style>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 

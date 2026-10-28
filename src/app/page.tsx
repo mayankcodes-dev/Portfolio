@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useLayoutEffect, useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { ArrowRight, Award, Mail, MapPin, ExternalLink, Copy, Check } from "lucide-react";
+import { ArrowRight, Award, Mail, MapPin, ExternalLink, Copy, Check, Terminal } from "lucide-react";
 import { useHeroStats } from "@/hooks/use-hero-stats";
 import Navbar from "@/components/navbar";
 import { Footer } from "@/components/sections/footer";
@@ -31,7 +31,7 @@ const LeetCodeCalendar = dynamic(
 
 gsap.registerPlugin(ScrollToPlugin);
 
-/* ─── Socials ─── */
+/* â”€â”€â”€ Socials â”€â”€â”€ */
 const SOCIALS = [
   {
     href: "https://github.com/mayankcodes-dev",
@@ -71,13 +71,13 @@ const SOCIALS = [
   },
 ];
 
-/* ─── Fade-up variant helper ─── */
+/* â”€â”€â”€ Fade-up variant helper â”€â”€â”€ */
 const fadeUp = (delay = 0) => ({
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const, delay } },
 });
 
-/* ─── CountUp hook ─── */
+/* â”€â”€â”€ CountUp hook â”€â”€â”€ */
 function useCountUp(target: number, duration = 1400, trigger = true) {
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -100,7 +100,7 @@ function useCountUp(target: number, duration = 1400, trigger = true) {
   return count;
 }
 
-/* ─── Section wrapper (scroll-triggered) ─── */
+/* â”€â”€â”€ Section wrapper (scroll-triggered) â”€â”€â”€ */
 function Section({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -130,6 +130,7 @@ export default function Home() {
 
   const [loaderDone, setLoaderDone] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
+  const [isTerminalFullScreen, setIsTerminalFullScreen] = useState(false);
 
   const copyEmail = () => {
     navigator.clipboard.writeText("admin@mayankcodes.dev");
@@ -147,6 +148,15 @@ export default function Home() {
       window.addEventListener("loaderFinished", handleLoaderFinished);
       return () => window.removeEventListener("loaderFinished", handleLoaderFinished);
     }
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const ce = e as CustomEvent;
+      setIsTerminalFullScreen(ce.detail === true ? true : (prev: boolean) => !prev);
+    };
+    window.addEventListener('toggle-terminal-fullscreen', handler);
+    return () => window.removeEventListener('toggle-terminal-fullscreen', handler);
   }, []);
 
   // Animated stat counters (count up from 0 when data loads, element is in view, and loader finishes)
@@ -179,13 +189,13 @@ export default function Home() {
   return (
     <div ref={rootRef} className="w-full bg-black overflow-x-hidden">
       <Navbar />
-      {/* ── White content wrapper — scales via CSS scroll-driven animation ── */}
+      {/* â”€â”€ White content wrapper â€” scales via CSS scroll-driven animation â”€â”€ */}
       <div
         className="relative w-full bg-[#F5F3F0] text-[#0a0a0a] overflow-hidden footer-scale-wrapper"
         style={{ transformOrigin: "bottom center" }}
       >
 
-      {/* ────────────────────────── HERO ────────────────────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <main
         id="hero"
         className="relative w-full bg-[#F5F3F0]"
@@ -200,7 +210,7 @@ export default function Home() {
           style={{ minHeight: "100dvh" }}
         >
 
-          {/* ── SIDEBAR — vertical labels & line (xl+ only) ── */}
+          {/* â”€â”€ SIDEBAR â€” vertical labels & line (xl+ only) â”€â”€ */}
           <div className="hidden xl:flex flex-col items-center justify-center border-r border-neutral-100 select-none font-mono relative" style={{ height: "100dvh", position: "sticky", top: 0 }}>
             <div className="flex flex-col items-center gap-24">
               {/* Static label */}
@@ -213,7 +223,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* ── CONTENT COLUMN ── */}
+          {/* â”€â”€ CONTENT COLUMN â”€â”€ */}
           <div ref={heroRightRef} className="flex flex-col justify-between pt-32 pb-12 lg:pt-40 lg:pb-16 z-10 px-8 md:px-14 lg:pl-14 lg:pr-8 xl:pl-16 xl:pr-10 relative h-full">
             <div className="flex-1 flex flex-col justify-center">
               {/* Live stats row */}
@@ -226,15 +236,15 @@ export default function Home() {
               >
                 <div className="flex flex-col group cursor-default">
                   <span className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0a0a0a] leading-none tabular-nums">
-                    {stats.loading ? "—" : problemsCount}
+                    {stats.loading ? "â€”" : problemsCount}
                   </span>
                   <span className="text-[12.5px] font-sans text-neutral-400 uppercase tracking-[0.18em] mt-2">
-                    Problems
+                    DSA Solved
                   </span>
                 </div>
                 <div className="flex flex-col group cursor-default">
                   <span className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0a0a0a] leading-none tabular-nums">
-                    {stats.loading ? "—" : contributionsCount}
+                    {stats.loading ? "â€”" : contributionsCount}
                   </span>
                   <span className="text-[12.5px] font-sans text-neutral-400 uppercase tracking-[0.18em] mt-2">
                     Contributions
@@ -262,7 +272,7 @@ export default function Home() {
                       marginBottom: "0.06em",
                     }}
                   >
-                    👋
+                    ðŸ‘‹
                   </span>
                 </h1>
               </motion.div>
@@ -274,7 +284,7 @@ export default function Home() {
                 transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
                 className="mt-6 text-neutral-500 text-xl md:text-xl leading-relaxed font-sans font-light"
               >
-                I&apos;m Mayank. A tinkerer obsessed with the craft.
+                I&apos;m Mayank, a software tinkerer obsessed with the craft.
               </motion.p>
 
               {/* Social icons */}
@@ -320,12 +330,12 @@ export default function Home() {
                 className="text-[11px] font-mono uppercase tracking-widest cursor-pointer hover:text-black transition-colors flex-shrink-0"
                 onClick={() => scrollTo("skills")}
               >
-                Scroll down ↓
+                Scroll down â†“
               </motion.span>
             </motion.div>
           </div>
 
-          {/* ── PHOTO COLUMN — sticky, fills viewport height ── */}
+          {/* â”€â”€ PHOTO COLUMN â€” sticky, fills viewport height â”€â”€ */}
           <div
             ref={heroPhotoRef}
             className="relative hidden lg:block group/hero cursor-none"
@@ -342,7 +352,7 @@ export default function Home() {
               {/* Layer 1: Base Grayscale Image */}
               <Image
                 src="/images/mayank-hero-cropped.webp"
-                alt="Mayank — Base Grayscale"
+                alt="Mayank â€” Base Grayscale"
                 fill
                 priority
                 sizes="(max-width: 1024px) 0px, 60vw"
@@ -359,7 +369,7 @@ export default function Home() {
               >
                 <Image
                   src="/images/mayank-hero-cropped.webp"
-                  alt="Mayank — Colorful Spotlight"
+                  alt="Mayank â€” Colorful Spotlight"
                   fill
                   priority
                   sizes="(max-width: 1024px) 0px, 60vw"
@@ -371,14 +381,14 @@ export default function Home() {
                 />
               </div>
 
-              {/* Left edge gradient — blends into warm white (matches page bg #F5F3F0) */}
+              {/* Left edge gradient â€” blends into warm white (matches page bg #F5F3F0) */}
               <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-[#F5F3F0] to-transparent z-10 pointer-events-none" />
               {/* Bottom fade */}
               <div className="absolute inset-x-0 bottom-0 h-44 z-10 pointer-events-none" style={{ background: "linear-gradient(to top, #F5F3F0 0%, rgba(245,243,240,0.7) 60%, transparent 100%)" }} />
-              {/* Top fade — subtle */}
+              {/* Top fade â€” subtle */}
               <div className="absolute inset-x-0 top-0 h-12 z-10 pointer-events-none" style={{ background: "linear-gradient(to bottom, rgba(245,243,240,0.4) 0%, transparent 100%)" }} />
 
-              {/* Year label — top right */}
+              {/* Year label â€” top right */}
               <div className="absolute top-6 right-6 z-20 font-mono text-[10px] text-neutral-400 uppercase tracking-widest">
                 2026
               </div>
@@ -387,10 +397,10 @@ export default function Home() {
         </div>
       </main>
 
-      {/* ══════════════════════════ SKILLS ══════════════════════════ */}
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• SKILLS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <SkillsSection />
 
-      {/* ══════════════════════════ DEV ACTIVITY ══════════════════════════ */}
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• DEV ACTIVITY â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <Section className="border-t border-neutral-100 bg-[#F5F3F0]" id="github-activity">
         <div className="mx-auto max-w-6xl px-6 md:px-8 py-16 md:py-20">
           <motion.div variants={fadeUp(0)} className="mb-10 flex items-end justify-between gap-4">
@@ -398,12 +408,12 @@ export default function Home() {
               <p className="eyebrow mb-2">Activity</p>
               <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">Dev Activity</h2>
               <p className="mt-2 text-sm text-neutral-500">
-                Coding every day —{" "}
+                Coding every day â€”{" "}
                 <a href="https://github.com/mayankcodes-dev" target="_blank" rel="noopener noreferrer"
                   className="text-[#0a0a0a] font-medium hover:underline underline-offset-2">GitHub</a>
-                {" "}·{" "}
-                <a href="https://leetcode.com/u/mayankcodes-dev/" target="_blank" rel="noopener noreferrer"
-                  className="text-[#0a0a0a] font-medium hover:underline underline-offset-2">LeetCode</a>
+                {" "}Â·{" "}
+                <a href="https://codeyes.in/u/mayankcodes-dev" target="_blank" rel="noopener noreferrer"
+                  className="text-[#0a0a0a] font-medium hover:underline underline-offset-2">CodEyes</a>
               </p>
             </div>
             <a href="https://github.com/mayankcodes-dev" target="_blank" rel="noopener noreferrer"
@@ -417,7 +427,7 @@ export default function Home() {
             <GitHubCalendar />
           </motion.div>
 
-          {/* LeetCode heatmap — same card, same renderer, different theme */}
+          {/* LeetCode heatmap â€” same card, same renderer, different theme */}
           <motion.div variants={fadeUp(0.15)} className="mb-6">
             <LeetCodeCalendar />
           </motion.div>
@@ -432,12 +442,12 @@ export default function Home() {
                 </svg>
               </div>
               <div>
-                <p className="text-xs text-neutral-400 font-mono uppercase tracking-widest mb-0.5">LeetCode</p>
+                <p className="text-xs text-neutral-400 font-mono uppercase tracking-widest mb-0.5">DSA Solved</p>
                 <p className="text-2xl font-extrabold text-[#0a0a0a]">{stats.problems}</p>
-                <p className="text-xs text-neutral-500">problems solved</p>
+                <p className="text-xs text-neutral-500">problems across 6 platforms</p>
               </div>
-              <a href="https://leetcode.com/u/mayankcodes-dev/" target="_blank" rel="noopener noreferrer"
-                className="ml-auto btn btn-outline btn-sm text-xs">Profile →</a>
+              <a href="https://codeyes.in/u/mayankcodes-dev" target="_blank" rel="noopener noreferrer"
+                className="ml-auto btn btn-outline btn-sm text-xs">Profile â†’</a>
             </motion.div>
 
             {/* GitHub contributions count */}
@@ -453,16 +463,16 @@ export default function Home() {
                 <p className="text-xs text-neutral-500">total contributions</p>
               </div>
               <a href="https://github.com/mayankcodes-dev" target="_blank" rel="noopener noreferrer"
-                className="ml-auto btn btn-outline btn-sm text-xs">Profile →</a>
+                className="ml-auto btn btn-outline btn-sm text-xs">Profile â†’</a>
             </motion.div>
           </motion.div>
         </div>
       </Section>
 
-      {/* ══════════════════════════ PROJECTS ══════════════════════════ */}
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• PROJECTS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <ProjectsSection />
 
-      {/* ══════════════════════════ AI ASSISTANT ══════════════════════════ */}
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• AI ASSISTANT â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <Section className="border-t border-neutral-100 bg-[#EFECE7]" id="assistant">
         <div className="mx-auto max-w-7xl px-6 md:px-10 py-20 md:py-28">
           <motion.div variants={fadeUp(0)} className="mb-8">
@@ -470,12 +480,12 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">Ask my assistant</h2>
           </motion.div>
           <motion.div variants={fadeUp(0.1)}>
-            <CliAssistant />
+            <CliAssistant isFullScreen={isTerminalFullScreen} onExitFullScreen={() => setIsTerminalFullScreen(false)} />
           </motion.div>
         </div>
       </Section>
 
-      {/* ══════════════════════════ CERTIFICATIONS ══════════════════════════ */}
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• CERTIFICATIONS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <Section className="relative border-t border-neutral-100 bg-[#EFECE7]" id="certs">
         <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" aria-hidden />
         <div className="relative mx-auto max-w-6xl px-6 md:px-8 py-20 md:py-28 z-10">
@@ -522,7 +532,7 @@ export default function Home() {
                     {cert.title}
                   </p>
                   <p className="mt-1 text-xs text-neutral-500 font-mono">
-                    {cert.issuer} · {cert.date}
+                    {cert.issuer} Â· {cert.date}
                   </p>
                 </div>
               </motion.a>
@@ -542,12 +552,12 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ══════════════════════════ CONTACT CTA ══════════════════════════ */}
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• CONTACT CTA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <Section id="contact" className="border-t border-neutral-100 bg-[#EFECE7]">
         <div className="mx-auto max-w-6xl px-6 md:px-8 py-24 md:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
 
-            {/* ── Left: copy + action buttons inside matching Bento Card ── */}
+            {/* â”€â”€ Left: copy + action buttons inside matching Bento Card â”€â”€ */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -564,7 +574,7 @@ export default function Home() {
 
               {/* Buttons: Email Copy + WhatsApp Chat */}
               <div className="mt-8 flex flex-wrap gap-3">
-                {/* Email button — hover copy scroll animation, no default mailto launch */}
+                {/* Email button â€” hover copy scroll animation, no default mailto launch */}
                 <button
                   onClick={copyEmail}
                   className="group relative block h-[48px] w-[260px] overflow-hidden rounded-xl border border-[#0a0a0a] bg-[#0a0a0a] text-white text-sm font-semibold shadow-sm transition-colors hover:bg-neutral-800 text-left cursor-pointer"
@@ -594,7 +604,7 @@ export default function Home() {
                   </div>
                 </button>
 
-                {/* WhatsApp button — green */}
+                {/* WhatsApp button â€” green */}
                 <a
                   href="https://wa.me/message/4BKKNWXBQUQ7G1"
                   target="_blank"
@@ -610,7 +620,7 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* ── Right: Google Map ── */}
+            {/* â”€â”€ Right: Google Map â”€â”€ */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -640,7 +650,7 @@ export default function Home() {
                 className="relative overflow-hidden rounded-2xl border border-neutral-200 shadow-sm"
                 style={{ height: "380px" }}
               >
-                {/* Blue glowing pulse — centered on embed location */}
+                {/* Blue glowing pulse â€” centered on embed location */}
                 <div
                   aria-hidden
                   className="absolute z-10 pointer-events-none flex items-center justify-center size-10"
@@ -651,7 +661,7 @@ export default function Home() {
                 </div>
 
                 <iframe
-                  title="Mayank's location — Krishna Nagar, Lucknow"
+                  title="Mayank's location â€” Krishna Nagar, Lucknow"
                   src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14245.368439659092!2d80.88758535!3d26.797233399999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1777930972403!5m2!1sen!2sin"
                   width="100%"
                   height="100%"
@@ -679,7 +689,18 @@ export default function Home() {
 
       </div>
 
+      {/* Desktop-only Terminal launcher - bottom-right */}
+      <button
+        className="hidden md:flex fixed bottom-6 right-6 z-40 items-center justify-center h-12 w-12 rounded-full bg-[#0a0a0a] text-white shadow-lg hover:bg-neutral-800 hover:scale-105 transition-all duration-200 border border-neutral-700/60"
+        title="Open AI Terminal"
+        aria-label="Open AI Terminal fullscreen"
+        onClick={() => window.dispatchEvent(new CustomEvent('toggle-terminal-fullscreen', { detail: true }))}
+      >
+        <Terminal className="size-5" />
+      </button>
+
       <Footer ref={footerRef} />
+
     </div>
   );
 }
